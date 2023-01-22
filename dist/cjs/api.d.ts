@@ -30,15 +30,15 @@ export declare const createStakePool: (connection: Connection, wallet: Wallet, p
     minStakeSeconds?: number;
     endDate?: BN;
     doubleOrResetEnabled?: boolean;
-    rewardDistributor?: {
+    rewardDistributors?: {
         rewardMintId: PublicKey;
         rewardAmount?: BN;
         rewardDurationSeconds?: BN;
         rewardDistributorKind?: RewardDistributorKind;
         maxSupply?: BN;
         supply?: BN;
-    };
-}) => Promise<[Transaction, PublicKey, PublicKey?]>;
+    }[];
+}) => Promise<[Transaction, PublicKey, PublicKey[]?]>;
 /**
  * Convenience call to create a reward distributor
  * @param connection - Connection to use
@@ -52,6 +52,7 @@ export declare const createStakePool: (connection: Connection, wallet: Wallet, p
  * @returns
  */
 export declare const createRewardDistributor: (connection: Connection, wallet: Wallet, params: {
+    distributorId: BN;
     stakePoolId: PublicKey;
     rewardMintId: PublicKey;
     rewardAmount?: BN;
@@ -83,6 +84,7 @@ export declare const createStakeEntry: (connection: Connection, wallet: Wallet, 
  * @returns
  */
 export declare const initializeRewardEntry: (connection: Connection, wallet: Wallet, params: {
+    distributorId: BN;
     stakePoolId: PublicKey;
     originalMintId: PublicKey;
     multiplier?: BN;
@@ -122,11 +124,13 @@ export declare const createStakeEntryAndStakeMint: (connection: Connection, wall
  * @returns
  */
 export declare const claimRewards: (connection: Connection, wallet: Wallet, params: {
+    distributorId: BN;
     stakePoolId: PublicKey;
     stakeEntryId: PublicKey;
     lastStaker?: PublicKey;
     payer?: PublicKey;
     skipRewardMintTokenAccount?: boolean;
+    authority?: PublicKey;
 }) => Promise<Transaction>;
 /**
  * Convenience method to stake tokens
@@ -157,6 +161,7 @@ export declare const stake: (connection: Connection, wallet: Wallet, params: {
  * @returns
  */
 export declare const unstake: (connection: Connection, wallet: Wallet, params: {
+    distributorId: BN;
     stakePoolId: PublicKey;
     originalMintId: PublicKey;
     skipRewardMintTokenAccount?: boolean;
@@ -282,6 +287,7 @@ export declare const updateGroupRewardDistributor: (connection: Connection, wall
  * @returns
  */
 export declare const claimGroupRewards: (connection: Connection, wallet: Wallet, params: {
+    distributorId: BN;
     groupRewardDistributorId: PublicKey;
     groupEntryId: PublicKey;
     stakeEntryIds: PublicKey[];
@@ -297,6 +303,7 @@ export declare const claimGroupRewards: (connection: Connection, wallet: Wallet,
  * @returns
  */
 export declare const closeGroupEntry: (connection: Connection, wallet: Wallet, params: {
+    distributorId: BN;
     groupRewardDistributorId: PublicKey;
     groupEntryId: PublicKey;
     stakeEntryIds: PublicKey[];

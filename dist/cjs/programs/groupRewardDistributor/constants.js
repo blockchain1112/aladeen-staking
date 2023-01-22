@@ -22,10 +22,10 @@ const GROUP_REWARD_DISTRIBUTOR_TYPES = tslib_1.__importStar(
   require("../../idl/cardinal_group_reward_distributor")
 );
 exports.GROUP_REWARD_DISTRIBUTOR_ADDRESS = new web3_js_1.PublicKey(
-  "grwDL1AZiCaBmTQHTQVhX6wxXKowAnisDZxH7866LUL"
+  "CbNG8keFXcG8jLzTk3cL35cj6PtZL8EiqRkT6MqU5CxE"
 );
 exports.GROUP_REWARD_MANAGER = new web3_js_1.PublicKey(
-  "crkdpVWjHWdggGgBuSyAqSmZUmAjYLzD435tcLDRLXr"
+  "5nx4MybNcPBut1yMBsandykg2n99vQGAqXR3ymEXzQze"
 );
 exports.GROUP_REWARD_ENTRY_SEED = "group-reward-entry";
 exports.GROUP_REWARD_COUNTER_SEED = "group-reward-counter";

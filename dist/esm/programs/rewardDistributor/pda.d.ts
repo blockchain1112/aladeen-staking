@@ -1,3 +1,4 @@
+import { BN } from "@project-serum/anchor";
 import { PublicKey } from "@solana/web3.js";
 /**
  * Finds the reward entry id.
@@ -8,5 +9,10 @@ export declare const findRewardEntryId: (rewardDistributorId: PublicKey, stakeEn
  * Finds the reward distributor id.
  * @returns
  */
-export declare const findRewardDistributorId: (stakePoolId: PublicKey) => PublicKey;
+export declare const findRewardDistributorId: (stakePoolId: PublicKey, id: BN) => PublicKey;
+/**
+ * Finds the reward distributor id.
+ * @returns
+ */
+export declare const findRewardAuthority: (authority: PublicKey) => PublicKey;
 //# sourceMappingURL=pda.d.ts.map

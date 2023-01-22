@@ -96,7 +96,11 @@ export const getActiveStakeSeconds = async (connection, stakeEntryId) => {
   const lastStakedAt = parsed.lastStakedAt.toNumber() || UTCNow;
   return parsed.lastStaker ? new BN(UTCNow - lastStakedAt) : new BN(0);
 };
-export const getUnclaimedRewards = async (connection, stakePoolId) => {
+export const getUnclaimedRewards = async (
+  connection,
+  stakePoolId,
+  distributorId
+) => {
   var _a;
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -106,7 +110,10 @@ export const getUnclaimedRewards = async (connection, stakePoolId) => {
     REWARD_DISTRIBUTOR_ADDRESS,
     provider
   );
-  const rewardDistributorId = findRewardDistributorId(stakePoolId);
+  const rewardDistributorId = findRewardDistributorId(
+    stakePoolId,
+    distributorId
+  );
   const parsed = await rewardDistributor.account.rewardDistributor.fetch(
     rewardDistributorId
   );
@@ -118,7 +125,11 @@ export const getUnclaimedRewards = async (connection, stakePoolId) => {
       )
     : new BN(0);
 };
-export const getClaimedRewards = async (connection, stakePoolId) => {
+export const getClaimedRewards = async (
+  connection,
+  stakePoolId,
+  distributorId
+) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const provider = new AnchorProvider(connection, null, {});
@@ -127,7 +138,10 @@ export const getClaimedRewards = async (connection, stakePoolId) => {
     REWARD_DISTRIBUTOR_ADDRESS,
     provider
   );
-  const rewardDistributorId = findRewardDistributorId(stakePoolId);
+  const rewardDistributorId = findRewardDistributorId(
+    stakePoolId,
+    distributorId
+  );
   const parsed = await rewardDistributor.account.rewardDistributor.fetch(
     rewardDistributorId
   );

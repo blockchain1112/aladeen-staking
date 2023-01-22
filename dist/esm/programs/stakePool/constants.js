@@ -3,7 +3,7 @@ import { AnchorProvider, Program } from "@project-serum/anchor";
 import { Keypair, PublicKey } from "@solana/web3.js";
 import * as STAKE_POOL_TYPES from "../../idl/cardinal_stake_pool";
 export const STAKE_POOL_ADDRESS = new PublicKey(
-  "stkBL96RZkjY5ine4TvPihGqW8UHJfch2cokjAPzV8i"
+  "wfXTQapJ9XWsRTWA6W4EaNDizPn1oESNjBLMhoKkag7"
 );
 export const STAKE_POOL_SEED = "stake-pool";
 export const STAKE_ENTRY_SEED = "stake-entry";

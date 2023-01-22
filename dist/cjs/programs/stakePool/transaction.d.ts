@@ -113,6 +113,7 @@ export declare const withStake: (transaction: Transaction, connection: Connectio
  * @returns Transaction
  */
 export declare const withUnstake: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    distributorId: BN;
     stakePoolId: PublicKey;
     originalMintId: PublicKey;
     skipRewardMintTokenAccount?: boolean;

@@ -416,7 +416,10 @@ export const withStake = async (transaction, connection, wallet, params) => {
  * @returns Transaction
  */
 export const withUnstake = async (transaction, connection, wallet, params) => {
-  const rewardDistributorId = findRewardDistributorId(params.stakePoolId);
+  const rewardDistributorId = findRewardDistributorId(
+    params.stakePoolId,
+    params.distributorId
+  );
   const stakeEntryId = await findStakeEntryIdFromMint(
     connection,
     wallet.publicKey,
@@ -497,6 +500,7 @@ export const withUnstake = async (transaction, connection, wallet, params) => {
   // claim any rewards deserved
   if (rewardDistributorData) {
     await withClaimRewards(transaction, connection, wallet, {
+      distributorId: params.distributorId,
       stakePoolId: params.stakePoolId,
       stakeEntryId: stakeEntryId,
       lastStaker: wallet.publicKey,

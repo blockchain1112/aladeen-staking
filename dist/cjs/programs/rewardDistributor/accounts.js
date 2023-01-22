@@ -4,6 +4,7 @@ exports.getAllRewardEntries =
   exports.getRewardEntriesForRewardDistributor =
   exports.getRewardDistributors =
   exports.getRewardDistributor =
+  exports.getRewardAuthority =
   exports.getRewardEntries =
   exports.getRewardEntry =
     void 0;
@@ -30,6 +31,17 @@ const getRewardEntries = async (connection, rewardEntryIds) => {
   }));
 };
 exports.getRewardEntries = getRewardEntries;
+const getRewardAuthority = async (connection, rewardAuthority) => {
+  const program = (0, constants_1.rewardDistributorProgram)(connection);
+  const parsed = await program.account.rewardDistributor.fetchNullable(
+    rewardAuthority
+  );
+  return {
+    parsed,
+    pubkey: rewardAuthority,
+  };
+};
+exports.getRewardAuthority = getRewardAuthority;
 const getRewardDistributor = async (connection, rewardDistributorId) => {
   const program = (0, constants_1.rewardDistributorProgram)(connection);
   const parsed = await program.account.rewardDistributor.fetch(

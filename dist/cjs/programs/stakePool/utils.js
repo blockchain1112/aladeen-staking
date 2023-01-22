@@ -112,7 +112,7 @@ const getActiveStakeSeconds = async (connection, stakeEntryId) => {
     : new anchor_1.BN(0);
 };
 exports.getActiveStakeSeconds = getActiveStakeSeconds;
-const getUnclaimedRewards = async (connection, stakePoolId) => {
+const getUnclaimedRewards = async (connection, stakePoolId, distributorId) => {
   var _a;
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -122,7 +122,10 @@ const getUnclaimedRewards = async (connection, stakePoolId) => {
     rewardDistributor_1.REWARD_DISTRIBUTOR_ADDRESS,
     provider
   );
-  const rewardDistributorId = (0, pda_1.findRewardDistributorId)(stakePoolId);
+  const rewardDistributorId = (0, pda_1.findRewardDistributorId)(
+    stakePoolId,
+    distributorId
+  );
   const parsed = await rewardDistributor.account.rewardDistributor.fetch(
     rewardDistributorId
   );
@@ -135,7 +138,7 @@ const getUnclaimedRewards = async (connection, stakePoolId) => {
     : new anchor_1.BN(0);
 };
 exports.getUnclaimedRewards = getUnclaimedRewards;
-const getClaimedRewards = async (connection, stakePoolId) => {
+const getClaimedRewards = async (connection, stakePoolId, distributorId) => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const provider = new anchor_1.AnchorProvider(connection, null, {});
@@ -144,7 +147,10 @@ const getClaimedRewards = async (connection, stakePoolId) => {
     rewardDistributor_1.REWARD_DISTRIBUTOR_ADDRESS,
     provider
   );
-  const rewardDistributorId = (0, pda_1.findRewardDistributorId)(stakePoolId);
+  const rewardDistributorId = (0, pda_1.findRewardDistributorId)(
+    stakePoolId,
+    distributorId
+  );
   const parsed = await rewardDistributor.account.rewardDistributor.fetch(
     rewardDistributorId
   );

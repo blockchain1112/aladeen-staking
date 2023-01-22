@@ -4,6 +4,7 @@ import type { Wallet } from "@project-serum/anchor/dist/cjs/provider";
 import type { Connection, PublicKey, Transaction } from "@solana/web3.js";
 import { RewardDistributorKind } from "./constants";
 export declare const withInitRewardDistributor: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    distributorId: BN;
     stakePoolId: PublicKey;
     rewardMintId: PublicKey;
     rewardAmount?: BN;
@@ -20,13 +21,16 @@ export declare const withInitRewardEntry: (transaction: Transaction, connection:
     rewardDistributorId: PublicKey;
 }) => Promise<[Transaction, PublicKey]>;
 export declare const withClaimRewards: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    distributorId: BN;
     stakePoolId: PublicKey;
     stakeEntryId: PublicKey;
     lastStaker: PublicKey;
     payer?: PublicKey;
     skipRewardMintTokenAccount?: boolean;
+    authority?: PublicKey;
 }) => Promise<Transaction>;
 export declare const withCloseRewardDistributor: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    distributorId: BN;
     stakePoolId: PublicKey;
 }) => Promise<Transaction>;
 export declare const withUpdateRewardEntry: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
@@ -36,10 +40,12 @@ export declare const withUpdateRewardEntry: (transaction: Transaction, connectio
     multiplier: BN;
 }) => Promise<Transaction>;
 export declare const withCloseRewardEntry: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    distributorId: BN;
     stakePoolId: PublicKey;
     stakeEntryId: PublicKey;
 }) => Promise<Transaction>;
 export declare const withUpdateRewardDistributor: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    distributorId: BN;
     stakePoolId: PublicKey;
     defaultMultiplier?: BN;
     multiplierDecimals?: number;
@@ -48,6 +54,7 @@ export declare const withUpdateRewardDistributor: (transaction: Transaction, con
     maxRewardSecondsReceived?: BN;
 }) => Promise<Transaction>;
 export declare const withReclaimFunds: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
+    distributorId: BN;
     stakePoolId: PublicKey;
     amount: BN;
 }) => Promise<Transaction>;

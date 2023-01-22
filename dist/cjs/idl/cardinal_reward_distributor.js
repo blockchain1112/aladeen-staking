@@ -6,11 +6,49 @@ exports.IDL = {
   name: "cardinal_reward_distributor",
   instructions: [
     {
+      name: "initRewardAuthority",
+      accounts: [
+        {
+          name: "rewardAuthority",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "authority",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "payer",
+          isMut: true,
+          isSigner: true,
+        },
+        {
+          name: "systemProgram",
+          isMut: false,
+          isSigner: false,
+        },
+      ],
+      args: [
+        {
+          name: "ix",
+          type: {
+            defined: "InitRewardAuthorityIx",
+          },
+        },
+      ],
+    },
+    {
       name: "initRewardDistributor",
       accounts: [
         {
           name: "rewardDistributor",
           isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "rewardAuthority",
+          isMut: false,
           isSigner: false,
         },
         {
@@ -98,6 +136,11 @@ exports.IDL = {
           isSigner: false,
         },
         {
+          name: "rewardAuthority",
+          isMut: true,
+          isSigner: false,
+        },
+        {
           name: "stakeEntry",
           isMut: false,
           isSigner: false,
@@ -154,6 +197,11 @@ exports.IDL = {
           isSigner: false,
         },
         {
+          name: "rewardAuthority",
+          isMut: false,
+          isSigner: false,
+        },
+        {
           name: "authority",
           isMut: false,
           isSigner: true,
@@ -174,6 +222,11 @@ exports.IDL = {
         {
           name: "rewardDistributor",
           isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "rewardAuthority",
+          isMut: false,
           isSigner: false,
         },
         {
@@ -208,6 +261,11 @@ exports.IDL = {
           isSigner: false,
         },
         {
+          name: "rewardAuthority",
+          isMut: false,
+          isSigner: false,
+        },
+        {
           name: "rewardEntry",
           isMut: true,
           isSigner: false,
@@ -225,6 +283,11 @@ exports.IDL = {
       accounts: [
         {
           name: "rewardDistributor",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "rewardAuthority",
           isMut: true,
           isSigner: false,
         },
@@ -248,6 +311,11 @@ exports.IDL = {
       accounts: [
         {
           name: "rewardDistributor",
+          isMut: true,
+          isSigner: false,
+        },
+        {
+          name: "rewardAuthority",
           isMut: true,
           isSigner: false,
         },
@@ -315,6 +383,10 @@ exports.IDL = {
         kind: "struct",
         fields: [
           {
+            name: "index",
+            type: "u8",
+          },
+          {
             name: "bump",
             type: "u8",
           },
@@ -327,7 +399,7 @@ exports.IDL = {
             type: "u8",
           },
           {
-            name: "authority",
+            name: "rewardAuthority",
             type: "publicKey",
           },
           {
@@ -369,13 +441,36 @@ exports.IDL = {
         ],
       },
     },
+    {
+      name: "rewardAuthority",
+      type: {
+        kind: "struct",
+        fields: [
+          {
+            name: "authority",
+            type: "publicKey",
+          },
+        ],
+      },
+    },
   ],
   types: [
+    {
+      name: "InitRewardAuthorityIx",
+      type: {
+        kind: "struct",
+        fields: [],
+      },
+    },
     {
       name: "InitRewardDistributorIx",
       type: {
         kind: "struct",
         fields: [
+          {
+            name: "distributorIndex",
+            type: "u8",
+          },
           {
             name: "rewardAmount",
             type: "u64",

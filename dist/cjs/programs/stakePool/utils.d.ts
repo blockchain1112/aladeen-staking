@@ -11,6 +11,6 @@ export declare const withRemainingAccountsForUnstake: (transaction: Transaction,
 export declare const findStakeEntryIdFromMint: (connection: Connection, wallet: PublicKey, stakePoolId: PublicKey, originalMintId: PublicKey, isFungible?: boolean) => Promise<PublicKey>;
 export declare const getTotalStakeSeconds: (connection: Connection, stakeEntryId: PublicKey) => Promise<BN>;
 export declare const getActiveStakeSeconds: (connection: Connection, stakeEntryId: PublicKey) => Promise<BN>;
-export declare const getUnclaimedRewards: (connection: Connection, stakePoolId: PublicKey) => Promise<BN>;
-export declare const getClaimedRewards: (connection: Connection, stakePoolId: PublicKey) => Promise<BN>;
+export declare const getUnclaimedRewards: (connection: Connection, stakePoolId: PublicKey, distributorId: BN) => Promise<BN>;
+export declare const getClaimedRewards: (connection: Connection, stakePoolId: PublicKey, distributorId: BN) => Promise<BN>;
 //# sourceMappingURL=utils.d.ts.map

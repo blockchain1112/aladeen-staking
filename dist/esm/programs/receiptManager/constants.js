@@ -3,7 +3,7 @@ import { AnchorProvider, Program } from "@project-serum/anchor";
 import { Keypair, PublicKey } from "@solana/web3.js";
 import * as RECEIPT_MANAGER_TYPES from "../../idl/cardinal_receipt_manager";
 export const RECEIPT_MANAGER_ADDRESS = new PublicKey(
-  "rrmevmpXMooxn8Qu6u7RWao93BZn4cKgfjtNMURSc2E"
+  "5u66Lbk1j7mDn8XC4yf8KK8Nhz4WZvxhQofj8ZuSPobF"
 );
 export const RECEIPT_MANAGER_SEED = "receipt-manager";
 export const REWARD_RECEIPT_SEED = "reward-receipt";

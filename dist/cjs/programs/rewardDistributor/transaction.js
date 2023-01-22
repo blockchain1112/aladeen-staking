@@ -23,15 +23,17 @@ const withInitRewardDistributor = async (
   wallet,
   params
 ) => {
+  const rewardAuthority = (0, pda_1.findRewardAuthority)(wallet.publicKey);
   const rewardDistributorId = (0, pda_1.findRewardDistributorId)(
-    params.stakePoolId
+    params.stakePoolId,
+    params.distributorId
   );
   const remainingAccountsForKind = await (0,
   utils_1.withRemainingAccountsForKind)(
     transaction,
     connection,
     wallet,
-    rewardDistributorId,
+    rewardAuthority,
     params.kind || constants_1.RewardDistributorKind.Mint,
     params.rewardMintId
   );
@@ -46,9 +48,11 @@ const withInitRewardDistributor = async (
       defaultMultiplier: params.defaultMultiplier || null,
       multiplierDecimals: params.multiplierDecimals || null,
       maxRewardSecondsReceived: params.maxRewardSecondsReceived || null,
+      distributorIndex: params.distributorId.toNumber(),
     })
     .accounts({
       rewardDistributor: rewardDistributorId,
+      rewardAuthority,
       stakePool: params.stakePoolId,
       rewardMint: params.rewardMintId,
       authority: wallet.publicKey,
@@ -58,6 +62,22 @@ const withInitRewardDistributor = async (
     })
     .remainingAccounts(remainingAccountsForKind)
     .instruction();
+  const rewardAuthorityData = await (0, accounts_1.getRewardAuthority)(
+    connection,
+    rewardAuthority
+  );
+  if (rewardAuthorityData.parsed === null) {
+    const initRewardAuthorityIx = await program.methods
+      .initRewardAuthority({})
+      .accounts({
+        rewardAuthority,
+        authority: wallet.publicKey,
+        payer: wallet.publicKey,
+        systemProgram: web3_js_1.SystemProgram.programId,
+      })
+      .instruction();
+    transaction.add(initRewardAuthorityIx);
+  }
   transaction.add(ix);
   return [transaction, rewardDistributorId];
 };
@@ -84,8 +104,12 @@ const withInitRewardEntry = async (transaction, connection, wallet, params) => {
 exports.withInitRewardEntry = withInitRewardEntry;
 const withClaimRewards = async (transaction, connection, wallet, params) => {
   var _a, _b;
+  const rewardAuthority = (0, pda_1.findRewardAuthority)(
+    params.authority ? params.authority : wallet.publicKey
+  );
   const rewardDistributorId = (0, pda_1.findRewardDistributorId)(
-    params.stakePoolId
+    params.stakePoolId,
+    params.distributorId
   );
   const rewardDistributorData = await (0, common_1.tryGetAccount)(() =>
     (0, accounts_1.getRewardDistributor)(connection, rewardDistributorId)
@@ -109,7 +133,7 @@ const withClaimRewards = async (transaction, connection, wallet, params) => {
       transaction,
       connection,
       wallet,
-      rewardDistributorId,
+      rewardAuthority,
       rewardDistributorData.parsed.kind,
       rewardDistributorData.parsed.rewardMint,
       true
@@ -143,6 +167,7 @@ const withClaimRewards = async (transaction, connection, wallet, params) => {
       .accounts({
         rewardEntry: rewardEntryId,
         rewardDistributor: rewardDistributorData.pubkey,
+        rewardAuthority,
         stakeEntry: params.stakeEntryId,
         stakePool: params.stakePoolId,
         rewardMint: rewardDistributorData.parsed.rewardMint,
@@ -166,8 +191,10 @@ const withCloseRewardDistributor = async (
   wallet,
   params
 ) => {
+  const rewardAuthority = (0, pda_1.findRewardAuthority)(wallet.publicKey);
   const rewardDistributorId = (0, pda_1.findRewardDistributorId)(
-    params.stakePoolId
+    params.stakePoolId,
+    params.distributorId
   );
   const rewardDistributorData = await (0, common_1.tryGetAccount)(() =>
     (0, accounts_1.getRewardDistributor)(connection, rewardDistributorId)
@@ -178,7 +205,7 @@ const withCloseRewardDistributor = async (
       transaction,
       connection,
       wallet,
-      rewardDistributorId,
+      rewardAuthority,
       rewardDistributorData.parsed.kind,
       rewardDistributorData.parsed.rewardMint
     );
@@ -190,6 +217,7 @@ const withCloseRewardDistributor = async (
       .closeRewardDistributor()
       .accounts({
         rewardDistributor: rewardDistributorData.pubkey,
+        rewardAuthority,
         stakePool: params.stakePoolId,
         rewardMint: rewardDistributorData.parsed.rewardMint,
         signer: wallet.publicKey,
@@ -208,6 +236,7 @@ const withUpdateRewardEntry = async (
   wallet,
   params
 ) => {
+  const rewardAuthority = (0, pda_1.findRewardAuthority)(wallet.publicKey);
   const rewardEntryId = (0, pda_1.findRewardEntryId)(
     params.rewardDistributorId,
     params.stakeEntryId
@@ -220,6 +249,7 @@ const withUpdateRewardEntry = async (
     .accounts({
       rewardEntry: rewardEntryId,
       rewardDistributor: params.rewardDistributorId,
+      rewardAuthority,
       authority: wallet.publicKey,
     })
     .instruction();
@@ -233,8 +263,10 @@ const withCloseRewardEntry = async (
   wallet,
   params
 ) => {
+  const rewardAuthority = (0, pda_1.findRewardAuthority)(wallet.publicKey);
   const rewardDistributorId = (0, pda_1.findRewardDistributorId)(
-    params.stakePoolId
+    params.stakePoolId,
+    params.distributorId
   );
   const rewardEntryId = (0, pda_1.findRewardEntryId)(
     rewardDistributorId,
@@ -244,6 +276,7 @@ const withCloseRewardEntry = async (
   const ix = await program.methods
     .closeRewardEntry()
     .accounts({
+      rewardAuthority,
       rewardDistributor: rewardDistributorId,
       rewardEntry: rewardEntryId,
       authority: wallet.publicKey,
@@ -259,8 +292,10 @@ const withUpdateRewardDistributor = async (
   wallet,
   params
 ) => {
+  const rewardAuthority = (0, pda_1.findRewardAuthority)(wallet.publicKey);
   const rewardDistributorId = (0, pda_1.findRewardDistributorId)(
-    params.stakePoolId
+    params.stakePoolId,
+    params.distributorId
   );
   const rewardDistributorData = await (0, accounts_1.getRewardDistributor)(
     connection,
@@ -286,6 +321,7 @@ const withUpdateRewardDistributor = async (
     })
     .accounts({
       rewardDistributor: rewardDistributorId,
+      rewardAuthority,
       authority: wallet.publicKey,
     })
     .instruction();
@@ -294,8 +330,10 @@ const withUpdateRewardDistributor = async (
 };
 exports.withUpdateRewardDistributor = withUpdateRewardDistributor;
 const withReclaimFunds = async (transaction, connection, wallet, params) => {
+  const rewardAuthority = (0, pda_1.findRewardAuthority)(wallet.publicKey);
   const rewardDistributorId = (0, pda_1.findRewardDistributorId)(
-    params.stakePoolId
+    params.stakePoolId,
+    params.distributorId
   );
   const rewardDistributorData = await (0, common_1.tryGetAccount)(() =>
     (0, accounts_1.getRewardDistributor)(connection, rewardDistributorId)
@@ -305,7 +343,7 @@ const withReclaimFunds = async (transaction, connection, wallet, params) => {
   }
   const rewardDistributorTokenAccountId = await (0, common_1.findAta)(
     rewardDistributorData.parsed.rewardMint,
-    rewardDistributorData.pubkey,
+    rewardAuthority,
     true
   );
   const authorityTokenAccountId = await (0,
@@ -322,6 +360,7 @@ const withReclaimFunds = async (transaction, connection, wallet, params) => {
     .reclaimFunds(params.amount)
     .accounts({
       rewardDistributor: rewardDistributorId,
+      rewardAuthority,
       rewardDistributorTokenAccount: rewardDistributorTokenAccountId,
       authorityTokenAccount: authorityTokenAccountId,
       authority: wallet.publicKey,

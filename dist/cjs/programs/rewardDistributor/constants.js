@@ -4,6 +4,7 @@ exports.rewardDistributorProgram =
   exports.RewardDistributorKind =
   exports.REWARD_DISTRIBUTOR_IDL =
   exports.REWARD_DISTRIBUTOR_SEED =
+  exports.REWARD_AUTHORITY_SEED =
   exports.REWARD_ENTRY_SEED =
   exports.REWARD_MANAGER =
   exports.REWARD_DISTRIBUTOR_ADDRESS =
@@ -16,12 +17,13 @@ const REWARD_DISTRIBUTOR_TYPES = tslib_1.__importStar(
   require("../../idl/cardinal_reward_distributor")
 );
 exports.REWARD_DISTRIBUTOR_ADDRESS = new web3_js_1.PublicKey(
-  "rwdNPNPS6zNvtF6FMvaxPRjzu2eC51mXaDT9rmWsojp"
+  "J8KGQczjGYRvqDwMuQ6jBhZdFfLHzHmLTWZRuCCu6mrY"
 );
 exports.REWARD_MANAGER = new web3_js_1.PublicKey(
-  "crkdpVWjHWdggGgBuSyAqSmZUmAjYLzD435tcLDRLXr"
+  "5nx4MybNcPBut1yMBsandykg2n99vQGAqXR3ymEXzQze"
 );
 exports.REWARD_ENTRY_SEED = "reward-entry";
+exports.REWARD_AUTHORITY_SEED = "reward-authority";
 exports.REWARD_DISTRIBUTOR_SEED = "reward-distributor";
 exports.REWARD_DISTRIBUTOR_IDL = REWARD_DISTRIBUTOR_TYPES.IDL;
 var RewardDistributorKind;

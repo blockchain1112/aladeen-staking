@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findRewardDistributorId = exports.findRewardEntryId = void 0;
+exports.findRewardAuthority =
+  exports.findRewardDistributorId =
+  exports.findRewardEntryId =
+    void 0;
 const anchor_1 = require("@project-serum/anchor");
 const web3_js_1 = require("@solana/web3.js");
 const _1 = require(".");
@@ -23,14 +26,29 @@ exports.findRewardEntryId = findRewardEntryId;
  * Finds the reward distributor id.
  * @returns
  */
-const findRewardDistributorId = (stakePoolId) => {
+const findRewardDistributorId = (stakePoolId, id) => {
   return web3_js_1.PublicKey.findProgramAddressSync(
     [
       anchor_1.utils.bytes.utf8.encode(_1.REWARD_DISTRIBUTOR_SEED),
       stakePoolId.toBuffer(),
+      id.toBuffer("le"),
     ],
     _1.REWARD_DISTRIBUTOR_ADDRESS
   )[0];
 };
 exports.findRewardDistributorId = findRewardDistributorId;
+/**
+ * Finds the reward distributor id.
+ * @returns
+ */
+const findRewardAuthority = (authority) => {
+  return web3_js_1.PublicKey.findProgramAddressSync(
+    [
+      anchor_1.utils.bytes.utf8.encode(_1.REWARD_AUTHORITY_SEED),
+      authority.toBuffer(),
+    ],
+    _1.REWARD_DISTRIBUTOR_ADDRESS
+  )[0];
+};
+exports.findRewardAuthority = findRewardAuthority;
 //# sourceMappingURL=pda.js.map
