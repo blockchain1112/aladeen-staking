@@ -2,6 +2,7 @@ import { beforeAll, expect, test } from "@jest/globals";
 import { getAccount, getAssociatedTokenAddressSync } from "@solana/spl-token";
 import type { Transaction } from "@solana/web3.js";
 import { PublicKey } from "@solana/web3.js";
+import BN from "bn.js";
 
 import { createStakePool, stake, unstake } from "../../src";
 import { ReceiptType } from "../../src/programs/stakePool";
@@ -81,6 +82,7 @@ describe("Stake unstake", () => {
     await executeTransaction(
       provider.connection,
       await unstake(provider.connection, provider.wallet, {
+        distributorId: new BN(0),
         stakePoolId: stakePoolId,
         originalMintId: originalMintId,
       }),

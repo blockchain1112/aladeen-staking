@@ -4,11 +4,15 @@ pub mod state;
 
 use {anchor_lang::prelude::*, instructions::*};
 
-declare_id!("rwdNPNPS6zNvtF6FMvaxPRjzu2eC51mXaDT9rmWsojp");
+declare_id!("J8KGQczjGYRvqDwMuQ6jBhZdFfLHzHmLTWZRuCCu6mrY");
 
 #[program]
 pub mod cardinal_reward_distributor {
     use super::*;
+
+    pub fn init_reward_authority<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts, 'remaining, 'info, InitRewardAuthorityCtx<'info>>, ix: InitRewardAuthorityIx) -> Result<()> {
+        init_reward_authority::handler(ctx, ix)
+    }
 
     pub fn init_reward_distributor<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts, 'remaining, 'info, InitRewardDistributorCtx<'info>>, ix: InitRewardDistributorIx) -> Result<()> {
         init_reward_distributor::handler(ctx, ix)

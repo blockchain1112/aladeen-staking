@@ -8,10 +8,10 @@ import type { ParsedIdlAccountData } from "../../accounts";
 import * as GROUP_REWARD_DISTRIBUTOR_TYPES from "../../idl/cardinal_group_reward_distributor";
 
 export const GROUP_REWARD_DISTRIBUTOR_ADDRESS = new PublicKey(
-  "grwDL1AZiCaBmTQHTQVhX6wxXKowAnisDZxH7866LUL"
+  "CbNG8keFXcG8jLzTk3cL35cj6PtZL8EiqRkT6MqU5CxE"
 );
 export const GROUP_REWARD_MANAGER = new PublicKey(
-  "crkdpVWjHWdggGgBuSyAqSmZUmAjYLzD435tcLDRLXr"
+  "5nx4MybNcPBut1yMBsandykg2n99vQGAqXR3ymEXzQze"
 );
 
 export const GROUP_REWARD_ENTRY_SEED = "group-reward-entry";

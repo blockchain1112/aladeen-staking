@@ -33,6 +33,8 @@ export const description =
   "Initialize all entries and optionally set multipliers for reward entries. Optionalls use metadataRules for complex multiplier rules";
 
 export const getArgs = (_connection: Connection, _wallet: Wallet) => ({
+  // rewards distributor index
+  distributorId: new BN(0),
   // stake pool id
   stakePoolId: new PublicKey("3BZCupFU6X3wYJwgTsKS2vTs4VeMrhSZgx4P2TfzExtP"),
   // whether this pool deals with fungible tokens
@@ -55,8 +57,12 @@ export const handler = async (
   wallet: Wallet,
   args: ReturnType<typeof getArgs>
 ) => {
-  const { stakePoolId, initEntries, fungible, metadataRules } = args;
-  const rewardDistributorId = findRewardDistributorId(stakePoolId);
+  const { stakePoolId, initEntries, fungible, metadataRules, distributorId } =
+    args;
+  const rewardDistributorId = findRewardDistributorId(
+    stakePoolId,
+    distributorId
+  );
   const rewardDistributorData = await getRewardDistributor(
     connection,
     rewardDistributorId

@@ -195,6 +195,7 @@ describe("Reassign stake entry", () => {
       true
     );
     transaction = await unstake(provider.connection, newStaker, {
+      distributorId: new BN(0),
       stakePoolId: stakePoolId,
       originalMintId: originalMintId,
     });

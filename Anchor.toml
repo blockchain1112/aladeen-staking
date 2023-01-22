@@ -5,29 +5,29 @@ solana_version = "1.10.41"
 test = "yarn mocha tests/**/*.spec.ts"
 
 [provider]
-cluster = "localnet"
-wallet = "./tests/test-key.json"
+cluster = "devnet"
+wallet = "./oracle.json"
 
 [programs.mainnet]
-cardinal_stake_pool = "stkBL96RZkjY5ine4TvPihGqW8UHJfch2cokjAPzV8i"
-cardinal_reward_distributor = "rwdNPNPS6zNvtF6FMvaxPRjzu2eC51mXaDT9rmWsojp"
+cardinal_stake_pool = "wfXTQapJ9XWsRTWA6W4EaNDizPn1oESNjBLMhoKkag7"
+cardinal_reward_distributor = "J8KGQczjGYRvqDwMuQ6jBhZdFfLHzHmLTWZRuCCu6mrY"
 cardinal_group_reward_distributor = "grwDL1AZiCaBmTQHTQVhX6wxXKowAnisDZxH7866LUL"
 cardinal_receipt_manager = "rrmevmpXMooxn8Qu6u7RWao93BZn4cKgfjtNMURSc2E"
 
 [programs.devnet]
-cardinal_stake_pool = "stkBL96RZkjY5ine4TvPihGqW8UHJfch2cokjAPzV8i"
-cardinal_reward_distributor = "rwdNPNPS6zNvtF6FMvaxPRjzu2eC51mXaDT9rmWsojp"
+cardinal_stake_pool = "wfXTQapJ9XWsRTWA6W4EaNDizPn1oESNjBLMhoKkag7"
+cardinal_reward_distributor = "J8KGQczjGYRvqDwMuQ6jBhZdFfLHzHmLTWZRuCCu6mrY"
 cardinal_group_reward_distributor = "grwDL1AZiCaBmTQHTQVhX6wxXKowAnisDZxH7866LUL"
 cardinal_receipt_manager = "rrmevmpXMooxn8Qu6u7RWao93BZn4cKgfjtNMURSc2E"
 
 [programs.testnet]
-cardinal_stake_pool = "stkBL96RZkjY5ine4TvPihGqW8UHJfch2cokjAPzV8i"
-cardinal_reward_distributor = "rwdNPNPS6zNvtF6FMvaxPRjzu2eC51mXaDT9rmWsojp"
+cardinal_stake_pool = "wfXTQapJ9XWsRTWA6W4EaNDizPn1oESNjBLMhoKkag7"
+cardinal_reward_distributor = "J8KGQczjGYRvqDwMuQ6jBhZdFfLHzHmLTWZRuCCu6mrY"
 cardinal_group_reward_distributor = "grwDL1AZiCaBmTQHTQVhX6wxXKowAnisDZxH7866LUL"
 cardinal_receipt_manager = "rrmevmpXMooxn8Qu6u7RWao93BZn4cKgfjtNMURSc2E"
 
 [programs.localnet]
-cardinal_stake_pool = "stkBL96RZkjY5ine4TvPihGqW8UHJfch2cokjAPzV8i"
-cardinal_reward_distributor = "rwdNPNPS6zNvtF6FMvaxPRjzu2eC51mXaDT9rmWsojp"
+cardinal_stake_pool = "wfXTQapJ9XWsRTWA6W4EaNDizPn1oESNjBLMhoKkag7"
+cardinal_reward_distributor = "J8KGQczjGYRvqDwMuQ6jBhZdFfLHzHmLTWZRuCCu6mrY"
 cardinal_group_reward_distributor = "grwDL1AZiCaBmTQHTQVhX6wxXKowAnisDZxH7866LUL"
 cardinal_receipt_manager = "rrmevmpXMooxn8Qu6u7RWao93BZn4cKgfjtNMURSc2E"

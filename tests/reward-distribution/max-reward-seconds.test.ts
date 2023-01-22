@@ -12,7 +12,10 @@ import {
 } from "../../src";
 import { RewardDistributorKind } from "../../src/programs/rewardDistributor";
 import { getRewardDistributor } from "../../src/programs/rewardDistributor/accounts";
-import { findRewardDistributorId } from "../../src/programs/rewardDistributor/pda";
+import {
+  findRewardAuthority,
+  findRewardDistributorId,
+} from "../../src/programs/rewardDistributor/pda";
 import { ReceiptType } from "../../src/programs/stakePool";
 import { getStakeEntry } from "../../src/programs/stakePool/accounts";
 import { findStakeEntryIdFromMint } from "../../src/programs/stakePool/utils";
@@ -67,6 +70,7 @@ describe("Stake and claim rewards up to max reward seconds", () => {
       provider.connection,
       provider.wallet,
       {
+        distributorId: new BN(0),
         stakePoolId: stakePoolId,
         rewardMintId: rewardMintId,
         kind: RewardDistributorKind.Treasury,
@@ -78,7 +82,7 @@ describe("Stake and claim rewards up to max reward seconds", () => {
     );
     await executeTransaction(provider.connection, transaction, provider.wallet);
 
-    const rewardDistributorId = findRewardDistributorId(stakePoolId);
+    const rewardDistributorId = findRewardDistributorId(stakePoolId, new BN(0));
     const rewardDistributorData = await getRewardDistributor(
       provider.connection,
       rewardDistributorId
@@ -88,9 +92,11 @@ describe("Stake and claim rewards up to max reward seconds", () => {
       rewardMintId.toString()
     );
 
+    const rewardAuthority = findRewardAuthority(provider.wallet.publicKey);
+
     const checkRewardDistributorTokenAccount = await getAccount(
       provider.connection,
-      await findAta(rewardMintId, rewardDistributorId, true)
+      await findAta(rewardMintId, rewardAuthority, true)
     );
     expect(Number(checkRewardDistributorTokenAccount.amount)).toEqual(
       maxSupply
@@ -146,6 +152,7 @@ describe("Stake and claim rewards up to max reward seconds", () => {
       provider.connection,
       provider.wallet,
       {
+        distributorId: new BN(0),
         stakePoolId: stakePoolId,
         stakeEntryId: stakeEntryId,
       }
@@ -212,6 +219,7 @@ describe("Stake and claim rewards up to max reward seconds", () => {
       provider.connection,
       provider.wallet,
       {
+        distributorId: new BN(0),
         stakePoolId: stakePoolId,
         stakeEntryId: stakeEntryId,
       }
@@ -275,6 +283,7 @@ describe("Stake and claim rewards up to max reward seconds", () => {
       stakeEntryId
     );
     const transaction = await unstake(provider.connection, provider.wallet, {
+      distributorId: new BN(0),
       stakePoolId: stakePoolId,
       originalMintId: originalMintId,
     });

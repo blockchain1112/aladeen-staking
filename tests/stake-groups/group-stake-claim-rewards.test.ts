@@ -2,6 +2,7 @@ import { findAta } from "@cardinal/common";
 import { Wallet } from "@project-serum/anchor";
 import { getAccount } from "@solana/spl-token";
 import { PublicKey, Transaction } from "@solana/web3.js";
+import { BN } from "bn.js";
 
 import {
   claimGroupRewards,
@@ -103,13 +104,14 @@ describe("Group stake and claim rewards", () => {
       provider.connection,
       provider.wallet,
       {
+        distributorId: new BN(0),
         stakePoolId: stakePoolId,
         rewardMintId: rewardMintId,
       }
     );
     await executeTransaction(provider.connection, transaction, provider.wallet);
 
-    const rewardDistributorId = findRewardDistributorId(stakePoolId);
+    const rewardDistributorId = findRewardDistributorId(stakePoolId, new BN(0));
     const rewardDistributorData = await getRewardDistributor(
       provider.connection,
       rewardDistributorId
@@ -148,7 +150,7 @@ describe("Group stake and claim rewards", () => {
   });
 
   it("Create Reward Entry", async () => {
-    const rewardDistributorId = findRewardDistributorId(stakePoolId);
+    const rewardDistributorId = findRewardDistributorId(stakePoolId, new BN(0));
     const stakeEntryId = await findStakeEntryIdFromMint(
       provider.connection,
       provider.wallet.publicKey,
@@ -160,6 +162,7 @@ describe("Group stake and claim rewards", () => {
       provider.connection,
       provider.wallet,
       {
+        distributorId: new BN(0),
         stakePoolId: stakePoolId,
         originalMintId: originalMintId,
       }
@@ -183,7 +186,7 @@ describe("Group stake and claim rewards", () => {
   });
 
   it("Create Reward Entry 2", async () => {
-    const rewardDistributorId = findRewardDistributorId(stakePoolId);
+    const rewardDistributorId = findRewardDistributorId(stakePoolId, new BN(0));
     const stakeEntryId = await findStakeEntryIdFromMint(
       provider.connection,
       provider.wallet.publicKey,
@@ -195,6 +198,7 @@ describe("Group stake and claim rewards", () => {
       provider.connection,
       provider.wallet,
       {
+        distributorId: new BN(0),
         stakePoolId: stakePoolId,
         originalMintId: originalMintId2,
       }
@@ -358,6 +362,7 @@ describe("Group stake and claim rewards", () => {
       provider.connection,
       provider.wallet,
       {
+        distributorId: new BN(0),
         groupRewardDistributorId,
         groupEntryId: groupStakeEntryId,
         stakeEntryIds: [stakeEntryId, stakeEntryId2],
@@ -430,6 +435,7 @@ describe("Group stake and claim rewards", () => {
       provider.connection,
       provider.wallet,
       {
+        distributorId: new BN(0),
         groupEntryId: groupStakeEntryId,
         groupRewardDistributorId,
         stakeEntryIds: [stakeEntryId, stakeEntryId2],
@@ -456,6 +462,7 @@ describe("Group stake and claim rewards", () => {
 
   it("Unstake", async () => {
     const transaction = await unstake(provider.connection, provider.wallet, {
+      distributorId: new BN(0),
       stakePoolId: stakePoolId,
       originalMintId: originalMintId,
     });
@@ -514,6 +521,7 @@ describe("Group stake and claim rewards", () => {
 
   it("Unstake2", async () => {
     const transaction = await unstake(provider.connection, provider.wallet, {
+      distributorId: new BN(0),
       stakePoolId: stakePoolId,
       originalMintId: originalMintId2,
     });

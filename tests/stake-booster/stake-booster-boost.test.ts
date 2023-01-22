@@ -296,6 +296,7 @@ describe("Stake booster boost", () => {
     );
 
     const transaction = await unstake(provider.connection, provider.wallet, {
+      distributorId: new BN(0),
       stakePoolId: stakePoolId,
       originalMintId: originalMintId,
     });

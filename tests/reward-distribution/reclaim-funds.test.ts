@@ -6,7 +6,10 @@ import { BN } from "bn.js";
 import { createRewardDistributor, createStakePool } from "../../src";
 import { RewardDistributorKind } from "../../src/programs/rewardDistributor";
 import { getRewardDistributor } from "../../src/programs/rewardDistributor/accounts";
-import { findRewardDistributorId } from "../../src/programs/rewardDistributor/pda";
+import {
+  findRewardAuthority,
+  findRewardDistributorId,
+} from "../../src/programs/rewardDistributor/pda";
 import { withReclaimFunds } from "../../src/programs/rewardDistributor/transaction";
 import { createMint, executeTransaction } from "../utils";
 import type { CardinalProvider } from "../workspace";
@@ -43,6 +46,7 @@ describe("Reclaim funds", () => {
       provider.connection,
       provider.wallet,
       {
+        distributorId: new BN(0),
         stakePoolId: stakePoolId,
         rewardMintId: rewardMintId,
         kind: RewardDistributorKind.Treasury,
@@ -51,7 +55,7 @@ describe("Reclaim funds", () => {
     );
     await executeTransaction(provider.connection, transaction, provider.wallet);
 
-    const rewardDistributorId = findRewardDistributorId(stakePoolId);
+    const rewardDistributorId = findRewardDistributorId(stakePoolId, new BN(0));
     const rewardDistributorData = await getRewardDistributor(
       provider.connection,
       rewardDistributorId
@@ -70,19 +74,21 @@ describe("Reclaim funds", () => {
     const transaction = new web3.Transaction();
 
     await withReclaimFunds(transaction, provider.connection, provider.wallet, {
+      distributorId: new BN(0),
       stakePoolId: stakePoolId,
       amount: new BN(50),
     });
     await executeTransaction(provider.connection, transaction, provider.wallet);
 
-    const rewardDistributorId = findRewardDistributorId(stakePoolId);
+    const rewardAuthority = findRewardAuthority(provider.wallet.publicKey);
+    const rewardDistributorId = findRewardDistributorId(stakePoolId, new BN(0));
     const rewardDistributorData = await getRewardDistributor(
       provider.connection,
       rewardDistributorId
     );
     const rewardDistributorTokenAccountId = await findAta(
       rewardDistributorData.parsed.rewardMint,
-      rewardDistributorId,
+      rewardAuthority,
       true
     );
     const rewardDistributorTokenAccount = await getAccount(

@@ -2,6 +2,7 @@ import { findAta } from "@cardinal/common";
 import { getAccount, getAssociatedTokenAddressSync } from "@solana/spl-token";
 import type { Transaction } from "@solana/web3.js";
 import { Keypair, PublicKey } from "@solana/web3.js";
+import BN from "bn.js";
 
 import {
   createStakeEntryAndStakeMint,
@@ -170,6 +171,7 @@ it("Stake", async () => {
 
 it("Unstake", async () => {
   const transaction = await unstake(provider.connection, provider.wallet, {
+    distributorId: new BN(0),
     stakePoolId: stakePoolId,
     originalMintId: originalMintId,
   });

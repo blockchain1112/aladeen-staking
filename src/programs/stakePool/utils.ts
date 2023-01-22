@@ -121,7 +121,8 @@ export const getActiveStakeSeconds = async (
 
 export const getUnclaimedRewards = async (
   connection: Connection,
-  stakePoolId: PublicKey
+  stakePoolId: PublicKey,
+  distributorId: BN
 ): Promise<BN> => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -132,7 +133,10 @@ export const getUnclaimedRewards = async (
     provider
   );
 
-  const rewardDistributorId = findRewardDistributorId(stakePoolId);
+  const rewardDistributorId = findRewardDistributorId(
+    stakePoolId,
+    distributorId
+  );
   const parsed = await rewardDistributor.account.rewardDistributor.fetch(
     rewardDistributorId
   );
@@ -143,7 +147,8 @@ export const getUnclaimedRewards = async (
 
 export const getClaimedRewards = async (
   connection: Connection,
-  stakePoolId: PublicKey
+  stakePoolId: PublicKey,
+  distributorId: BN
 ): Promise<BN> => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -154,7 +159,10 @@ export const getClaimedRewards = async (
     provider
   );
 
-  const rewardDistributorId = findRewardDistributorId(stakePoolId);
+  const rewardDistributorId = findRewardDistributorId(
+    stakePoolId,
+    distributorId
+  );
   const parsed = await rewardDistributor.account.rewardDistributor.fetch(
     rewardDistributorId
   );

@@ -7,6 +7,7 @@ import {
   PublicKey,
   Transaction,
 } from "@solana/web3.js";
+import { BN } from "bn.js";
 
 import {
   claimRewards,
@@ -84,13 +85,14 @@ describe("Stake and claim permissionless rewards", () => {
       provider.connection,
       provider.wallet,
       {
+        distributorId: new BN(0),
         stakePoolId: stakePoolId,
         rewardMintId: rewardMintId,
       }
     );
     await executeTransaction(provider.connection, transaction, provider.wallet);
 
-    const rewardDistributorId = findRewardDistributorId(stakePoolId);
+    const rewardDistributorId = findRewardDistributorId(stakePoolId, new BN(0));
     const rewardDistributorData = await getRewardDistributor(
       provider.connection,
       rewardDistributorId
@@ -106,7 +108,7 @@ describe("Stake and claim permissionless rewards", () => {
   });
 
   it("Create Reward Entry", async () => {
-    const rewardDistributorId = findRewardDistributorId(stakePoolId);
+    const rewardDistributorId = findRewardDistributorId(stakePoolId, new BN(0));
     const stakeEntryId = await findStakeEntryIdFromMint(
       provider.connection,
       provider.wallet.publicKey,
@@ -118,6 +120,7 @@ describe("Stake and claim permissionless rewards", () => {
       provider.connection,
       provider.wallet,
       {
+        distributorId: new BN(0),
         stakePoolId: stakePoolId,
         originalMintId: originalMintId,
       }
@@ -191,6 +194,7 @@ describe("Stake and claim permissionless rewards", () => {
       provider.connection,
       new Wallet(rewardClaimer),
       {
+        distributorId: new BN(0),
         stakePoolId: stakePoolId,
         stakeEntryId: stakeEntryId,
       }
@@ -219,9 +223,11 @@ describe("Stake and claim permissionless rewards", () => {
       provider.connection,
       new Wallet(rewardClaimer),
       {
+        distributorId: new BN(0),
         stakePoolId: stakePoolId,
         stakeEntryId: stakeEntryId,
         lastStaker: oldStakeEntryData.parsed.lastStaker,
+        authority: provider.wallet.publicKey,
       }
     );
     await executeTransaction(
@@ -276,6 +282,7 @@ describe("Stake and claim permissionless rewards", () => {
 
   it("Unstake", async () => {
     const transaction = await unstake(provider.connection, provider.wallet, {
+      distributorId: new BN(0),
       stakePoolId: stakePoolId,
       originalMintId: originalMintId,
     });

@@ -71,6 +71,7 @@ describe("Stake and claim rewards from treasury", () => {
       provider.connection,
       provider.wallet,
       {
+        distributorId: new BN(0),
         stakePoolId: stakePoolId,
         rewardMintId: rewardMint,
         rewardAmount: new BN(1 * LAMPORTS_PER_SOL),
@@ -81,7 +82,7 @@ describe("Stake and claim rewards from treasury", () => {
     );
     await executeTransaction(provider.connection, transaction, provider.wallet);
 
-    const rewardDistributorId = findRewardDistributorId(stakePoolId);
+    const rewardDistributorId = findRewardDistributorId(stakePoolId, new BN(0));
 
     const rewardDistributorData = await getRewardDistributor(
       provider.connection,
@@ -209,6 +210,7 @@ describe("Stake and claim rewards from treasury", () => {
       provider.connection,
       provider.wallet,
       {
+        distributorId: new BN(0),
         stakePoolId: stakePoolId,
         stakeEntryId: stakeEntryId,
       }

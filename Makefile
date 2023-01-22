@@ -16,10 +16,10 @@ start:
 		--clone metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s --clone PwDiXFxQsGra4sFFTT8r1QWRMd4vfumiWC1jfWNfdYT \
 		--clone mgr99QFMYByTqGPWmNqunV7vBLmWWXdSrHUfV8Jf3JM --clone ojLGErfqghuAqpJXE1dguXF7kKfvketCEeah8ig6GU3 \
 		--clone pmvYY6Wgvpe3DEj3UX1FcRpMx43sMLYLJrFTVGcqpdn --clone 355AtuHH98Jy9XFg5kWodfmvSfrhcxYUKGoJe8qziFNY \
-		--bpf-program stkBL96RZkjY5ine4TvPihGqW8UHJfch2cokjAPzV8i ./target/deploy/cardinal_stake_pool.so \
-		--bpf-program rwdNPNPS6zNvtF6FMvaxPRjzu2eC51mXaDT9rmWsojp ./target/deploy/cardinal_reward_distributor.so \
-		--bpf-program rrmevmpXMooxn8Qu6u7RWao93BZn4cKgfjtNMURSc2E ./target/deploy/cardinal_receipt_manager.so \
-		--bpf-program grwDL1AZiCaBmTQHTQVhX6wxXKowAnisDZxH7866LUL ./target/deploy/cardinal_group_reward_distributor.so \
+		--bpf-program wfXTQapJ9XWsRTWA6W4EaNDizPn1oESNjBLMhoKkag7 ./target/deploy/cardinal_stake_pool.so \
+		--bpf-program J8KGQczjGYRvqDwMuQ6jBhZdFfLHzHmLTWZRuCCu6mrY ./target/deploy/cardinal_reward_distributor.so \
+		--bpf-program 5u66Lbk1j7mDn8XC4yf8KK8Nhz4WZvxhQofj8ZuSPobF ./target/deploy/cardinal_receipt_manager.so \
+		--bpf-program CbNG8keFXcG8jLzTk3cL35cj6PtZL8EiqRkT6MqU5CxE ./target/deploy/cardinal_group_reward_distributor.so \
 		--reset --quiet & echo $$!
 	sleep 10
 	solana-keygen pubkey ./tests/test-key.json

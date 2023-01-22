@@ -2,6 +2,7 @@ import { findAta } from "@cardinal/common";
 import { getAccount } from "@solana/spl-token";
 import type { Transaction } from "@solana/web3.js";
 import { PublicKey } from "@solana/web3.js";
+import BN from "bn.js";
 
 import { createStakeEntry, createStakePool, stake, unstake } from "../../src";
 import { ReceiptType } from "../../src/programs/stakePool";
@@ -119,6 +120,7 @@ describe("Create stake pool", () => {
     expect(oldStakeEntryData.parsed.cooldownStartSeconds).toBeNull();
 
     const transaction = await unstake(provider.connection, provider.wallet, {
+      distributorId: new BN(0),
       stakePoolId: stakePoolId,
       originalMintId: originalMintId,
     });
@@ -156,6 +158,7 @@ describe("Create stake pool", () => {
     await delay(7000);
 
     const transaction = await unstake(provider.connection, provider.wallet, {
+      distributorId: new BN(0),
       stakePoolId: stakePoolId,
       originalMintId: originalMintId,
     });

@@ -4,7 +4,7 @@ use std::str::FromStr;
 pub const CLAIM_REWARD_LAMPORTS: u64 = 2_000_000;
 
 pub fn assert_reward_manager(pubkey: &Pubkey) -> bool {
-    pubkey.to_string() == Pubkey::from_str("crkdpVWjHWdggGgBuSyAqSmZUmAjYLzD435tcLDRLXr").unwrap().to_string()
+    pubkey.to_string() == Pubkey::from_str("5nx4MybNcPBut1yMBsandykg2n99vQGAqXR3ymEXzQze").unwrap().to_string()
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, AnchorSerialize, AnchorDeserialize, Copy)]

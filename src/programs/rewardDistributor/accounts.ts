@@ -3,7 +3,11 @@ import { BorshAccountsCoder, utils } from "@project-serum/anchor";
 import type { Connection, PublicKey } from "@solana/web3.js";
 
 import { REWARD_DISTRIBUTOR_ADDRESS, REWARD_DISTRIBUTOR_IDL } from ".";
-import type { RewardDistributorData, RewardEntryData } from "./constants";
+import type {
+  RewardAuthorityData,
+  RewardDistributorData,
+  RewardEntryData,
+} from "./constants";
 import { rewardDistributorProgram } from "./constants";
 
 export const getRewardEntry = async (
@@ -32,6 +36,20 @@ export const getRewardEntries = async (
     parsed: entry,
     pubkey: rewardEntryIds[i]!,
   }));
+};
+
+export const getRewardAuthority = async (
+  connection: Connection,
+  rewardAuthority: PublicKey
+): Promise<AccountData<RewardAuthorityData | null>> => {
+  const program = rewardDistributorProgram(connection);
+  const parsed = (await program.account.rewardDistributor.fetchNullable(
+    rewardAuthority
+  )) as RewardAuthorityData | null;
+  return {
+    parsed,
+    pubkey: rewardAuthority,
+  };
 };
 
 export const getRewardDistributor = async (

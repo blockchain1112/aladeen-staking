@@ -1,4 +1,5 @@
 import { tryGetAccount } from "@cardinal/common";
+import { BN } from "@project-serum/anchor";
 import type { Wallet } from "@project-serum/anchor";
 import type { Connection } from "@solana/web3.js";
 import { PublicKey, Transaction } from "@solana/web3.js";
@@ -16,6 +17,8 @@ export const description =
   "Claim all rewards for users in the given pool (must be pool authority) - Cost 0.002 per token";
 
 export const getArgs = (_connection: Connection, _wallet: Wallet) => ({
+  // rewards distributor index
+  distributorId: new BN(0),
   // stake pool id
   stakePoolId: new PublicKey("3BZCupFU6X3wYJwgTsKS2vTs4VeMrhSZgx4P2TfzExtP"),
   // number of entries per transaction
@@ -29,8 +32,11 @@ export const handler = async (
   wallet: Wallet,
   args: ReturnType<typeof getArgs>
 ) => {
-  const { stakePoolId } = args;
-  const rewardDistributorId = findRewardDistributorId(stakePoolId);
+  const { stakePoolId, distributorId } = args;
+  const rewardDistributorId = findRewardDistributorId(
+    stakePoolId,
+    distributorId
+  );
   const checkRewardDistributorData = await tryGetAccount(() =>
     getRewardDistributor(connection, rewardDistributorId)
   );
@@ -64,6 +70,7 @@ export const handler = async (
             lastStaker: wallet.publicKey,
           });
           await withClaimRewards(transaction, connection, wallet, {
+            distributorId,
             stakePoolId: stakePoolId,
             stakeEntryId: stakeEntryData.pubkey,
             lastStaker: stakeEntryData.parsed.lastStaker,

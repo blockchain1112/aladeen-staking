@@ -4,7 +4,7 @@ use std::str::FromStr;
 pub const CLAIM_REWARD_LAMPORTS: u64 = 2_000_000;
 
 pub fn assert_reward_manager(pubkey: &Pubkey) -> bool {
-    pubkey.to_string() == Pubkey::from_str("crkdpVWjHWdggGgBuSyAqSmZUmAjYLzD435tcLDRLXr").unwrap().to_string()
+    pubkey.to_string() == Pubkey::from_str("5nx4MybNcPBut1yMBsandykg2n99vQGAqXR3ymEXzQze").unwrap().to_string()
 }
 
 pub const REWARD_ENTRY_SEED: &str = "reward-entry";
@@ -31,10 +31,11 @@ pub const REWARD_DISTRIBUTOR_SEED: &str = "reward-distributor";
 pub const REWARD_DISTRIBUTOR_SIZE: usize = 8 + std::mem::size_of::<RewardDistributor>() + 64;
 #[account]
 pub struct RewardDistributor {
+    pub index: u8,
     pub bump: u8,
     pub stake_pool: Pubkey,
     pub kind: u8,
-    pub authority: Pubkey,
+    pub reward_authority: Pubkey,
     pub reward_mint: Pubkey,
     pub reward_amount: u64,
     pub reward_duration_seconds: u128,
@@ -43,4 +44,12 @@ pub struct RewardDistributor {
     pub default_multiplier: u64,
     pub multiplier_decimals: u8,
     pub max_reward_seconds_received: Option<u128>,
+}
+
+pub const REWARD_AUTHORITY_SEED: &str = "reward-authority";
+pub const REWARD_AUTHORITY_SIZE: usize = 8 + std::mem::size_of::<RewardAuthority>() + 64;
+#[account]
+pub struct RewardAuthority {
+    pub authority: Pubkey,
+    pub bump: u8,
 }

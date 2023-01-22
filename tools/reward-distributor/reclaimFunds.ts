@@ -11,6 +11,8 @@ export const description =
   "Reclaim funds from a stake pool as the pool authority";
 
 export const getArgs = (_connection: Connection, _wallet: Wallet) => ({
+  // rewards distributor index
+  distributorId: new BN(0),
   // stake pool id to reclaim funds from
   stakePoolId: new PublicKey("3BZCupFU6X3wYJwgTsKS2vTs4VeMrhSZgx4P2TfzExtP"),
   // amount of tokens to reclaim
@@ -28,6 +30,7 @@ export const handler = async (
     connection,
     wallet,
     {
+      distributorId: args.distributorId,
       stakePoolId: args.stakePoolId,
       amount: args.amount,
     }

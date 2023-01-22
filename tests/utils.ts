@@ -238,8 +238,9 @@ export const handleError = (e: any) => {
   const message = (e as SendTransactionError).message ?? "";
   const logs = (e as SendTransactionError).logs;
   if (logs) {
-    console.log(logs, message);
+    console.error(logs, message);
   } else {
-    console.log(e, message);
+    console.error(e, message);
   }
 };
+

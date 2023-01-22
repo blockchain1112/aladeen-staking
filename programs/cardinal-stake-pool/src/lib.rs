@@ -5,7 +5,7 @@ pub mod utils;
 
 use {anchor_lang::prelude::*, instructions::*};
 
-declare_id!("stkBL96RZkjY5ine4TvPihGqW8UHJfch2cokjAPzV8i");
+declare_id!("wfXTQapJ9XWsRTWA6W4EaNDizPn1oESNjBLMhoKkag7");
 
 #[program]
 pub mod cardinal_stake_pool {

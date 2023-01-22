@@ -2,7 +2,7 @@ import { tryGetAccount } from "@cardinal/common";
 import type { Wallet } from "@project-serum/anchor/dist/cjs/provider";
 import type { Connection } from "@solana/web3.js";
 import { PublicKey, Transaction } from "@solana/web3.js";
-import { BN } from "bn.js";
+import BN from "bn.js";
 
 import { executeTransaction } from "../../src";
 import {
@@ -32,6 +32,7 @@ Rules options:
   combination - (if user has to stake A,B,C mints together, token get 'X' multiplier, else set to zero)`;
 
 export const getArgs = (_connection: Connection, _wallet: Wallet) => ({
+  distributorId: new BN(0),
   stakePoolId: new PublicKey("3BZCupFU6X3wYJwgTsKS2vTs4VeMrhSZgx4P2TfzExtP"),
   updateRules: [
     // {
@@ -68,7 +69,7 @@ export const handler = async (
   wallet: Wallet,
   args: ReturnType<typeof getArgs>
 ) => {
-  const { stakePoolId, updateRules, batchSize } = args;
+  const { stakePoolId, updateRules, batchSize, distributorId } = args;
   const activeStakeEntries = await getActiveStakeEntriesForPool(
     connection,
     stakePoolId
@@ -125,6 +126,7 @@ export const handler = async (
               await updateMultipliers(
                 connection,
                 wallet,
+                distributorId,
                 stakePoolId,
                 dataToSubmit.map((entry) => entry.mint),
                 dataToSubmit.map((entry) => entry.multiplier)
@@ -167,6 +169,7 @@ export const handler = async (
               await updateMultipliers(
                 connection,
                 wallet,
+                distributorId,
                 stakePoolId,
                 dataToSubmit.map((entry) => entry.mint),
                 dataToSubmit.map((entry) => entry.multiplier)
@@ -227,6 +230,7 @@ export const handler = async (
             await updateMultipliers(
               connection,
               wallet,
+              distributorId,
               stakePoolId,
               dataToSubmit.map((entry) => entry.mint),
               dataToSubmit.map((entry) => entry.multiplier)
@@ -242,13 +246,17 @@ export const handler = async (
 const updateMultipliers = async (
   connection: Connection,
   wallet: Wallet,
+  distributorId: BN,
   stakePoolId: PublicKey,
   stakeEntryIds: PublicKey[],
   multipliers: number[]
 ): Promise<void> => {
   const transaction = new Transaction();
   // update multipliers
-  const rewardDistributorId = findRewardDistributorId(stakePoolId);
+  const rewardDistributorId = findRewardDistributorId(
+    stakePoolId,
+    distributorId
+  );
   const rewardDistributorData = await tryGetAccount(() =>
     getRewardDistributor(connection, rewardDistributorId)
   );

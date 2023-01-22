@@ -77,6 +77,7 @@ describe("Stake and claim rewards from treasury", () => {
       provider.connection,
       provider.wallet,
       {
+        distributorId: new BN(0),
         stakePoolId: stakePoolId,
         rewardMintId: rewardMintId,
         kind: RewardDistributorKind.Treasury,
@@ -85,7 +86,7 @@ describe("Stake and claim rewards from treasury", () => {
     );
     await executeTransaction(provider.connection, transaction, provider.wallet);
 
-    const rewardDistributorId = findRewardDistributorId(stakePoolId);
+    const rewardDistributorId = findRewardDistributorId(stakePoolId, new BN(0));
     const rewardDistributorData = await getRewardDistributor(
       provider.connection,
       rewardDistributorId
@@ -101,7 +102,7 @@ describe("Stake and claim rewards from treasury", () => {
   });
 
   it("Create Reward Entry", async () => {
-    const rewardDistributorId = findRewardDistributorId(stakePoolId);
+    const rewardDistributorId = findRewardDistributorId(stakePoolId, new BN(0));
     const stakeEntryId = await findStakeEntryIdFromMint(
       provider.connection,
       provider.wallet.publicKey,
@@ -113,6 +114,7 @@ describe("Stake and claim rewards from treasury", () => {
       provider.connection,
       provider.wallet,
       {
+        distributorId: new BN(0),
         originalMintId: originalMintId,
         stakePoolId: stakePoolId,
       }
@@ -263,6 +265,7 @@ describe("Stake and claim rewards from treasury", () => {
   it("Unstake", async () => {
     await delay(2000);
     const transaction = await unstake(provider.connection, provider.wallet, {
+      distributorId: new BN(0),
       stakePoolId: stakePoolId,
       originalMintId: originalMintId,
     });

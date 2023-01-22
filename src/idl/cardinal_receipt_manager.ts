@@ -1,1139 +1,1139 @@
 export type CardinalReceiptManager = {
-  version: "1.17.0";
-  name: "cardinal_receipt_manager";
-  instructions: [
+  "version": "1.17.0",
+  "name": "cardinal_receipt_manager",
+  "instructions": [
     {
-      name: "initReceiptManager";
-      accounts: [
+      "name": "initReceiptManager",
+      "accounts": [
         {
-          name: "receiptManager";
-          isMut: true;
-          isSigner: false;
+          "name": "receiptManager",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "stakePool";
-          isMut: false;
-          isSigner: false;
+          "name": "stakePool",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "payer";
-          isMut: true;
-          isSigner: true;
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
         },
         {
-          name: "systemProgram";
-          isMut: false;
-          isSigner: false;
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
         }
-      ];
-      args: [
+      ],
+      "args": [
         {
-          name: "ix";
-          type: {
-            defined: "InitReceiptManagerIx";
-          };
+          "name": "ix",
+          "type": {
+            "defined": "InitReceiptManagerIx"
+          }
         }
-      ];
+      ]
     },
     {
-      name: "initReceiptEntry";
-      accounts: [
+      "name": "initReceiptEntry",
+      "accounts": [
         {
-          name: "receiptEntry";
-          isMut: true;
-          isSigner: false;
+          "name": "receiptEntry",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "stakeEntry";
-          isMut: false;
-          isSigner: false;
+          "name": "stakeEntry",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "payer";
-          isMut: true;
-          isSigner: true;
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
         },
         {
-          name: "systemProgram";
-          isMut: false;
-          isSigner: false;
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
         }
-      ];
-      args: [];
+      ],
+      "args": []
     },
     {
-      name: "initRewardReceipt";
-      accounts: [
+      "name": "initRewardReceipt",
+      "accounts": [
         {
-          name: "rewardReceipt";
-          isMut: true;
-          isSigner: false;
+          "name": "rewardReceipt",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "receiptManager";
-          isMut: false;
-          isSigner: false;
+          "name": "receiptManager",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "receiptEntry";
-          isMut: false;
-          isSigner: false;
+          "name": "receiptEntry",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "stakeEntry";
-          isMut: false;
-          isSigner: false;
+          "name": "stakeEntry",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "payer";
-          isMut: true;
-          isSigner: true;
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
         },
         {
-          name: "systemProgram";
-          isMut: false;
-          isSigner: false;
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
         }
-      ];
-      args: [];
+      ],
+      "args": []
     },
     {
-      name: "claimRewardReceipt";
-      accounts: [
+      "name": "claimRewardReceipt",
+      "accounts": [
         {
-          name: "rewardReceipt";
-          isMut: true;
-          isSigner: false;
+          "name": "rewardReceipt",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "receiptManager";
-          isMut: true;
-          isSigner: false;
+          "name": "receiptManager",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "stakeEntry";
-          isMut: false;
-          isSigner: false;
+          "name": "stakeEntry",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "receiptEntry";
-          isMut: true;
-          isSigner: false;
+          "name": "receiptEntry",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "paymentManager";
-          isMut: true;
-          isSigner: false;
+          "name": "paymentManager",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "feeCollectorTokenAccount";
-          isMut: true;
-          isSigner: false;
+          "name": "feeCollectorTokenAccount",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "paymentRecipientTokenAccount";
-          isMut: true;
-          isSigner: false;
+          "name": "paymentRecipientTokenAccount",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "payerTokenAccount";
-          isMut: true;
-          isSigner: false;
+          "name": "payerTokenAccount",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "payer";
-          isMut: true;
-          isSigner: true;
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
         },
         {
-          name: "claimer";
-          isMut: true;
-          isSigner: true;
+          "name": "claimer",
+          "isMut": true,
+          "isSigner": true
         },
         {
-          name: "cardinalPaymentManager";
-          isMut: false;
-          isSigner: false;
+          "name": "cardinalPaymentManager",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "tokenProgram";
-          isMut: false;
-          isSigner: false;
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "systemProgram";
-          isMut: false;
-          isSigner: false;
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
         }
-      ];
-      args: [];
+      ],
+      "args": []
     },
     {
-      name: "setRewardReceiptAllowed";
-      accounts: [
+      "name": "setRewardReceiptAllowed",
+      "accounts": [
         {
-          name: "receiptManager";
-          isMut: false;
-          isSigner: false;
+          "name": "receiptManager",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "rewardReceipt";
-          isMut: true;
-          isSigner: false;
+          "name": "rewardReceipt",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "authority";
-          isMut: true;
-          isSigner: true;
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
         }
-      ];
-      args: [
+      ],
+      "args": [
         {
-          name: "allowed";
-          type: "bool";
+          "name": "allowed",
+          "type": "bool"
         }
-      ];
+      ]
     },
     {
-      name: "updateReceiptManager";
-      accounts: [
+      "name": "updateReceiptManager",
+      "accounts": [
         {
-          name: "receiptManager";
-          isMut: true;
-          isSigner: false;
+          "name": "receiptManager",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "authority";
-          isMut: false;
-          isSigner: true;
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
         }
-      ];
-      args: [
+      ],
+      "args": [
         {
-          name: "ix";
-          type: {
-            defined: "UpdateReceiptManagerIx";
-          };
+          "name": "ix",
+          "type": {
+            "defined": "UpdateReceiptManagerIx"
+          }
         }
-      ];
+      ]
     },
     {
-      name: "closeReceiptManager";
-      accounts: [
+      "name": "closeReceiptManager",
+      "accounts": [
         {
-          name: "receiptManager";
-          isMut: true;
-          isSigner: false;
+          "name": "receiptManager",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "authority";
-          isMut: true;
-          isSigner: true;
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
         }
-      ];
-      args: [];
+      ],
+      "args": []
     },
     {
-      name: "closeRewardReceipt";
-      accounts: [
+      "name": "closeRewardReceipt",
+      "accounts": [
         {
-          name: "rewardReceipt";
-          isMut: true;
-          isSigner: false;
+          "name": "rewardReceipt",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "receiptManager";
-          isMut: false;
-          isSigner: false;
+          "name": "receiptManager",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "authority";
-          isMut: true;
-          isSigner: true;
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
         }
-      ];
-      args: [];
+      ],
+      "args": []
     },
     {
-      name: "closeReceiptEntry";
-      accounts: [
+      "name": "closeReceiptEntry",
+      "accounts": [
         {
-          name: "receiptEntry";
-          isMut: true;
-          isSigner: false;
+          "name": "receiptEntry",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "receiptManager";
-          isMut: false;
-          isSigner: false;
+          "name": "receiptManager",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "stakeEntry";
-          isMut: false;
-          isSigner: false;
+          "name": "stakeEntry",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "authority";
-          isMut: true;
-          isSigner: true;
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
         }
-      ];
-      args: [];
+      ],
+      "args": []
     }
-  ];
-  accounts: [
+  ],
+  "accounts": [
     {
-      name: "receiptManager";
-      type: {
-        kind: "struct";
-        fields: [
+      "name": "receiptManager",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "bump";
-            type: "u8";
+            "name": "bump",
+            "type": "u8"
           },
           {
-            name: "stakePool";
-            type: "publicKey";
+            "name": "stakePool",
+            "type": "publicKey"
           },
           {
-            name: "authority";
-            type: "publicKey";
+            "name": "authority",
+            "type": "publicKey"
           },
           {
-            name: "requiredStakeSeconds";
-            type: "u128";
+            "name": "requiredStakeSeconds",
+            "type": "u128"
           },
           {
-            name: "stakeSecondsToUse";
-            type: "u128";
+            "name": "stakeSecondsToUse",
+            "type": "u128"
           },
           {
-            name: "claimedReceiptsCounter";
-            type: "u128";
+            "name": "claimedReceiptsCounter",
+            "type": "u128"
           },
           {
-            name: "paymentMint";
-            type: "publicKey";
+            "name": "paymentMint",
+            "type": "publicKey"
           },
           {
-            name: "paymentManager";
-            type: "publicKey";
+            "name": "paymentManager",
+            "type": "publicKey"
           },
           {
-            name: "paymentRecipient";
-            type: "publicKey";
+            "name": "paymentRecipient",
+            "type": "publicKey"
           },
           {
-            name: "requiresAuthorization";
-            type: "bool";
+            "name": "requiresAuthorization",
+            "type": "bool"
           },
           {
-            name: "name";
-            type: "string";
+            "name": "name",
+            "type": "string"
           },
           {
-            name: "maxClaimedReceipts";
-            type: {
-              option: "u128";
-            };
+            "name": "maxClaimedReceipts",
+            "type": {
+              "option": "u128"
+            }
           }
-        ];
-      };
+        ]
+      }
     },
     {
-      name: "receiptEntry";
-      type: {
-        kind: "struct";
-        fields: [
+      "name": "receiptEntry",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "bump";
-            type: "u8";
+            "name": "bump",
+            "type": "u8"
           },
           {
-            name: "stakeEntry";
-            type: "publicKey";
+            "name": "stakeEntry",
+            "type": "publicKey"
           },
           {
-            name: "usedStakeSeconds";
-            type: "u128";
+            "name": "usedStakeSeconds",
+            "type": "u128"
           }
-        ];
-      };
+        ]
+      }
     },
     {
-      name: "rewardReceipt";
-      type: {
-        kind: "struct";
-        fields: [
+      "name": "rewardReceipt",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "bump";
-            type: "u8";
+            "name": "bump",
+            "type": "u8"
           },
           {
-            name: "receiptEntry";
-            type: "publicKey";
+            "name": "receiptEntry",
+            "type": "publicKey"
           },
           {
-            name: "receiptManager";
-            type: "publicKey";
+            "name": "receiptManager",
+            "type": "publicKey"
           },
           {
-            name: "target";
-            type: "publicKey";
+            "name": "target",
+            "type": "publicKey"
           },
           {
-            name: "allowed";
-            type: "bool";
+            "name": "allowed",
+            "type": "bool"
           }
-        ];
-      };
+        ]
+      }
     }
-  ];
-  types: [
+  ],
+  "types": [
     {
-      name: "InitReceiptManagerIx";
-      type: {
-        kind: "struct";
-        fields: [
+      "name": "InitReceiptManagerIx",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "name";
-            type: "string";
+            "name": "name",
+            "type": "string"
           },
           {
-            name: "authority";
-            type: "publicKey";
+            "name": "authority",
+            "type": "publicKey"
           },
           {
-            name: "requiredStakeSeconds";
-            type: "u128";
+            "name": "requiredStakeSeconds",
+            "type": "u128"
           },
           {
-            name: "stakeSecondsToUse";
-            type: "u128";
+            "name": "stakeSecondsToUse",
+            "type": "u128"
           },
           {
-            name: "paymentMint";
-            type: "publicKey";
+            "name": "paymentMint",
+            "type": "publicKey"
           },
           {
-            name: "paymentManager";
-            type: "publicKey";
+            "name": "paymentManager",
+            "type": "publicKey"
           },
           {
-            name: "paymentRecipient";
-            type: "publicKey";
+            "name": "paymentRecipient",
+            "type": "publicKey"
           },
           {
-            name: "requiresAuthorization";
-            type: "bool";
+            "name": "requiresAuthorization",
+            "type": "bool"
           },
           {
-            name: "maxClaimedReceipts";
-            type: {
-              option: "u128";
-            };
+            "name": "maxClaimedReceipts",
+            "type": {
+              "option": "u128"
+            }
           }
-        ];
-      };
+        ]
+      }
     },
     {
-      name: "UpdateReceiptManagerIx";
-      type: {
-        kind: "struct";
-        fields: [
+      "name": "UpdateReceiptManagerIx",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "authority";
-            type: "publicKey";
+            "name": "authority",
+            "type": "publicKey"
           },
           {
-            name: "requiredStakeSeconds";
-            type: "u128";
+            "name": "requiredStakeSeconds",
+            "type": "u128"
           },
           {
-            name: "stakeSecondsToUse";
-            type: "u128";
+            "name": "stakeSecondsToUse",
+            "type": "u128"
           },
           {
-            name: "paymentMint";
-            type: "publicKey";
+            "name": "paymentMint",
+            "type": "publicKey"
           },
           {
-            name: "paymentManager";
-            type: "publicKey";
+            "name": "paymentManager",
+            "type": "publicKey"
           },
           {
-            name: "paymentRecipient";
-            type: "publicKey";
+            "name": "paymentRecipient",
+            "type": "publicKey"
           },
           {
-            name: "requiresAuthorization";
-            type: "bool";
+            "name": "requiresAuthorization",
+            "type": "bool"
           },
           {
-            name: "maxClaimedReceipts";
-            type: {
-              option: "u128";
-            };
+            "name": "maxClaimedReceipts",
+            "type": {
+              "option": "u128"
+            }
           }
-        ];
-      };
+        ]
+      }
     }
-  ];
-  errors: [
+  ],
+  "errors": [
     {
-      code: 6000;
-      name: "InvalidAuthority";
-      msg: "Invalid authority";
+      "code": 6000,
+      "name": "InvalidAuthority",
+      "msg": "Invalid authority"
     },
     {
-      code: 6001;
-      name: "MaxNumberOfReceiptsExceeded";
-      msg: "Max number of receipts exceeded";
+      "code": 6001,
+      "name": "MaxNumberOfReceiptsExceeded",
+      "msg": "Max number of receipts exceeded"
     },
     {
-      code: 6002;
-      name: "InvalidClaimer";
-      msg: "Invalid claimer";
+      "code": 6002,
+      "name": "InvalidClaimer",
+      "msg": "Invalid claimer"
     },
     {
-      code: 6003;
-      name: "RewardSecondsNotSatisfied";
-      msg: "Reward seconds not satisifed";
+      "code": 6003,
+      "name": "RewardSecondsNotSatisfied",
+      "msg": "Reward seconds not satisifed"
     },
     {
-      code: 6004;
-      name: "InvalidPayerTokenAcount";
-      msg: "Invalid payer token account";
+      "code": 6004,
+      "name": "InvalidPayerTokenAcount",
+      "msg": "Invalid payer token account"
     },
     {
-      code: 6005;
-      name: "InvalidPaymentMint";
-      msg: "Invalid payment mint";
+      "code": 6005,
+      "name": "InvalidPaymentMint",
+      "msg": "Invalid payment mint"
     },
     {
-      code: 6006;
-      name: "InvalidPaymentManager";
-      msg: "Invalid payment manager";
+      "code": 6006,
+      "name": "InvalidPaymentManager",
+      "msg": "Invalid payment manager"
     },
     {
-      code: 6007;
-      name: "InvalidMaxClaimedReceipts";
-      msg: "Invalid max claimed receipts";
+      "code": 6007,
+      "name": "InvalidMaxClaimedReceipts",
+      "msg": "Invalid max claimed receipts"
     },
     {
-      code: 6008;
-      name: "InvalidPaymentTokenAccount";
-      msg: "Invalid payment token account";
+      "code": 6008,
+      "name": "InvalidPaymentTokenAccount",
+      "msg": "Invalid payment token account"
     },
     {
-      code: 6009;
-      name: "InvalidPaymentCollector";
-      msg: "Invalid payment collector";
+      "code": 6009,
+      "name": "InvalidPaymentCollector",
+      "msg": "Invalid payment collector"
     },
     {
-      code: 6010;
-      name: "InvalidRewardReceipt";
-      msg: "Invalid reward receipt";
+      "code": 6010,
+      "name": "InvalidRewardReceipt",
+      "msg": "Invalid reward receipt"
     },
     {
-      code: 6011;
-      name: "InvalidReceiptEntry";
-      msg: "Invalid receipt entry";
+      "code": 6011,
+      "name": "InvalidReceiptEntry",
+      "msg": "Invalid receipt entry"
     },
     {
-      code: 6012;
-      name: "InsufficientAvailableStakeSeconds";
-      msg: "Insufficient available stake seconds to use";
+      "code": 6012,
+      "name": "InsufficientAvailableStakeSeconds",
+      "msg": "Insufficient available stake seconds to use"
     },
     {
-      code: 6013;
-      name: "InvalidStakeEntry";
-      msg: "Invalid stake entry";
+      "code": 6013,
+      "name": "InvalidStakeEntry",
+      "msg": "Invalid stake entry"
     },
     {
-      code: 6014;
-      name: "InvalidReceiptManager";
-      msg: "Invalid receipt manager";
+      "code": 6014,
+      "name": "InvalidReceiptManager",
+      "msg": "Invalid receipt manager"
     },
     {
-      code: 6015;
-      name: "RewardReceiptIsNotAllowed";
-      msg: "Reward receipt is not allowed";
+      "code": 6015,
+      "name": "RewardReceiptIsNotAllowed",
+      "msg": "Reward receipt is not allowed"
     },
     {
-      code: 6016;
-      name: "RewardReceiptAlreadyClaimed";
-      msg: "Reward receipt already claimed";
+      "code": 6016,
+      "name": "RewardReceiptAlreadyClaimed",
+      "msg": "Reward receipt already claimed"
     }
-  ];
+  ]
 };
 
 export const IDL: CardinalReceiptManager = {
-  version: "1.17.0",
-  name: "cardinal_receipt_manager",
-  instructions: [
+  "version": "1.17.0",
+  "name": "cardinal_receipt_manager",
+  "instructions": [
     {
-      name: "initReceiptManager",
-      accounts: [
+      "name": "initReceiptManager",
+      "accounts": [
         {
-          name: "receiptManager",
-          isMut: true,
-          isSigner: false,
+          "name": "receiptManager",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "stakePool",
-          isMut: false,
-          isSigner: false,
+          "name": "stakePool",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "payer",
-          isMut: true,
-          isSigner: true,
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
         },
         {
-          name: "systemProgram",
-          isMut: false,
-          isSigner: false,
-        },
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
       ],
-      args: [
+      "args": [
         {
-          name: "ix",
-          type: {
-            defined: "InitReceiptManagerIx",
-          },
-        },
-      ],
+          "name": "ix",
+          "type": {
+            "defined": "InitReceiptManagerIx"
+          }
+        }
+      ]
     },
     {
-      name: "initReceiptEntry",
-      accounts: [
+      "name": "initReceiptEntry",
+      "accounts": [
         {
-          name: "receiptEntry",
-          isMut: true,
-          isSigner: false,
+          "name": "receiptEntry",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "stakeEntry",
-          isMut: false,
-          isSigner: false,
+          "name": "stakeEntry",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "payer",
-          isMut: true,
-          isSigner: true,
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
         },
         {
-          name: "systemProgram",
-          isMut: false,
-          isSigner: false,
-        },
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
       ],
-      args: [],
+      "args": []
     },
     {
-      name: "initRewardReceipt",
-      accounts: [
+      "name": "initRewardReceipt",
+      "accounts": [
         {
-          name: "rewardReceipt",
-          isMut: true,
-          isSigner: false,
+          "name": "rewardReceipt",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "receiptManager",
-          isMut: false,
-          isSigner: false,
+          "name": "receiptManager",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "receiptEntry",
-          isMut: false,
-          isSigner: false,
+          "name": "receiptEntry",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "stakeEntry",
-          isMut: false,
-          isSigner: false,
+          "name": "stakeEntry",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "payer",
-          isMut: true,
-          isSigner: true,
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
         },
         {
-          name: "systemProgram",
-          isMut: false,
-          isSigner: false,
-        },
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
       ],
-      args: [],
+      "args": []
     },
     {
-      name: "claimRewardReceipt",
-      accounts: [
+      "name": "claimRewardReceipt",
+      "accounts": [
         {
-          name: "rewardReceipt",
-          isMut: true,
-          isSigner: false,
+          "name": "rewardReceipt",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "receiptManager",
-          isMut: true,
-          isSigner: false,
+          "name": "receiptManager",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "stakeEntry",
-          isMut: false,
-          isSigner: false,
+          "name": "stakeEntry",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "receiptEntry",
-          isMut: true,
-          isSigner: false,
+          "name": "receiptEntry",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "paymentManager",
-          isMut: true,
-          isSigner: false,
+          "name": "paymentManager",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "feeCollectorTokenAccount",
-          isMut: true,
-          isSigner: false,
+          "name": "feeCollectorTokenAccount",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "paymentRecipientTokenAccount",
-          isMut: true,
-          isSigner: false,
+          "name": "paymentRecipientTokenAccount",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "payerTokenAccount",
-          isMut: true,
-          isSigner: false,
+          "name": "payerTokenAccount",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "payer",
-          isMut: true,
-          isSigner: true,
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true
         },
         {
-          name: "claimer",
-          isMut: true,
-          isSigner: true,
+          "name": "claimer",
+          "isMut": true,
+          "isSigner": true
         },
         {
-          name: "cardinalPaymentManager",
-          isMut: false,
-          isSigner: false,
+          "name": "cardinalPaymentManager",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "tokenProgram",
-          isMut: false,
-          isSigner: false,
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "systemProgram",
-          isMut: false,
-          isSigner: false,
-        },
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
       ],
-      args: [],
+      "args": []
     },
     {
-      name: "setRewardReceiptAllowed",
-      accounts: [
+      "name": "setRewardReceiptAllowed",
+      "accounts": [
         {
-          name: "receiptManager",
-          isMut: false,
-          isSigner: false,
+          "name": "receiptManager",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "rewardReceipt",
-          isMut: true,
-          isSigner: false,
+          "name": "rewardReceipt",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "authority",
-          isMut: true,
-          isSigner: true,
-        },
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        }
       ],
-      args: [
+      "args": [
         {
-          name: "allowed",
-          type: "bool",
-        },
-      ],
+          "name": "allowed",
+          "type": "bool"
+        }
+      ]
     },
     {
-      name: "updateReceiptManager",
-      accounts: [
+      "name": "updateReceiptManager",
+      "accounts": [
         {
-          name: "receiptManager",
-          isMut: true,
-          isSigner: false,
+          "name": "receiptManager",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "authority",
-          isMut: false,
-          isSigner: true,
-        },
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        }
       ],
-      args: [
+      "args": [
         {
-          name: "ix",
-          type: {
-            defined: "UpdateReceiptManagerIx",
-          },
-        },
-      ],
+          "name": "ix",
+          "type": {
+            "defined": "UpdateReceiptManagerIx"
+          }
+        }
+      ]
     },
     {
-      name: "closeReceiptManager",
-      accounts: [
+      "name": "closeReceiptManager",
+      "accounts": [
         {
-          name: "receiptManager",
-          isMut: true,
-          isSigner: false,
+          "name": "receiptManager",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "authority",
-          isMut: true,
-          isSigner: true,
-        },
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        }
       ],
-      args: [],
+      "args": []
     },
     {
-      name: "closeRewardReceipt",
-      accounts: [
+      "name": "closeRewardReceipt",
+      "accounts": [
         {
-          name: "rewardReceipt",
-          isMut: true,
-          isSigner: false,
+          "name": "rewardReceipt",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "receiptManager",
-          isMut: false,
-          isSigner: false,
+          "name": "receiptManager",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "authority",
-          isMut: true,
-          isSigner: true,
-        },
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        }
       ],
-      args: [],
+      "args": []
     },
     {
-      name: "closeReceiptEntry",
-      accounts: [
+      "name": "closeReceiptEntry",
+      "accounts": [
         {
-          name: "receiptEntry",
-          isMut: true,
-          isSigner: false,
+          "name": "receiptEntry",
+          "isMut": true,
+          "isSigner": false
         },
         {
-          name: "receiptManager",
-          isMut: false,
-          isSigner: false,
+          "name": "receiptManager",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "stakeEntry",
-          isMut: false,
-          isSigner: false,
+          "name": "stakeEntry",
+          "isMut": false,
+          "isSigner": false
         },
         {
-          name: "authority",
-          isMut: true,
-          isSigner: true,
-        },
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        }
       ],
-      args: [],
-    },
+      "args": []
+    }
   ],
-  accounts: [
+  "accounts": [
     {
-      name: "receiptManager",
-      type: {
-        kind: "struct",
-        fields: [
+      "name": "receiptManager",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "bump",
-            type: "u8",
+            "name": "bump",
+            "type": "u8"
           },
           {
-            name: "stakePool",
-            type: "publicKey",
+            "name": "stakePool",
+            "type": "publicKey"
           },
           {
-            name: "authority",
-            type: "publicKey",
+            "name": "authority",
+            "type": "publicKey"
           },
           {
-            name: "requiredStakeSeconds",
-            type: "u128",
+            "name": "requiredStakeSeconds",
+            "type": "u128"
           },
           {
-            name: "stakeSecondsToUse",
-            type: "u128",
+            "name": "stakeSecondsToUse",
+            "type": "u128"
           },
           {
-            name: "claimedReceiptsCounter",
-            type: "u128",
+            "name": "claimedReceiptsCounter",
+            "type": "u128"
           },
           {
-            name: "paymentMint",
-            type: "publicKey",
+            "name": "paymentMint",
+            "type": "publicKey"
           },
           {
-            name: "paymentManager",
-            type: "publicKey",
+            "name": "paymentManager",
+            "type": "publicKey"
           },
           {
-            name: "paymentRecipient",
-            type: "publicKey",
+            "name": "paymentRecipient",
+            "type": "publicKey"
           },
           {
-            name: "requiresAuthorization",
-            type: "bool",
+            "name": "requiresAuthorization",
+            "type": "bool"
           },
           {
-            name: "name",
-            type: "string",
+            "name": "name",
+            "type": "string"
           },
           {
-            name: "maxClaimedReceipts",
-            type: {
-              option: "u128",
-            },
-          },
-        ],
-      },
+            "name": "maxClaimedReceipts",
+            "type": {
+              "option": "u128"
+            }
+          }
+        ]
+      }
     },
     {
-      name: "receiptEntry",
-      type: {
-        kind: "struct",
-        fields: [
+      "name": "receiptEntry",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "bump",
-            type: "u8",
+            "name": "bump",
+            "type": "u8"
           },
           {
-            name: "stakeEntry",
-            type: "publicKey",
+            "name": "stakeEntry",
+            "type": "publicKey"
           },
           {
-            name: "usedStakeSeconds",
-            type: "u128",
-          },
-        ],
-      },
+            "name": "usedStakeSeconds",
+            "type": "u128"
+          }
+        ]
+      }
     },
     {
-      name: "rewardReceipt",
-      type: {
-        kind: "struct",
-        fields: [
+      "name": "rewardReceipt",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "bump",
-            type: "u8",
+            "name": "bump",
+            "type": "u8"
           },
           {
-            name: "receiptEntry",
-            type: "publicKey",
+            "name": "receiptEntry",
+            "type": "publicKey"
           },
           {
-            name: "receiptManager",
-            type: "publicKey",
+            "name": "receiptManager",
+            "type": "publicKey"
           },
           {
-            name: "target",
-            type: "publicKey",
+            "name": "target",
+            "type": "publicKey"
           },
           {
-            name: "allowed",
-            type: "bool",
-          },
-        ],
-      },
-    },
+            "name": "allowed",
+            "type": "bool"
+          }
+        ]
+      }
+    }
   ],
-  types: [
+  "types": [
     {
-      name: "InitReceiptManagerIx",
-      type: {
-        kind: "struct",
-        fields: [
+      "name": "InitReceiptManagerIx",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "name",
-            type: "string",
+            "name": "name",
+            "type": "string"
           },
           {
-            name: "authority",
-            type: "publicKey",
+            "name": "authority",
+            "type": "publicKey"
           },
           {
-            name: "requiredStakeSeconds",
-            type: "u128",
+            "name": "requiredStakeSeconds",
+            "type": "u128"
           },
           {
-            name: "stakeSecondsToUse",
-            type: "u128",
+            "name": "stakeSecondsToUse",
+            "type": "u128"
           },
           {
-            name: "paymentMint",
-            type: "publicKey",
+            "name": "paymentMint",
+            "type": "publicKey"
           },
           {
-            name: "paymentManager",
-            type: "publicKey",
+            "name": "paymentManager",
+            "type": "publicKey"
           },
           {
-            name: "paymentRecipient",
-            type: "publicKey",
+            "name": "paymentRecipient",
+            "type": "publicKey"
           },
           {
-            name: "requiresAuthorization",
-            type: "bool",
+            "name": "requiresAuthorization",
+            "type": "bool"
           },
           {
-            name: "maxClaimedReceipts",
-            type: {
-              option: "u128",
-            },
-          },
-        ],
-      },
+            "name": "maxClaimedReceipts",
+            "type": {
+              "option": "u128"
+            }
+          }
+        ]
+      }
     },
     {
-      name: "UpdateReceiptManagerIx",
-      type: {
-        kind: "struct",
-        fields: [
+      "name": "UpdateReceiptManagerIx",
+      "type": {
+        "kind": "struct",
+        "fields": [
           {
-            name: "authority",
-            type: "publicKey",
+            "name": "authority",
+            "type": "publicKey"
           },
           {
-            name: "requiredStakeSeconds",
-            type: "u128",
+            "name": "requiredStakeSeconds",
+            "type": "u128"
           },
           {
-            name: "stakeSecondsToUse",
-            type: "u128",
+            "name": "stakeSecondsToUse",
+            "type": "u128"
           },
           {
-            name: "paymentMint",
-            type: "publicKey",
+            "name": "paymentMint",
+            "type": "publicKey"
           },
           {
-            name: "paymentManager",
-            type: "publicKey",
+            "name": "paymentManager",
+            "type": "publicKey"
           },
           {
-            name: "paymentRecipient",
-            type: "publicKey",
+            "name": "paymentRecipient",
+            "type": "publicKey"
           },
           {
-            name: "requiresAuthorization",
-            type: "bool",
+            "name": "requiresAuthorization",
+            "type": "bool"
           },
           {
-            name: "maxClaimedReceipts",
-            type: {
-              option: "u128",
-            },
-          },
-        ],
-      },
-    },
+            "name": "maxClaimedReceipts",
+            "type": {
+              "option": "u128"
+            }
+          }
+        ]
+      }
+    }
   ],
-  errors: [
+  "errors": [
     {
-      code: 6000,
-      name: "InvalidAuthority",
-      msg: "Invalid authority",
+      "code": 6000,
+      "name": "InvalidAuthority",
+      "msg": "Invalid authority"
     },
     {
-      code: 6001,
-      name: "MaxNumberOfReceiptsExceeded",
-      msg: "Max number of receipts exceeded",
+      "code": 6001,
+      "name": "MaxNumberOfReceiptsExceeded",
+      "msg": "Max number of receipts exceeded"
     },
     {
-      code: 6002,
-      name: "InvalidClaimer",
-      msg: "Invalid claimer",
+      "code": 6002,
+      "name": "InvalidClaimer",
+      "msg": "Invalid claimer"
     },
     {
-      code: 6003,
-      name: "RewardSecondsNotSatisfied",
-      msg: "Reward seconds not satisifed",
+      "code": 6003,
+      "name": "RewardSecondsNotSatisfied",
+      "msg": "Reward seconds not satisifed"
     },
     {
-      code: 6004,
-      name: "InvalidPayerTokenAcount",
-      msg: "Invalid payer token account",
+      "code": 6004,
+      "name": "InvalidPayerTokenAcount",
+      "msg": "Invalid payer token account"
     },
     {
-      code: 6005,
-      name: "InvalidPaymentMint",
-      msg: "Invalid payment mint",
+      "code": 6005,
+      "name": "InvalidPaymentMint",
+      "msg": "Invalid payment mint"
     },
     {
-      code: 6006,
-      name: "InvalidPaymentManager",
-      msg: "Invalid payment manager",
+      "code": 6006,
+      "name": "InvalidPaymentManager",
+      "msg": "Invalid payment manager"
     },
     {
-      code: 6007,
-      name: "InvalidMaxClaimedReceipts",
-      msg: "Invalid max claimed receipts",
+      "code": 6007,
+      "name": "InvalidMaxClaimedReceipts",
+      "msg": "Invalid max claimed receipts"
     },
     {
-      code: 6008,
-      name: "InvalidPaymentTokenAccount",
-      msg: "Invalid payment token account",
+      "code": 6008,
+      "name": "InvalidPaymentTokenAccount",
+      "msg": "Invalid payment token account"
     },
     {
-      code: 6009,
-      name: "InvalidPaymentCollector",
-      msg: "Invalid payment collector",
+      "code": 6009,
+      "name": "InvalidPaymentCollector",
+      "msg": "Invalid payment collector"
     },
     {
-      code: 6010,
-      name: "InvalidRewardReceipt",
-      msg: "Invalid reward receipt",
+      "code": 6010,
+      "name": "InvalidRewardReceipt",
+      "msg": "Invalid reward receipt"
     },
     {
-      code: 6011,
-      name: "InvalidReceiptEntry",
-      msg: "Invalid receipt entry",
+      "code": 6011,
+      "name": "InvalidReceiptEntry",
+      "msg": "Invalid receipt entry"
     },
     {
-      code: 6012,
-      name: "InsufficientAvailableStakeSeconds",
-      msg: "Insufficient available stake seconds to use",
+      "code": 6012,
+      "name": "InsufficientAvailableStakeSeconds",
+      "msg": "Insufficient available stake seconds to use"
     },
     {
-      code: 6013,
-      name: "InvalidStakeEntry",
-      msg: "Invalid stake entry",
+      "code": 6013,
+      "name": "InvalidStakeEntry",
+      "msg": "Invalid stake entry"
     },
     {
-      code: 6014,
-      name: "InvalidReceiptManager",
-      msg: "Invalid receipt manager",
+      "code": 6014,
+      "name": "InvalidReceiptManager",
+      "msg": "Invalid receipt manager"
     },
     {
-      code: 6015,
-      name: "RewardReceiptIsNotAllowed",
-      msg: "Reward receipt is not allowed",
+      "code": 6015,
+      "name": "RewardReceiptIsNotAllowed",
+      "msg": "Reward receipt is not allowed"
     },
     {
-      code: 6016,
-      name: "RewardReceiptAlreadyClaimed",
-      msg: "Reward receipt already claimed",
-    },
-  ],
+      "code": 6016,
+      "name": "RewardReceiptAlreadyClaimed",
+      "msg": "Reward receipt already claimed"
+    }
+  ]
 };

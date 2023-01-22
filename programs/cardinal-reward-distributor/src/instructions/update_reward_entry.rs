@@ -14,7 +14,9 @@ pub struct UpdateRewardEntryCtx<'info> {
     #[account(mut, constraint = reward_entry.reward_distributor == reward_distributor.key() @ ErrorCode::InvalidRewardDistributor)]
     reward_entry: Box<Account<'info, RewardEntry>>,
     reward_distributor: Box<Account<'info, RewardDistributor>>,
-    #[account(constraint = authority.key() == reward_distributor.authority @ ErrorCode::InvalidRewardDistributorAuthority)]
+    #[account(constraint = reward_authority.key() == reward_distributor.reward_authority @ ErrorCode::InvalidRewardDistributorAuthority)]
+    reward_authority: Box<Account<'info, RewardAuthority>>,
+    #[account(constraint = authority.key() == reward_authority.authority @ ErrorCode::InvalidRewardDistributorAuthority)]
     authority: Signer<'info>,
 }
 
