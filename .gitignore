@@ -34,7 +34,7 @@ test-ledger/
 
 # Generated IDL types
 artifacts/
-dist/
+# dist/
 src/idls/
 keypairs
 
