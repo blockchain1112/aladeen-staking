@@ -33,7 +33,7 @@ export const findStakeEntryId = (
 ): PublicKey => {
   return PublicKey.findProgramAddressSync(
     [
-      utils.bytes.utf8.encode(STAKE_ENTRY_SEED),
+      Buffer.from(STAKE_ENTRY_SEED),
       stakePoolId.toBuffer(),
       originalMintId.toBuffer(),
     ],

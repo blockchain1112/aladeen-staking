@@ -15,7 +15,9 @@ import { withClaimRewards } from "../rewardDistributor/transaction";
 import { getPoolIdentifier, getStakeBooster, getStakeEntry, getStakePool, } from "./accounts";
 import { ReceiptType, STAKE_BOOSTER_PAYMENT_MANAGER, stakePoolProgram, } from "./constants";
 import { findGroupEntryId, findIdentifierId, findStakeAuthorizationId, findStakeBoosterId, findStakePoolId, } from "./pda";
-import { findStakeEntryIdFromMint, remainingAccountsForInitStakeEntry, withRemainingAccountsForUnstake, } from "./utils";
+import { findStakeEntryIdFromMint, 
+// remainingAccountsForInitStakeEntry,
+withRemainingAccountsForUnstake, } from "./utils";
 /**
  * Add init pool identifier instructions to a transaction
  * @param transaction
@@ -90,7 +92,12 @@ export const withInitStakePool = async (transaction, connection, wallet, params)
 export const withInitStakeEntry = async (transaction, connection, wallet, params) => {
     const stakeEntryId = await findStakeEntryIdFromMint(params.stakePoolId, params.originalMintId);
     const originalMintMetadatId = findMintMetadataId(params.originalMintId);
-    const remainingAccounts = remainingAccountsForInitStakeEntry(params.stakePoolId, params.originalMintId);
+    /*
+    const remainingAccounts = remainingAccountsForInitStakeEntry(
+      params.stakePoolId,
+      params.originalMintId
+    );
+    */
     const program = stakePoolProgram(connection, wallet);
     const ix = await program.methods
         .initEntry(wallet.publicKey)
@@ -102,7 +109,7 @@ export const withInitStakeEntry = async (transaction, connection, wallet, params
         payer: wallet.publicKey,
         systemProgram: SystemProgram.programId,
     })
-        .remainingAccounts(remainingAccounts)
+        // .remainingAccounts(remainingAccounts)
         .instruction();
     transaction.add(ix);
     return [transaction, stakeEntryId];

@@ -95,7 +95,12 @@ exports.withInitStakePool = withInitStakePool;
 const withInitStakeEntry = async (transaction, connection, wallet, params) => {
     const stakeEntryId = await (0, utils_2.findStakeEntryIdFromMint)(params.stakePoolId, params.originalMintId);
     const originalMintMetadatId = (0, common_1.findMintMetadataId)(params.originalMintId);
-    const remainingAccounts = (0, utils_2.remainingAccountsForInitStakeEntry)(params.stakePoolId, params.originalMintId);
+    /*
+    const remainingAccounts = remainingAccountsForInitStakeEntry(
+      params.stakePoolId,
+      params.originalMintId
+    );
+    */
     const program = (0, constants_1.stakePoolProgram)(connection, wallet);
     const ix = await program.methods
         .initEntry(wallet.publicKey)
@@ -107,7 +112,7 @@ const withInitStakeEntry = async (transaction, connection, wallet, params) => {
         payer: wallet.publicKey,
         systemProgram: web3_js_1.SystemProgram.programId,
     })
-        .remainingAccounts(remainingAccounts)
+        // .remainingAccounts(remainingAccounts)
         .instruction();
     transaction.add(ix);
     return [transaction, stakeEntryId];

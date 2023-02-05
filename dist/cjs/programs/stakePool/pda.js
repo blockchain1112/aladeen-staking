@@ -22,7 +22,7 @@ exports.findStakePoolId = findStakePoolId;
  */
 const findStakeEntryId = (stakePoolId, originalMintId) => {
     return web3_js_1.PublicKey.findProgramAddressSync([
-        anchor_1.utils.bytes.utf8.encode(_1.STAKE_ENTRY_SEED),
+        Buffer.from(_1.STAKE_ENTRY_SEED),
         stakePoolId.toBuffer(),
         originalMintId.toBuffer(),
     ], _1.STAKE_POOL_ADDRESS)[0];
