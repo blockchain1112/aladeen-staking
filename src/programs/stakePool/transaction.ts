@@ -60,7 +60,7 @@ import {
 } from "./pda";
 import {
   findStakeEntryIdFromMint,
-  // remainingAccountsForInitStakeEntry,
+  remainingAccountsForInitStakeEntry,
   withRemainingAccountsForUnstake,
 } from "./utils";
 
@@ -178,12 +178,10 @@ export const withInitStakeEntry = async (
 
   const originalMintMetadatId = findMintMetadataId(params.originalMintId);
 
-  /*
   const remainingAccounts = remainingAccountsForInitStakeEntry(
     params.stakePoolId,
     params.originalMintId
   );
-  */
   const program = stakePoolProgram(connection, wallet);
   const ix = await program.methods
     .initEntry(wallet.publicKey)
@@ -195,7 +193,7 @@ export const withInitStakeEntry = async (
       payer: wallet.publicKey,
       systemProgram: SystemProgram.programId,
     })
-    // .remainingAccounts(remainingAccounts)
+    .remainingAccounts(remainingAccounts)
     .instruction();
   transaction.add(ix);
   return [transaction, stakeEntryId];
