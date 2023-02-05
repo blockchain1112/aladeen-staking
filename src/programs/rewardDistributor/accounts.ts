@@ -59,7 +59,8 @@ export const getRewardDistributor = async (
 ): Promise<AccountData<RewardDistributorData>> => {
   const program = rewardDistributorProgram(connection);
   const parsed = (await program.account.rewardDistributor.fetch(
-    rewardDistributorId
+    rewardDistributorId,
+    "single"
   )) as RewardDistributorData;
   return {
     parsed,

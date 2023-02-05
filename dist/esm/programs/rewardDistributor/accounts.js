@@ -28,7 +28,7 @@ export const getRewardAuthority = async (connection, rewardAuthority) => {
 };
 export const getRewardDistributor = async (connection, rewardDistributorId) => {
     const program = rewardDistributorProgram(connection);
-    const parsed = (await program.account.rewardDistributor.fetch(rewardDistributorId));
+    const parsed = (await program.account.rewardDistributor.fetch(rewardDistributorId, "single"));
     return {
         parsed,
         pubkey: rewardDistributorId,
