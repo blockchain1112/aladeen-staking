@@ -35,7 +35,7 @@ export const findRewardDistributorId = (stakePoolId: PublicKey, id: BN) => {
     [
       utils.bytes.utf8.encode(REWARD_DISTRIBUTOR_SEED),
       stakePoolId.toBuffer(),
-      id.toBuffer(),
+      id.toArrayLike(Buffer, "le", 8),
     ],
     REWARD_DISTRIBUTOR_ADDRESS
   )[0];
