@@ -59,11 +59,9 @@ pub struct ClaimReceiptMintCtx<'info> {
 pub fn handler<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts, 'remaining, 'info, ClaimReceiptMintCtx<'info>>) -> Result<()> {
     let stake_entry = &mut ctx.accounts.stake_entry;
     let original_mint = stake_entry.original_mint;
-    let user = ctx.accounts.user.key();
     let stake_pool = stake_entry.pool;
-    let seed = get_stake_seed(ctx.accounts.original_mint.supply, user);
 
-    let stake_entry_seed = [STAKE_ENTRY_PREFIX.as_bytes(), stake_pool.as_ref(), original_mint.as_ref(), seed.as_ref(), &[stake_entry.bump]];
+    let stake_entry_seed = [STAKE_ENTRY_PREFIX.as_bytes(), stake_pool.as_ref(), original_mint.as_ref(), &[stake_entry.bump]];
     let stake_entry_signer = &[&stake_entry_seed[..]];
 
     let token_manager_kind;

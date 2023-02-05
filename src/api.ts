@@ -446,7 +446,7 @@ export const unstake = async (
   connection: Connection,
   wallet: Wallet,
   params: {
-    distributorId: BN;
+    distributorIds: BN[];
     stakePoolId: PublicKey;
     originalMintId: PublicKey;
     skipRewardMintTokenAccount?: boolean;
@@ -736,4 +736,3 @@ export const initUngrouping = async (
 
   return [transaction];
 };
-

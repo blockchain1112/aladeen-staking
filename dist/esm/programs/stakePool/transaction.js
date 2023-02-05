@@ -273,32 +273,46 @@ export const withStake = async (transaction, connection, wallet, params) => {
  * @returns Transaction
  */
 export const withUnstake = async (transaction, connection, wallet, params) => {
-    const rewardDistributorId = findRewardDistributorId(params.stakePoolId, params.distributorId);
     const stakeEntryId = await findStakeEntryIdFromMint(params.stakePoolId, params.originalMintId);
-    const [stakeEntryData, rewardDistributorData] = await Promise.all([
+    const [stakeEntryData] = await Promise.all([
         tryGetAccount(() => getStakeEntry(connection, stakeEntryId)),
-        tryGetAccount(() => getRewardDistributor(connection, rewardDistributorId)),
     ]);
-    if (!stakeEntryData)
-        throw "Stake entry not found";
-    const stakePoolData = await getStakePool(connection, params.stakePoolId);
-    if ((!stakePoolData.parsed.cooldownSeconds ||
-        stakePoolData.parsed.cooldownSeconds === 0 ||
-        ((stakeEntryData === null || stakeEntryData === void 0 ? void 0 : stakeEntryData.parsed.cooldownStartSeconds) &&
-            Date.now() / 1000 -
-                stakeEntryData.parsed.cooldownStartSeconds.toNumber() >=
-                stakePoolData.parsed.cooldownSeconds)) &&
-        (!stakePoolData.parsed.minStakeSeconds ||
-            stakePoolData.parsed.minStakeSeconds === 0 ||
-            ((stakeEntryData === null || stakeEntryData === void 0 ? void 0 : stakeEntryData.parsed.lastStakedAt) &&
-                Date.now() / 1000 - stakeEntryData.parsed.lastStakedAt.toNumber() >=
-                    stakePoolData.parsed.minStakeSeconds)) &&
-        (stakeEntryData.parsed.originalMintClaimed ||
-            stakeEntryData.parsed.stakeMintClaimed)) {
-        // return receipt mint if its claimed
-        await withReturnReceiptMint(transaction, connection, wallet, {
-            stakeEntryId: stakeEntryId,
-        });
+    for (const distributorId of params.distributorIds) {
+        const rewardDistributorId = findRewardDistributorId(params.stakePoolId, distributorId);
+        const [rewardDistributorData] = await Promise.all([
+            tryGetAccount(() => getRewardDistributor(connection, rewardDistributorId)),
+        ]);
+        if (!stakeEntryData)
+            throw "Stake entry not found";
+        const stakePoolData = await getStakePool(connection, params.stakePoolId);
+        if ((!stakePoolData.parsed.cooldownSeconds ||
+            stakePoolData.parsed.cooldownSeconds === 0 ||
+            ((stakeEntryData === null || stakeEntryData === void 0 ? void 0 : stakeEntryData.parsed.cooldownStartSeconds) &&
+                Date.now() / 1000 -
+                    stakeEntryData.parsed.cooldownStartSeconds.toNumber() >=
+                    stakePoolData.parsed.cooldownSeconds)) &&
+            (!stakePoolData.parsed.minStakeSeconds ||
+                stakePoolData.parsed.minStakeSeconds === 0 ||
+                ((stakeEntryData === null || stakeEntryData === void 0 ? void 0 : stakeEntryData.parsed.lastStakedAt) &&
+                    Date.now() / 1000 - stakeEntryData.parsed.lastStakedAt.toNumber() >=
+                        stakePoolData.parsed.minStakeSeconds)) &&
+            (stakeEntryData.parsed.originalMintClaimed ||
+                stakeEntryData.parsed.stakeMintClaimed)) {
+            // return receipt mint if its claimed
+            await withReturnReceiptMint(transaction, connection, wallet, {
+                stakeEntryId: stakeEntryId,
+            });
+        }
+        // claim any rewards deserved
+        if (rewardDistributorData) {
+            await withClaimRewards(transaction, connection, wallet, {
+                distributorId: distributorId,
+                stakePoolId: params.stakePoolId,
+                stakeEntryId: stakeEntryId,
+                lastStaker: wallet.publicKey,
+                skipRewardMintTokenAccount: params.skipRewardMintTokenAccount,
+            });
+        }
     }
     const stakeEntryOriginalMintTokenAccountId = await withFindOrInitAssociatedTokenAccount(transaction, connection, params.originalMintId, stakeEntryId, wallet.publicKey, true);
     const userOriginalMintTokenAccountId = await withFindOrInitAssociatedTokenAccount(transaction, connection, params.originalMintId, wallet.publicKey, wallet.publicKey);
@@ -318,16 +332,6 @@ export const withUnstake = async (transaction, connection, wallet, params) => {
         .remainingAccounts(remainingAccounts)
         .instruction();
     transaction.add(ix);
-    // claim any rewards deserved
-    if (rewardDistributorData) {
-        await withClaimRewards(transaction, connection, wallet, {
-            distributorId: params.distributorId,
-            stakePoolId: params.stakePoolId,
-            stakeEntryId: stakeEntryId,
-            lastStaker: wallet.publicKey,
-            skipRewardMintTokenAccount: params.skipRewardMintTokenAccount,
-        });
-    }
     return transaction;
 };
 export const withUpdateStakePool = async (transaction, connection, wallet, params) => {

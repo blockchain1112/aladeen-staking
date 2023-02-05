@@ -162,7 +162,7 @@ export declare const stake: (connection: Connection, wallet: Wallet, params: {
  * @returns
  */
 export declare const unstake: (connection: Connection, wallet: Wallet, params: {
-    distributorId: BN;
+    distributorIds: BN[];
     stakePoolId: PublicKey;
     originalMintId: PublicKey;
     skipRewardMintTokenAccount?: boolean;
