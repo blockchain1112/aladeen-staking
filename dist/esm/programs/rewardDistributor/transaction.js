@@ -66,49 +66,47 @@ export const withInitRewardEntry = async (transaction, connection, wallet, param
 };
 export const withClaimRewards = async (transaction, connection, wallet, params) => {
     var _a, _b;
-    const rewardAuthority = findRewardAuthority(params.authority ? params.authority : wallet.publicKey);
     const rewardDistributorId = findRewardDistributorId(params.stakePoolId, params.distributorId);
     const rewardDistributorData = await tryGetAccount(() => getRewardDistributor(connection, rewardDistributorId));
-    if (rewardDistributorData) {
-        const rewardMintTokenAccountId = params.skipRewardMintTokenAccount
-            ? await findAta(rewardDistributorData.parsed.rewardMint, params.lastStaker, true)
-            : await withFindOrInitAssociatedTokenAccount(transaction, connection, rewardDistributorData.parsed.rewardMint, params.lastStaker, (_a = params.payer) !== null && _a !== void 0 ? _a : wallet.publicKey);
-        const remainingAccountsForKind = await withRemainingAccountsForKind(transaction, connection, wallet, rewardAuthority, rewardDistributorData.parsed.kind, rewardDistributorData.parsed.rewardMint, true);
-        const rewardEntryId = findRewardEntryId(rewardDistributorData.pubkey, params.stakeEntryId);
-        const rewardEntryData = await tryGetAccount(() => getRewardEntry(connection, rewardEntryId));
-        const program = rewardDistributorProgram(connection, wallet);
-        if (!rewardEntryData) {
-            const ix = await program.methods
-                .initRewardEntry()
-                .accounts({
-                rewardEntry: rewardEntryId,
-                stakeEntry: params.stakeEntryId,
-                rewardDistributor: rewardDistributorData.pubkey,
-                payer: wallet.publicKey,
-                systemProgram: SystemProgram.programId,
-            })
-                .instruction();
-            transaction.add(ix);
-        }
+    const rewardAuthority = rewardDistributorData === null || rewardDistributorData === void 0 ? void 0 : rewardDistributorData.parsed.rewardAuthority;
+    const rewardMintTokenAccountId = params.skipRewardMintTokenAccount
+        ? await findAta(rewardDistributorData.parsed.rewardMint, params.lastStaker, true)
+        : await withFindOrInitAssociatedTokenAccount(transaction, connection, rewardDistributorData.parsed.rewardMint, params.lastStaker, (_a = params.payer) !== null && _a !== void 0 ? _a : wallet.publicKey);
+    const remainingAccountsForKind = await withRemainingAccountsForKind(transaction, connection, wallet, rewardAuthority, rewardDistributorData.parsed.kind, rewardDistributorData.parsed.rewardMint, true);
+    const rewardEntryId = findRewardEntryId(rewardDistributorData.pubkey, params.stakeEntryId);
+    const rewardEntryData = await tryGetAccount(() => getRewardEntry(connection, rewardEntryId));
+    const program = rewardDistributorProgram(connection, wallet);
+    if (!rewardEntryData) {
         const ix = await program.methods
-            .claimRewards()
+            .initRewardEntry()
             .accounts({
             rewardEntry: rewardEntryId,
-            rewardDistributor: rewardDistributorData.pubkey,
-            rewardAuthority,
             stakeEntry: params.stakeEntryId,
-            stakePool: params.stakePoolId,
-            rewardMint: rewardDistributorData.parsed.rewardMint,
-            userRewardMintTokenAccount: rewardMintTokenAccountId,
-            rewardManager: REWARD_MANAGER,
-            user: (_b = params.payer) !== null && _b !== void 0 ? _b : wallet.publicKey,
-            tokenProgram: TOKEN_PROGRAM_ID,
+            rewardDistributor: rewardDistributorData.pubkey,
+            payer: wallet.publicKey,
             systemProgram: SystemProgram.programId,
         })
-            .remainingAccounts(remainingAccountsForKind)
             .instruction();
         transaction.add(ix);
     }
+    const ix = await program.methods
+        .claimRewards()
+        .accounts({
+        rewardEntry: rewardEntryId,
+        rewardDistributor: rewardDistributorData.pubkey,
+        rewardAuthority,
+        stakeEntry: params.stakeEntryId,
+        stakePool: params.stakePoolId,
+        rewardMint: rewardDistributorData.parsed.rewardMint,
+        userRewardMintTokenAccount: rewardMintTokenAccountId,
+        rewardManager: REWARD_MANAGER,
+        user: (_b = params.payer) !== null && _b !== void 0 ? _b : wallet.publicKey,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        systemProgram: SystemProgram.programId,
+    })
+        .remainingAccounts(remainingAccountsForKind)
+        .instruction();
+    transaction.add(ix);
     return transaction;
 };
 export const withCloseRewardDistributor = async (transaction, connection, wallet, params) => {

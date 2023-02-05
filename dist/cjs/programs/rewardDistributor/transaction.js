@@ -71,49 +71,47 @@ const withInitRewardEntry = async (transaction, connection, wallet, params) => {
 exports.withInitRewardEntry = withInitRewardEntry;
 const withClaimRewards = async (transaction, connection, wallet, params) => {
     var _a, _b;
-    const rewardAuthority = (0, pda_1.findRewardAuthority)(params.authority ? params.authority : wallet.publicKey);
     const rewardDistributorId = (0, pda_1.findRewardDistributorId)(params.stakePoolId, params.distributorId);
     const rewardDistributorData = await (0, common_1.tryGetAccount)(() => (0, accounts_1.getRewardDistributor)(connection, rewardDistributorId));
-    if (rewardDistributorData) {
-        const rewardMintTokenAccountId = params.skipRewardMintTokenAccount
-            ? await (0, common_1.findAta)(rewardDistributorData.parsed.rewardMint, params.lastStaker, true)
-            : await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, rewardDistributorData.parsed.rewardMint, params.lastStaker, (_a = params.payer) !== null && _a !== void 0 ? _a : wallet.publicKey);
-        const remainingAccountsForKind = await (0, utils_1.withRemainingAccountsForKind)(transaction, connection, wallet, rewardAuthority, rewardDistributorData.parsed.kind, rewardDistributorData.parsed.rewardMint, true);
-        const rewardEntryId = (0, pda_1.findRewardEntryId)(rewardDistributorData.pubkey, params.stakeEntryId);
-        const rewardEntryData = await (0, common_1.tryGetAccount)(() => (0, accounts_1.getRewardEntry)(connection, rewardEntryId));
-        const program = (0, constants_1.rewardDistributorProgram)(connection, wallet);
-        if (!rewardEntryData) {
-            const ix = await program.methods
-                .initRewardEntry()
-                .accounts({
-                rewardEntry: rewardEntryId,
-                stakeEntry: params.stakeEntryId,
-                rewardDistributor: rewardDistributorData.pubkey,
-                payer: wallet.publicKey,
-                systemProgram: web3_js_1.SystemProgram.programId,
-            })
-                .instruction();
-            transaction.add(ix);
-        }
+    const rewardAuthority = rewardDistributorData === null || rewardDistributorData === void 0 ? void 0 : rewardDistributorData.parsed.rewardAuthority;
+    const rewardMintTokenAccountId = params.skipRewardMintTokenAccount
+        ? await (0, common_1.findAta)(rewardDistributorData.parsed.rewardMint, params.lastStaker, true)
+        : await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, rewardDistributorData.parsed.rewardMint, params.lastStaker, (_a = params.payer) !== null && _a !== void 0 ? _a : wallet.publicKey);
+    const remainingAccountsForKind = await (0, utils_1.withRemainingAccountsForKind)(transaction, connection, wallet, rewardAuthority, rewardDistributorData.parsed.kind, rewardDistributorData.parsed.rewardMint, true);
+    const rewardEntryId = (0, pda_1.findRewardEntryId)(rewardDistributorData.pubkey, params.stakeEntryId);
+    const rewardEntryData = await (0, common_1.tryGetAccount)(() => (0, accounts_1.getRewardEntry)(connection, rewardEntryId));
+    const program = (0, constants_1.rewardDistributorProgram)(connection, wallet);
+    if (!rewardEntryData) {
         const ix = await program.methods
-            .claimRewards()
+            .initRewardEntry()
             .accounts({
             rewardEntry: rewardEntryId,
-            rewardDistributor: rewardDistributorData.pubkey,
-            rewardAuthority,
             stakeEntry: params.stakeEntryId,
-            stakePool: params.stakePoolId,
-            rewardMint: rewardDistributorData.parsed.rewardMint,
-            userRewardMintTokenAccount: rewardMintTokenAccountId,
-            rewardManager: constants_1.REWARD_MANAGER,
-            user: (_b = params.payer) !== null && _b !== void 0 ? _b : wallet.publicKey,
-            tokenProgram: spl_token_1.TOKEN_PROGRAM_ID,
+            rewardDistributor: rewardDistributorData.pubkey,
+            payer: wallet.publicKey,
             systemProgram: web3_js_1.SystemProgram.programId,
         })
-            .remainingAccounts(remainingAccountsForKind)
             .instruction();
         transaction.add(ix);
     }
+    const ix = await program.methods
+        .claimRewards()
+        .accounts({
+        rewardEntry: rewardEntryId,
+        rewardDistributor: rewardDistributorData.pubkey,
+        rewardAuthority,
+        stakeEntry: params.stakeEntryId,
+        stakePool: params.stakePoolId,
+        rewardMint: rewardDistributorData.parsed.rewardMint,
+        userRewardMintTokenAccount: rewardMintTokenAccountId,
+        rewardManager: constants_1.REWARD_MANAGER,
+        user: (_b = params.payer) !== null && _b !== void 0 ? _b : wallet.publicKey,
+        tokenProgram: spl_token_1.TOKEN_PROGRAM_ID,
+        systemProgram: web3_js_1.SystemProgram.programId,
+    })
+        .remainingAccounts(remainingAccountsForKind)
+        .instruction();
+    transaction.add(ix);
     return transaction;
 };
 exports.withClaimRewards = withClaimRewards;
