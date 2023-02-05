@@ -8,7 +8,7 @@ export declare const withRemainingAccountsForUnstake: (transaction: Transaction,
  * NOTE: This will lookup the mint on-chain to get the supply
  * @returns
  */
-export declare const findStakeEntryIdFromMint: (connection: Connection, wallet: PublicKey, stakePoolId: PublicKey, originalMintId: PublicKey, isFungible?: boolean) => Promise<PublicKey>;
+export declare const findStakeEntryIdFromMint: (_connection: Connection, wallet: PublicKey, stakePoolId: PublicKey, originalMintId: PublicKey, _isFungible?: boolean) => Promise<PublicKey>;
 export declare const getTotalStakeSeconds: (connection: Connection, stakeEntryId: PublicKey) => Promise<BN>;
 export declare const getActiveStakeSeconds: (connection: Connection, stakeEntryId: PublicKey) => Promise<BN>;
 export declare const getUnclaimedRewards: (connection: Connection, stakePoolId: PublicKey, distributorId: BN) => Promise<BN>;

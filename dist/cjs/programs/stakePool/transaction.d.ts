@@ -19,9 +19,10 @@ export declare const withInitStakePool: (transaction: Transaction, connection: C
     imageUri?: string;
     resetOnStake?: boolean;
     cooldownSeconds?: number;
-    minStakeSeconds?: number;
+    minStakeSeconds?: number[];
     endDate?: BN;
     doubleOrResetEnabled?: boolean;
+    taxMint: PublicKey;
 }) => Promise<[Transaction, PublicKey]>;
 /**
  * Add init stake entry instructions to a transaction
@@ -103,6 +104,7 @@ export declare const withStake: (transaction: Transaction, connection: Connectio
     originalMintId: PublicKey;
     userOriginalMintTokenAccountId: PublicKey;
     amount?: BN;
+    duration: number;
 }) => Promise<Transaction>;
 /**
  * Add unstake instructions to a transaction

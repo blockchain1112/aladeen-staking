@@ -1,0 +1,12 @@
+{
+  "4TXbeAkuFjkTK9RFbzqUU3DWm1f1z8mat9CX4Yd9agWo": {
+    "rewardDistributors": [
+      {
+        "label": "reward zero",
+        "rewardMint": "GzjbEiTSVGkfPU2uZXX5UdvLTXm5nt5QwJcLqYPZPqFh",
+        "rewardDistributorPda": "D4jdAPMB2zaUm1bdwiF8xU8f2sacYEaoKge6rcbKkVxb",
+        "distributorIndex": 0
+      }
+    ]
+  }
+}

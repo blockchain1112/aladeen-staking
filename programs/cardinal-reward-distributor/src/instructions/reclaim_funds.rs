@@ -31,7 +31,7 @@ pub struct ReclaimFundsCtx<'info> {
     authority_token_account: Box<Account<'info, TokenAccount>>,
     #[account(
         mut,
-        constraint = authority.key() == reward_authority.authority
+        constraint = authority.key() == reward_authority.authority.unwrap()
         @ ErrorCode::InvalidAuthority
     )]
     authority: Signer<'info>,
@@ -40,7 +40,8 @@ pub struct ReclaimFundsCtx<'info> {
 
 pub fn handler(ctx: Context<ReclaimFundsCtx>, amount: u64) -> Result<()> {
     let reward_authority = &mut ctx.accounts.reward_authority;
-    let reward_authority_seed = &[REWARD_AUTHORITY_SEED.as_bytes(), reward_authority.authority.as_ref(), &[reward_authority.bump]];
+    let reward_authority_authority = reward_authority.authority.unwrap();
+    let reward_authority_seed = &[REWARD_AUTHORITY_SEED.as_bytes(), reward_authority_authority.as_ref(), &[reward_authority.bump]];
     let reward_authority_signer = &[&reward_authority_seed[..]];
     let cpi_accounts = token::Transfer {
         from: ctx.accounts.reward_distributor_token_account.to_account_info(),

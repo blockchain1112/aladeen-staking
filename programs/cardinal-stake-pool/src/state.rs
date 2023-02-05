@@ -62,6 +62,7 @@ pub struct StakeEntry {
     pub cooldown_start_seconds: Option<i64>,
     pub last_updated_at: Option<i64>,
     pub grouped: Option<bool>,
+    pub staked_duration: Option<u32>,
 }
 
 #[account]
@@ -77,9 +78,10 @@ pub struct StakePool {
     pub reset_on_stake: bool,
     pub total_staked: u32,
     pub cooldown_seconds: Option<u32>,
-    pub min_stake_seconds: Option<u32>,
+    pub min_stake_seconds: Option<Vec<Option<u32>>>,
     pub end_date: Option<i64>,
     pub double_or_reset_enabled: Option<bool>,
+    pub tax_mint: Pubkey,
 }
 
 pub fn assert_stake_boost_payment_manager(pubkey: &Pubkey) -> Result<()> {

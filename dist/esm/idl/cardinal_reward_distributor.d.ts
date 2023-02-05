@@ -445,7 +445,13 @@ export type CardinalRewardDistributor = {
                 "fields": [
                     {
                         "name": "authority";
-                        "type": "publicKey";
+                        "type": {
+                            "option": "publicKey";
+                        };
+                    },
+                    {
+                        "name": "bump";
+                        "type": "u8";
                     }
                 ];
             };
@@ -650,6 +656,11 @@ export type CardinalRewardDistributor = {
             "code": 6015;
             "name": "InvalidPayer";
             "msg": "Invalid payer";
+        },
+        {
+            "code": 6016;
+            "name": "InvalidRewardAuthority";
+            "msg": "Invalid reward authority";
         }
     ];
 };

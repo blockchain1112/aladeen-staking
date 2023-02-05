@@ -74,7 +74,7 @@ export const createStakePool = async (
     imageUri?: string;
     resetOnStake?: boolean;
     cooldownSeconds?: number;
-    minStakeSeconds?: number;
+    minStakeSeconds?: number[];
     endDate?: BN;
     doubleOrResetEnabled?: boolean;
     rewardDistributors?: {
@@ -85,6 +85,7 @@ export const createStakePool = async (
       maxSupply?: BN;
       supply?: BN;
     }[];
+    taxMint: PublicKey;
   }
 ): Promise<[Transaction, PublicKey, PublicKey[]?]> => {
   const transaction = new Transaction();
@@ -402,6 +403,7 @@ export const stake = async (
     originalMintId: params.originalMintId,
     userOriginalMintTokenAccountId: params.userOriginalMintTokenAccountId,
     amount: params.amount,
+    duration: 0,
   });
 
   if (params.receiptType && params.receiptType !== ReceiptType.None) {
@@ -740,3 +742,4 @@ export const initUngrouping = async (
 
   return [transaction];
 };
+

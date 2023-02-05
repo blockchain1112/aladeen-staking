@@ -10,11 +10,7 @@ import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import type { Connection, PublicKey, Transaction } from "@solana/web3.js";
 import { SystemProgram } from "@solana/web3.js";
 
-import {
-  getRewardAuthority,
-  getRewardDistributor,
-  getRewardEntry,
-} from "./accounts";
+import { getRewardDistributor, getRewardEntry } from "./accounts";
 import {
   REWARD_MANAGER,
   RewardDistributorKind,
@@ -84,22 +80,16 @@ export const withInitRewardDistributor = async (
     })
     .remainingAccounts(remainingAccountsForKind)
     .instruction();
-  const rewardAuthorityData = await getRewardAuthority(
-    connection,
-    rewardAuthority
-  );
-  if (rewardAuthorityData.parsed === null) {
-    const initRewardAuthorityIx = await program.methods
-      .initRewardAuthority({})
-      .accounts({
-        rewardAuthority,
-        authority: wallet.publicKey,
-        payer: wallet.publicKey,
-        systemProgram: SystemProgram.programId,
-      })
-      .instruction();
-    transaction.add(initRewardAuthorityIx);
-  }
+  const initRewardAuthorityIx = await program.methods
+    .initRewardAuthority({})
+    .accounts({
+      rewardAuthority,
+      authority: wallet.publicKey,
+      payer: wallet.publicKey,
+      systemProgram: SystemProgram.programId,
+    })
+    .instruction();
+  transaction.add(initRewardAuthorityIx);
 
   transaction.add(ix);
   return [transaction, rewardDistributorId];

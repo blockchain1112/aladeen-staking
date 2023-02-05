@@ -42,6 +42,7 @@ export const getRewardAuthority = async (
   connection: Connection,
   rewardAuthority: PublicKey
 ): Promise<AccountData<RewardAuthorityData | null>> => {
+  console.log(rewardAuthority.toString());
   const program = rewardDistributorProgram(connection);
   const parsed = (await program.account.rewardDistributor.fetchNullable(
     rewardAuthority

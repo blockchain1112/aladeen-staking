@@ -28,17 +28,17 @@ export const findStakePoolId = (identifier: BN): PublicKey => {
  * @returns
  */
 export const findStakeEntryId = (
-  wallet: PublicKey,
+  _wallet: PublicKey,
   stakePoolId: PublicKey,
   originalMintId: PublicKey,
-  isFungible: boolean
+  _isFungible: boolean = false
 ): PublicKey => {
   return PublicKey.findProgramAddressSync(
     [
       utils.bytes.utf8.encode(STAKE_ENTRY_SEED),
       stakePoolId.toBuffer(),
       originalMintId.toBuffer(),
-      isFungible ? wallet.toBuffer() : PublicKey.default.toBuffer(),
+      PublicKey.default.toBuffer(),
     ],
     STAKE_POOL_ADDRESS
   )[0];

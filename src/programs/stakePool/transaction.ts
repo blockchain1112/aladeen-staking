@@ -102,9 +102,10 @@ export const withInitStakePool = async (
     imageUri?: string;
     resetOnStake?: boolean;
     cooldownSeconds?: number;
-    minStakeSeconds?: number;
+    minStakeSeconds?: number[];
     endDate?: BN;
     doubleOrResetEnabled?: boolean;
+    taxMint: PublicKey;
   }
 ): Promise<[Transaction, PublicKey]> => {
   const identifierId = findIdentifierId();
@@ -137,9 +138,10 @@ export const withInitStakePool = async (
       authority: wallet.publicKey,
       resetOnStake: params.resetOnStake || false,
       cooldownSeconds: params.cooldownSeconds || null,
-      minStakeSeconds: params.minStakeSeconds || null,
+      minStakeSeconds: params.minStakeSeconds || [],
       endDate: params.endDate || null,
       doubleOrResetEnabled: params.doubleOrResetEnabled || null,
+      taxMint: params.taxMint,
     })
     .accounts({
       stakePool: stakePoolId,
@@ -434,6 +436,7 @@ export const withStake = async (
     originalMintId: PublicKey;
     userOriginalMintTokenAccountId: PublicKey;
     amount?: BN;
+    duration: number;
   }
 ): Promise<Transaction> => {
   const stakeEntryId = await findStakeEntryIdFromMint(
@@ -454,7 +457,7 @@ export const withStake = async (
 
   const program = stakePoolProgram(connection, wallet);
   const ix = await program.methods
-    .stake(params.amount || new BN(1))
+    .stake(params.amount || new BN(1), params.duration)
     .accounts({
       stakeEntry: stakeEntryId,
       stakePool: params.stakePoolId,

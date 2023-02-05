@@ -35,8 +35,8 @@ pub mod cardinal_stake_pool {
         deauthorize_mint::handler(ctx)
     }
 
-    pub fn stake(ctx: Context<StakeCtx>, amount: u64) -> Result<()> {
-        stake::handler(ctx, amount)
+    pub fn stake(ctx: Context<StakeCtx>, amount: u64, duration: Option<u32>) -> Result<()> {
+        stake::handler(ctx, amount, duration)
     }
 
     pub fn claim_receipt_mint<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts, 'remaining, 'info, ClaimReceiptMintCtx<'info>>) -> Result<()> {

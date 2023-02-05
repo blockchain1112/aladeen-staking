@@ -8,14 +8,29 @@ use {
 pub struct UnstakeCtx<'info> {
     #[account(mut)]
     stake_pool: Box<Account<'info, StakePool>>,
-    #[account(mut, constraint = stake_entry.pool == stake_pool.key() @ ErrorCode::InvalidStakePool)]
+    #[account(
+        mut,
+        constraint = stake_entry.pool == stake_pool.key() @ ErrorCode::InvalidStakePool
+    )]
     stake_entry: Box<Account<'info, StakeEntry>>,
 
     original_mint: Box<Account<'info, Mint>>,
 
+    // tax accounts
+    #[account(
+        mut,
+        constraint = tax_mint.key() == stake_pool.tax_mint @ ErrorCode::InvalidTaxCoinMint
+    )]
+    tax_mint: Box<Account<'info, Mint>>,
+    #[account(
+        mut,
+        constraint = tax_mint.key() == tax_mint_token_account.mint @ ErrorCode::InvalidTaxCoinTokenAccount
+    )]
+    tax_mint_token_account: Box<Account<'info, TokenAccount>>,
+
     // stake_entry token accounts
     #[account(mut, constraint =
-        (stake_entry_original_mint_token_account.amount > 0 || stake_pool.cooldown_seconds.is_some() || stake_pool.min_stake_seconds.is_some())
+        (stake_entry_original_mint_token_account.amount > 0 || stake_pool.cooldown_seconds.is_some())
         && stake_entry_original_mint_token_account.mint == stake_entry.original_mint
         && stake_entry_original_mint_token_account.owner == stake_entry.key()
         @ ErrorCode::InvalidStakeEntryOriginalMintTokenAccount)]
@@ -50,11 +65,26 @@ pub fn handler(ctx: Context<UnstakeCtx>) -> Result<()> {
         return Err(error!(ErrorCode::GroupedStakeEntry));
     }
 
-    if stake_pool.min_stake_seconds.is_some()
-        && stake_pool.min_stake_seconds.unwrap() > 0
-        && ((Clock::get().unwrap().unix_timestamp - stake_entry.last_staked_at) as u32) < stake_pool.min_stake_seconds.unwrap()
-    {
-        return Err(error!(ErrorCode::MinStakeSecondsNotSatisfied));
+    // if stake_pool.min_stake_seconds.is_some() && stake_pool.min_stake_seconds.unwrap() > 0 &&
+    if stake_entry.staked_duration.is_some() && ((Clock::get().unwrap().unix_timestamp - stake_entry.last_staked_at) as u32) < stake_entry.staked_duration.unwrap() {
+        // TODO incorporate incomplete staked duration tax
+        // TODO add tax coin to remaining accounts on frontend calls if staking duration is not met
+        msg!("unstaking early. enforcing tax!");
+
+        {
+            let unstaking_fee = 1000u64 * 10u64.pow(ctx.accounts.tax_mint.decimals as u32);
+
+            let cpi_accounts = token::Burn {
+                from: ctx.accounts.tax_mint_token_account.to_account_info(),
+                mint: ctx.accounts.tax_mint.to_account_info(),
+                authority: ctx.accounts.user.to_account_info(),
+            };
+            let cpi_program = ctx.accounts.token_program.to_account_info();
+            let cpi_context = CpiContext::new(cpi_program, cpi_accounts);
+            token::burn(cpi_context, unstaking_fee)?;
+        }
+
+        return Ok(());
     }
 
     if stake_pool.cooldown_seconds.is_some() && stake_pool.cooldown_seconds.unwrap() > 0 {

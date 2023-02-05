@@ -1,21 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.initUngrouping =
-  exports.closeGroupEntry =
-  exports.claimGroupRewards =
-  exports.updateGroupRewardDistributor =
-  exports.createGroupRewardDistributor =
-  exports.createGroupEntry =
-  exports.unstake =
-  exports.stake =
-  exports.claimRewards =
-  exports.createStakeEntryAndStakeMint =
-  exports.authorizeStakeEntry =
-  exports.initializeRewardEntry =
-  exports.createStakeEntry =
-  exports.createRewardDistributor =
-  exports.createStakePool =
-    void 0;
+exports.initUngrouping = exports.closeGroupEntry = exports.claimGroupRewards = exports.updateGroupRewardDistributor = exports.createGroupRewardDistributor = exports.createGroupEntry = exports.unstake = exports.stake = exports.claimRewards = exports.createStakeEntryAndStakeMint = exports.authorizeStakeEntry = exports.initializeRewardEntry = exports.createStakeEntry = exports.createRewardDistributor = exports.createStakePool = void 0;
 const common_1 = require("@cardinal/common");
 const anchor_1 = require("@project-serum/anchor");
 const web3_js_1 = require("@solana/web3.js");
@@ -44,39 +29,25 @@ const utils_2 = require("./utils");
  * @returns
  */
 const createStakePool = async (connection, wallet, params) => {
-  const transaction = new web3_js_1.Transaction();
-  const [, stakePoolId] = await (0, transaction_3.withInitStakePool)(
-    transaction,
-    connection,
-    wallet,
-    params
-  );
-  let rewardDistributorIds = [];
-  if (params.rewardDistributors) {
-    for (const [
-      index,
-      rewardDistributor,
-    ] of params.rewardDistributors.entries()) {
-      const [, rewardDistributorId] = await (0,
-      transaction_2.withInitRewardDistributor)(
-        transaction,
-        connection,
-        wallet,
-        {
-          distributorId: new anchor_1.BN(index),
-          stakePoolId: stakePoolId,
-          rewardMintId: rewardDistributor.rewardMintId,
-          rewardAmount: rewardDistributor.rewardAmount,
-          rewardDurationSeconds: rewardDistributor.rewardDurationSeconds,
-          kind: rewardDistributor.rewardDistributorKind,
-          maxSupply: rewardDistributor.maxSupply,
-          supply: rewardDistributor.supply,
+    const transaction = new web3_js_1.Transaction();
+    const [, stakePoolId] = await (0, transaction_3.withInitStakePool)(transaction, connection, wallet, params);
+    let rewardDistributorIds = [];
+    if (params.rewardDistributors) {
+        for (const [index, rewardDistributor,] of params.rewardDistributors.entries()) {
+            const [, rewardDistributorId] = await (0, transaction_2.withInitRewardDistributor)(transaction, connection, wallet, {
+                distributorId: new anchor_1.BN(index),
+                stakePoolId: stakePoolId,
+                rewardMintId: rewardDistributor.rewardMintId,
+                rewardAmount: rewardDistributor.rewardAmount,
+                rewardDurationSeconds: rewardDistributor.rewardDurationSeconds,
+                kind: rewardDistributor.rewardDistributorKind,
+                maxSupply: rewardDistributor.maxSupply,
+                supply: rewardDistributor.supply,
+            });
+            rewardDistributorIds.push(rewardDistributorId);
         }
-      );
-      rewardDistributorIds.push(rewardDistributorId);
     }
-  }
-  return [transaction, stakePoolId, rewardDistributorIds];
+    return [transaction, stakePoolId, rewardDistributorIds];
 };
 exports.createStakePool = createStakePool;
 /**
@@ -91,13 +62,7 @@ exports.createStakePool = createStakePool;
  * @param supply - (Optional) Supply
  * @returns
  */
-const createRewardDistributor = async (connection, wallet, params) =>
-  (0, transaction_2.withInitRewardDistributor)(
-    new web3_js_1.Transaction(),
-    connection,
-    wallet,
-    params
-  );
+const createRewardDistributor = async (connection, wallet, params) => (0, transaction_2.withInitRewardDistributor)(new web3_js_1.Transaction(), connection, wallet, params);
 exports.createRewardDistributor = createRewardDistributor;
 /**
  * Convenience call to create a stake entry
@@ -110,15 +75,10 @@ exports.createRewardDistributor = createRewardDistributor;
  * @returns
  */
 const createStakeEntry = async (connection, wallet, params) => {
-  return (0, transaction_3.withInitStakeEntry)(
-    new web3_js_1.Transaction(),
-    connection,
-    wallet,
-    {
-      stakePoolId: params.stakePoolId,
-      originalMintId: params.originalMintId,
-    }
-  );
+    return (0, transaction_3.withInitStakeEntry)(new web3_js_1.Transaction(), connection, wallet, {
+        stakePoolId: params.stakePoolId,
+        originalMintId: params.originalMintId,
+    });
 };
 exports.createStakeEntry = createStakeEntry;
 /**
@@ -130,56 +90,28 @@ exports.createStakeEntry = createStakeEntry;
  * @returns
  */
 const initializeRewardEntry = async (connection, wallet, params) => {
-  var _a;
-  const stakeEntryId = await (0, utils_1.findStakeEntryIdFromMint)(
-    connection,
-    wallet.publicKey,
-    params.stakePoolId,
-    params.originalMintId
-  );
-  const stakeEntryData = await (0, common_1.tryGetAccount)(() =>
-    (0, accounts_2.getStakeEntry)(connection, stakeEntryId)
-  );
-  const transaction = new web3_js_1.Transaction();
-  if (!stakeEntryData) {
-    await (0, transaction_3.withInitStakeEntry)(
-      transaction,
-      connection,
-      wallet,
-      {
+    var _a;
+    const stakeEntryId = await (0, utils_1.findStakeEntryIdFromMint)(connection, wallet.publicKey, params.stakePoolId, params.originalMintId);
+    const stakeEntryData = await (0, common_1.tryGetAccount)(() => (0, accounts_2.getStakeEntry)(connection, stakeEntryId));
+    const transaction = new web3_js_1.Transaction();
+    if (!stakeEntryData) {
+        await (0, transaction_3.withInitStakeEntry)(transaction, connection, wallet, {
+            stakePoolId: params.stakePoolId,
+            originalMintId: params.originalMintId,
+        });
+    }
+    const rewardDistributorId = (0, pda_2.findRewardDistributorId)(params.stakePoolId, params.distributorId);
+    await (0, transaction_2.withInitRewardEntry)(transaction, connection, wallet, {
+        stakeEntryId: stakeEntryId,
+        rewardDistributorId: rewardDistributorId,
+    });
+    await (0, transaction_2.withUpdateRewardEntry)(transaction, connection, wallet, {
         stakePoolId: params.stakePoolId,
-        originalMintId: params.originalMintId,
-      }
-    );
-  }
-  const rewardDistributorId = (0, pda_2.findRewardDistributorId)(
-    params.stakePoolId,
-    params.distributorId
-  );
-  await (0, transaction_2.withInitRewardEntry)(
-    transaction,
-    connection,
-    wallet,
-    {
-      stakeEntryId: stakeEntryId,
-      rewardDistributorId: rewardDistributorId,
-    }
-  );
-  await (0, transaction_2.withUpdateRewardEntry)(
-    transaction,
-    connection,
-    wallet,
-    {
-      stakePoolId: params.stakePoolId,
-      rewardDistributorId: rewardDistributorId,
-      stakeEntryId: stakeEntryId,
-      multiplier:
-        (_a = params.multiplier) !== null && _a !== void 0
-          ? _a
-          : new anchor_1.BN(1), //TODO default multiplier
-    }
-  );
-  return transaction;
+        rewardDistributorId: rewardDistributorId,
+        stakeEntryId: stakeEntryId,
+        multiplier: (_a = params.multiplier) !== null && _a !== void 0 ? _a : new anchor_1.BN(1), //TODO default multiplier
+    });
+    return transaction;
 };
 exports.initializeRewardEntry = initializeRewardEntry;
 /**
@@ -191,15 +123,10 @@ exports.initializeRewardEntry = initializeRewardEntry;
  * @returns
  */
 const authorizeStakeEntry = (connection, wallet, params) => {
-  return (0, transaction_3.withAuthorizeStakeEntry)(
-    new web3_js_1.Transaction(),
-    connection,
-    wallet,
-    {
-      stakePoolId: params.stakePoolId,
-      originalMintId: params.originalMintId,
-    }
-  );
+    return (0, transaction_3.withAuthorizeStakeEntry)(new web3_js_1.Transaction(), connection, wallet, {
+        stakePoolId: params.stakePoolId,
+        originalMintId: params.originalMintId,
+    });
 };
 exports.authorizeStakeEntry = authorizeStakeEntry;
 /**
@@ -212,54 +139,30 @@ exports.authorizeStakeEntry = authorizeStakeEntry;
  * @returns
  */
 const createStakeEntryAndStakeMint = async (connection, wallet, params) => {
-  var _a;
-  let transaction = new web3_js_1.Transaction();
-  const stakeEntryId = await (0, utils_1.findStakeEntryIdFromMint)(
-    connection,
-    wallet.publicKey,
-    params.stakePoolId,
-    params.originalMintId
-  );
-  const stakeEntryData = await (0, common_1.tryGetAccount)(() =>
-    (0, accounts_2.getStakeEntry)(connection, stakeEntryId)
-  );
-  if (!stakeEntryData) {
-    transaction = (
-      await (0, exports.createStakeEntry)(connection, wallet, {
-        stakePoolId: params.stakePoolId,
-        originalMintId: params.originalMintId,
-      })
-    )[0];
-  }
-  let stakeMintKeypair;
-  if (
-    !(stakeEntryData === null || stakeEntryData === void 0
-      ? void 0
-      : stakeEntryData.parsed.stakeMint)
-  ) {
-    stakeMintKeypair = web3_js_1.Keypair.generate();
-    const stakePool = await (0, accounts_2.getStakePool)(
-      connection,
-      params.stakePoolId
-    );
-    await (0, transaction_3.withInitStakeMint)(
-      transaction,
-      connection,
-      wallet,
-      {
-        stakePoolId: params.stakePoolId,
-        stakeEntryId: stakeEntryId,
-        originalMintId: params.originalMintId,
-        stakeMintKeypair,
-        name:
-          (_a = params.receiptName) !== null && _a !== void 0
-            ? _a
-            : `POOl${stakePool.parsed.identifier.toString()} RECEIPT`,
-        symbol: `POOl${stakePool.parsed.identifier.toString()}`,
-      }
-    );
-  }
-  return [transaction, stakeEntryId, stakeMintKeypair];
+    var _a;
+    let transaction = new web3_js_1.Transaction();
+    const stakeEntryId = await (0, utils_1.findStakeEntryIdFromMint)(connection, wallet.publicKey, params.stakePoolId, params.originalMintId);
+    const stakeEntryData = await (0, common_1.tryGetAccount)(() => (0, accounts_2.getStakeEntry)(connection, stakeEntryId));
+    if (!stakeEntryData) {
+        transaction = (await (0, exports.createStakeEntry)(connection, wallet, {
+            stakePoolId: params.stakePoolId,
+            originalMintId: params.originalMintId,
+        }))[0];
+    }
+    let stakeMintKeypair;
+    if (!(stakeEntryData === null || stakeEntryData === void 0 ? void 0 : stakeEntryData.parsed.stakeMint)) {
+        stakeMintKeypair = web3_js_1.Keypair.generate();
+        const stakePool = await (0, accounts_2.getStakePool)(connection, params.stakePoolId);
+        await (0, transaction_3.withInitStakeMint)(transaction, connection, wallet, {
+            stakePoolId: params.stakePoolId,
+            stakeEntryId: stakeEntryId,
+            originalMintId: params.originalMintId,
+            stakeMintKeypair,
+            name: (_a = params.receiptName) !== null && _a !== void 0 ? _a : `POOl${stakePool.parsed.identifier.toString()} RECEIPT`,
+            symbol: `POOl${stakePool.parsed.identifier.toString()}`,
+        });
+    }
+    return [transaction, stakeEntryId, stakeMintKeypair];
 };
 exports.createStakeEntryAndStakeMint = createStakeEntryAndStakeMint;
 /**
@@ -271,30 +174,22 @@ exports.createStakeEntryAndStakeMint = createStakeEntryAndStakeMint;
  * @returns
  */
 const claimRewards = async (connection, wallet, params) => {
-  var _a;
-  const transaction = new web3_js_1.Transaction();
-  await (0, transaction_3.withUpdateTotalStakeSeconds)(
-    transaction,
-    connection,
-    wallet,
-    {
-      stakeEntryId: params.stakeEntryId,
-      lastStaker: wallet.publicKey,
-    }
-  );
-  await (0, transaction_2.withClaimRewards)(transaction, connection, wallet, {
-    distributorId: params.distributorId,
-    stakePoolId: params.stakePoolId,
-    stakeEntryId: params.stakeEntryId,
-    lastStaker:
-      (_a = params.lastStaker) !== null && _a !== void 0
-        ? _a
-        : wallet.publicKey,
-    payer: params.payer,
-    skipRewardMintTokenAccount: params.skipRewardMintTokenAccount,
-    authority: params.authority,
-  });
-  return transaction;
+    var _a;
+    const transaction = new web3_js_1.Transaction();
+    await (0, transaction_3.withUpdateTotalStakeSeconds)(transaction, connection, wallet, {
+        stakeEntryId: params.stakeEntryId,
+        lastStaker: wallet.publicKey,
+    });
+    await (0, transaction_2.withClaimRewards)(transaction, connection, wallet, {
+        distributorId: params.distributorId,
+        stakePoolId: params.stakePoolId,
+        stakeEntryId: params.stakeEntryId,
+        lastStaker: (_a = params.lastStaker) !== null && _a !== void 0 ? _a : wallet.publicKey,
+        payer: params.payer,
+        skipRewardMintTokenAccount: params.skipRewardMintTokenAccount,
+        authority: params.authority,
+    });
+    return transaction;
 };
 exports.claimRewards = claimRewards;
 /**
@@ -311,88 +206,51 @@ exports.claimRewards = claimRewards;
  * @returns
  */
 const stake = async (connection, wallet, params) => {
-  var _a;
-  const supply = await (0, utils_2.getMintSupply)(
-    connection,
-    params.originalMintId
-  );
-  if (
-    (supply.gt(new anchor_1.BN(1)) ||
-      ((_a = params.amount) === null || _a === void 0
-        ? void 0
-        : _a.gt(new anchor_1.BN(1)))) &&
-    params.receiptType === stakePool_1.ReceiptType.Original
-  ) {
-    throw new Error("Fungible with receipt type Original is not supported yet");
-  }
-  let transaction = new web3_js_1.Transaction();
-  const stakeEntryId = await (0, utils_1.findStakeEntryIdFromMint)(
-    connection,
-    wallet.publicKey,
-    params.stakePoolId,
-    params.originalMintId
-  );
-  const stakeEntryData = await (0, common_1.tryGetAccount)(() =>
-    (0, accounts_2.getStakeEntry)(connection, stakeEntryId)
-  );
-  if (!stakeEntryData) {
-    [transaction] = await (0, exports.createStakeEntry)(connection, wallet, {
-      stakePoolId: params.stakePoolId,
-      originalMintId: params.originalMintId,
+    var _a;
+    const supply = await (0, utils_2.getMintSupply)(connection, params.originalMintId);
+    if ((supply.gt(new anchor_1.BN(1)) || ((_a = params.amount) === null || _a === void 0 ? void 0 : _a.gt(new anchor_1.BN(1)))) &&
+        params.receiptType === stakePool_1.ReceiptType.Original) {
+        throw new Error("Fungible with receipt type Original is not supported yet");
+    }
+    let transaction = new web3_js_1.Transaction();
+    const stakeEntryId = await (0, utils_1.findStakeEntryIdFromMint)(connection, wallet.publicKey, params.stakePoolId, params.originalMintId);
+    const stakeEntryData = await (0, common_1.tryGetAccount)(() => (0, accounts_2.getStakeEntry)(connection, stakeEntryId));
+    if (!stakeEntryData) {
+        [transaction] = await (0, exports.createStakeEntry)(connection, wallet, {
+            stakePoolId: params.stakePoolId,
+            originalMintId: params.originalMintId,
+        });
+    }
+    await (0, transaction_3.withStake)(transaction, connection, wallet, {
+        stakePoolId: params.stakePoolId,
+        originalMintId: params.originalMintId,
+        userOriginalMintTokenAccountId: params.userOriginalMintTokenAccountId,
+        amount: params.amount,
+        duration: 0,
     });
-  }
-  await (0, transaction_3.withStake)(transaction, connection, wallet, {
-    stakePoolId: params.stakePoolId,
-    originalMintId: params.originalMintId,
-    userOriginalMintTokenAccountId: params.userOriginalMintTokenAccountId,
-    amount: params.amount,
-  });
-  if (
-    params.receiptType &&
-    params.receiptType !== stakePool_1.ReceiptType.None
-  ) {
-    const receiptMintId =
-      params.receiptType === stakePool_1.ReceiptType.Receipt
-        ? stakeEntryData === null || stakeEntryData === void 0
-          ? void 0
-          : stakeEntryData.parsed.stakeMint
-        : params.originalMintId;
-    if (!receiptMintId) {
-      throw new Error(
-        "Stake entry has no stake mint. Initialize stake mint first."
-      );
-    }
-    if (
-      (stakeEntryData === null || stakeEntryData === void 0
-        ? void 0
-        : stakeEntryData.parsed.stakeMintClaimed) ||
-      (stakeEntryData === null || stakeEntryData === void 0
-        ? void 0
-        : stakeEntryData.parsed.originalMintClaimed)
-    ) {
-      throw new Error("Receipt has already been claimed.");
-    }
-    if (
-      !(stakeEntryData === null || stakeEntryData === void 0
-        ? void 0
-        : stakeEntryData.parsed) ||
-      stakeEntryData.parsed.amount.toNumber() === 0
-    ) {
-      await (0, transaction_3.withClaimReceiptMint)(
-        transaction,
-        connection,
-        wallet,
-        {
-          stakePoolId: params.stakePoolId,
-          stakeEntryId: stakeEntryId,
-          originalMintId: params.originalMintId,
-          receiptMintId: receiptMintId,
-          receiptType: params.receiptType,
+    if (params.receiptType && params.receiptType !== stakePool_1.ReceiptType.None) {
+        const receiptMintId = params.receiptType === stakePool_1.ReceiptType.Receipt
+            ? stakeEntryData === null || stakeEntryData === void 0 ? void 0 : stakeEntryData.parsed.stakeMint
+            : params.originalMintId;
+        if (!receiptMintId) {
+            throw new Error("Stake entry has no stake mint. Initialize stake mint first.");
         }
-      );
+        if ((stakeEntryData === null || stakeEntryData === void 0 ? void 0 : stakeEntryData.parsed.stakeMintClaimed) ||
+            (stakeEntryData === null || stakeEntryData === void 0 ? void 0 : stakeEntryData.parsed.originalMintClaimed)) {
+            throw new Error("Receipt has already been claimed.");
+        }
+        if (!(stakeEntryData === null || stakeEntryData === void 0 ? void 0 : stakeEntryData.parsed) ||
+            stakeEntryData.parsed.amount.toNumber() === 0) {
+            await (0, transaction_3.withClaimReceiptMint)(transaction, connection, wallet, {
+                stakePoolId: params.stakePoolId,
+                stakeEntryId: stakeEntryId,
+                originalMintId: params.originalMintId,
+                receiptMintId: receiptMintId,
+                receiptType: params.receiptType,
+            });
+        }
     }
-  }
-  return transaction;
+    return transaction;
 };
 exports.stake = stake;
 /**
@@ -403,13 +261,7 @@ exports.stake = stake;
  * @param originalMintId - Original mint ID
  * @returns
  */
-const unstake = async (connection, wallet, params) =>
-  (0, transaction_3.withUnstake)(
-    new web3_js_1.Transaction(),
-    connection,
-    wallet,
-    params
-  );
+const unstake = async (connection, wallet, params) => (0, transaction_3.withUnstake)(new web3_js_1.Transaction(), connection, wallet, params);
 exports.unstake = unstake;
 /**
  * Convenience call to create a group entry
@@ -423,26 +275,17 @@ exports.unstake = unstake;
  * @returns
  */
 const createGroupEntry = async (connection, wallet, params) => {
-  if (!params.stakeEntryIds.length) throw new Error("No stake entry found");
-  const [transaction, groupEntryId] = await (0,
-  transaction_3.withInitGroupStakeEntry)(
-    new web3_js_1.Transaction(),
-    connection,
-    wallet,
-    {
-      groupCooldownSeconds: params.groupCooldownSeconds,
-      groupStakeSeconds: params.groupStakeSeconds,
-    }
-  );
-  await Promise.all(
-    params.stakeEntryIds.map((stakeEntryId) =>
-      (0, transaction_3.withAddToGroupEntry)(transaction, connection, wallet, {
+    if (!params.stakeEntryIds.length)
+        throw new Error("No stake entry found");
+    const [transaction, groupEntryId] = await (0, transaction_3.withInitGroupStakeEntry)(new web3_js_1.Transaction(), connection, wallet, {
+        groupCooldownSeconds: params.groupCooldownSeconds,
+        groupStakeSeconds: params.groupStakeSeconds,
+    });
+    await Promise.all(params.stakeEntryIds.map((stakeEntryId) => (0, transaction_3.withAddToGroupEntry)(transaction, connection, wallet, {
         groupEntryId,
         stakeEntryId,
-      })
-    )
-  );
-  return [transaction, groupEntryId];
+    })));
+    return [transaction, groupEntryId];
 };
 exports.createGroupEntry = createGroupEntry;
 /**
@@ -472,13 +315,7 @@ exports.createGroupEntry = createGroupEntry;
  *  maxRewardSecondsReceived - (Optional) max reward seconds received
  * @returns
  */
-const createGroupRewardDistributor = async (connection, wallet, params) =>
-  (0, transaction_1.withInitGroupRewardDistributor)(
-    new web3_js_1.Transaction(),
-    connection,
-    wallet,
-    params
-  );
+const createGroupRewardDistributor = async (connection, wallet, params) => (0, transaction_1.withInitGroupRewardDistributor)(new web3_js_1.Transaction(), connection, wallet, params);
 exports.createGroupRewardDistributor = createGroupRewardDistributor;
 /**
  * Convenience call to update a group reward distributor
@@ -505,13 +342,7 @@ exports.createGroupRewardDistributor = createGroupRewardDistributor;
  * maxRewardSecondsReceived - (Optional) max reward seconds received
  * @returns
  */
-const updateGroupRewardDistributor = async (connection, wallet, params) =>
-  (0, transaction_1.withUpdateGroupRewardDistributor)(
-    new web3_js_1.Transaction(),
-    connection,
-    wallet,
-    params
-  );
+const updateGroupRewardDistributor = async (connection, wallet, params) => (0, transaction_1.withUpdateGroupRewardDistributor)(new web3_js_1.Transaction(), connection, wallet, params);
 exports.updateGroupRewardDistributor = updateGroupRewardDistributor;
 /**
  * Convenience method to claim rewards
@@ -524,53 +355,30 @@ exports.updateGroupRewardDistributor = updateGroupRewardDistributor;
  * @returns
  */
 const claimGroupRewards = async (connection, wallet, params) => {
-  const transaction = new web3_js_1.Transaction();
-  const groupRewardEntryId = (0, pda_1.findGroupRewardEntryId)(
-    params.groupRewardDistributorId,
-    params.groupEntryId
-  );
-  const groupRewardEntry = await (0, common_1.tryGetAccount)(() =>
-    (0, accounts_1.getGroupRewardEntry)(connection, groupRewardEntryId)
-  );
-  if (!groupRewardEntry) {
-    const stakeEntriesData = await (0, accounts_2.getStakeEntries)(
-      connection,
-      params.stakeEntryIds
-    );
-    const stakeEntries = await Promise.all(
-      stakeEntriesData.map((stakeEntry) => {
-        const rewardDistributorId = (0, pda_2.findRewardDistributorId)(
-          stakeEntry.parsed.pool,
-          params.distributorId
-        );
-        return {
-          stakeEntryId: stakeEntry.pubkey,
-          originalMint: stakeEntry.parsed.originalMint,
-          rewardDistributorId,
-        };
-      })
-    );
-    await (0, transaction_1.withInitGroupRewardEntry)(
-      transaction,
-      connection,
-      wallet,
-      {
+    const transaction = new web3_js_1.Transaction();
+    const groupRewardEntryId = (0, pda_1.findGroupRewardEntryId)(params.groupRewardDistributorId, params.groupEntryId);
+    const groupRewardEntry = await (0, common_1.tryGetAccount)(() => (0, accounts_1.getGroupRewardEntry)(connection, groupRewardEntryId));
+    if (!groupRewardEntry) {
+        const stakeEntriesData = await (0, accounts_2.getStakeEntries)(connection, params.stakeEntryIds);
+        const stakeEntries = await Promise.all(stakeEntriesData.map((stakeEntry) => {
+            const rewardDistributorId = (0, pda_2.findRewardDistributorId)(stakeEntry.parsed.pool, params.distributorId);
+            return {
+                stakeEntryId: stakeEntry.pubkey,
+                originalMint: stakeEntry.parsed.originalMint,
+                rewardDistributorId,
+            };
+        }));
+        await (0, transaction_1.withInitGroupRewardEntry)(transaction, connection, wallet, {
+            groupRewardDistributorId: params.groupRewardDistributorId,
+            groupEntryId: params.groupEntryId,
+            stakeEntries,
+        });
+    }
+    await (0, transaction_1.withClaimGroupRewards)(transaction, connection, wallet, {
         groupRewardDistributorId: params.groupRewardDistributorId,
         groupEntryId: params.groupEntryId,
-        stakeEntries,
-      }
-    );
-  }
-  await (0, transaction_1.withClaimGroupRewards)(
-    transaction,
-    connection,
-    wallet,
-    {
-      groupRewardDistributorId: params.groupRewardDistributorId,
-      groupEntryId: params.groupEntryId,
-    }
-  );
-  return [transaction];
+    });
+    return [transaction];
 };
 exports.claimGroupRewards = claimGroupRewards;
 /**
@@ -584,34 +392,16 @@ exports.claimGroupRewards = claimGroupRewards;
  * @returns
  */
 const closeGroupEntry = async (connection, wallet, params) => {
-  const [transaction] = await (0, exports.claimGroupRewards)(
-    connection,
-    wallet,
-    params
-  );
-  await (0, transaction_1.withCloseGroupRewardEntry)(
-    transaction,
-    connection,
-    wallet,
-    {
-      groupEntryId: params.groupEntryId,
-      groupRewardDistributorId: params.groupRewardDistributorId,
-    }
-  );
-  await Promise.all(
-    params.stakeEntryIds.map((stakeEntryId) =>
-      (0, transaction_3.withRemoveFromGroupEntry)(
-        transaction,
-        connection,
-        wallet,
-        {
-          groupEntryId: params.groupEntryId,
-          stakeEntryId,
-        }
-      )
-    )
-  );
-  return [transaction];
+    const [transaction] = await (0, exports.claimGroupRewards)(connection, wallet, params);
+    await (0, transaction_1.withCloseGroupRewardEntry)(transaction, connection, wallet, {
+        groupEntryId: params.groupEntryId,
+        groupRewardDistributorId: params.groupRewardDistributorId,
+    });
+    await Promise.all(params.stakeEntryIds.map((stakeEntryId) => (0, transaction_3.withRemoveFromGroupEntry)(transaction, connection, wallet, {
+        groupEntryId: params.groupEntryId,
+        stakeEntryId,
+    })));
+    return [transaction];
 };
 exports.closeGroupEntry = closeGroupEntry;
 /**
@@ -625,11 +415,11 @@ exports.closeGroupEntry = closeGroupEntry;
  * @returns
  */
 const initUngrouping = async (connection, wallet, params) => {
-  const transaction = new web3_js_1.Transaction();
-  await (0, transaction_3.withInitUngrouping)(transaction, connection, wallet, {
-    groupEntryId: params.groupEntryId,
-  });
-  return [transaction];
+    const transaction = new web3_js_1.Transaction();
+    await (0, transaction_3.withInitUngrouping)(transaction, connection, wallet, {
+        groupEntryId: params.groupEntryId,
+    });
+    return [transaction];
 };
 exports.initUngrouping = initUngrouping;
 //# sourceMappingURL=api.js.map

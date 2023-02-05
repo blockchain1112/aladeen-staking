@@ -280,6 +280,12 @@ export type CardinalStakePool = {
         {
           "name": "amount",
           "type": "u64"
+        },
+        {
+          "name": "duration",
+          "type": {
+            "option": "u32"
+          }
         }
       ]
     },
@@ -375,6 +381,16 @@ export type CardinalStakePool = {
         {
           "name": "originalMint",
           "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "taxMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "taxMintTokenAccount",
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -1065,6 +1081,12 @@ export type CardinalStakePool = {
             "type": {
               "option": "bool"
             }
+          },
+          {
+            "name": "stakedDuration",
+            "type": {
+              "option": "u32"
+            }
           }
         ]
       }
@@ -1127,7 +1149,11 @@ export type CardinalStakePool = {
           {
             "name": "minStakeSeconds",
             "type": {
-              "option": "u32"
+              "option": {
+                "vec": {
+                  "option": "u32"
+                }
+              }
             }
           },
           {
@@ -1141,6 +1167,10 @@ export type CardinalStakePool = {
             "type": {
               "option": "bool"
             }
+          },
+          {
+            "name": "taxMint",
+            "type": "publicKey"
           }
         ]
       }
@@ -1297,7 +1327,11 @@ export type CardinalStakePool = {
           {
             "name": "minStakeSeconds",
             "type": {
-              "option": "u32"
+              "option": {
+                "vec": {
+                  "option": "u32"
+                }
+              }
             }
           },
           {
@@ -1311,6 +1345,10 @@ export type CardinalStakePool = {
             "type": {
               "option": "bool"
             }
+          },
+          {
+            "name": "taxMint",
+            "type": "publicKey"
           }
         ]
       }
@@ -1467,7 +1505,11 @@ export type CardinalStakePool = {
           {
             "name": "minStakeSeconds",
             "type": {
-              "option": "u32"
+              "option": {
+                "vec": {
+                  "option": "u32"
+                }
+              }
             }
           },
           {
@@ -1715,6 +1757,21 @@ export type CardinalStakePool = {
       "code": 6132,
       "name": "StakeEntryFundsTokenAccountEmpty",
       "msg": "Stake entry funds token account is empty"
+    },
+    {
+      "code": 6133,
+      "name": "InvalidStakingDuration",
+      "msg": "Invalid staking duration"
+    },
+    {
+      "code": 6134,
+      "name": "InvalidTaxCoinMint",
+      "msg": "Invalid tax coin mint"
+    },
+    {
+      "code": 6135,
+      "name": "InvalidTaxCoinTokenAccount",
+      "msg": "Invalid tax coin token account"
     }
   ]
 };
@@ -2001,6 +2058,12 @@ export const IDL: CardinalStakePool = {
         {
           "name": "amount",
           "type": "u64"
+        },
+        {
+          "name": "duration",
+          "type": {
+            "option": "u32"
+          }
         }
       ]
     },
@@ -2096,6 +2159,16 @@ export const IDL: CardinalStakePool = {
         {
           "name": "originalMint",
           "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "taxMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "taxMintTokenAccount",
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -2786,6 +2859,12 @@ export const IDL: CardinalStakePool = {
             "type": {
               "option": "bool"
             }
+          },
+          {
+            "name": "stakedDuration",
+            "type": {
+              "option": "u32"
+            }
           }
         ]
       }
@@ -2848,7 +2927,11 @@ export const IDL: CardinalStakePool = {
           {
             "name": "minStakeSeconds",
             "type": {
-              "option": "u32"
+              "option": {
+                "vec": {
+                  "option": "u32"
+                }
+              }
             }
           },
           {
@@ -2862,6 +2945,10 @@ export const IDL: CardinalStakePool = {
             "type": {
               "option": "bool"
             }
+          },
+          {
+            "name": "taxMint",
+            "type": "publicKey"
           }
         ]
       }
@@ -3018,7 +3105,11 @@ export const IDL: CardinalStakePool = {
           {
             "name": "minStakeSeconds",
             "type": {
-              "option": "u32"
+              "option": {
+                "vec": {
+                  "option": "u32"
+                }
+              }
             }
           },
           {
@@ -3032,6 +3123,10 @@ export const IDL: CardinalStakePool = {
             "type": {
               "option": "bool"
             }
+          },
+          {
+            "name": "taxMint",
+            "type": "publicKey"
           }
         ]
       }
@@ -3188,7 +3283,11 @@ export const IDL: CardinalStakePool = {
           {
             "name": "minStakeSeconds",
             "type": {
-              "option": "u32"
+              "option": {
+                "vec": {
+                  "option": "u32"
+                }
+              }
             }
           },
           {
@@ -3436,6 +3535,21 @@ export const IDL: CardinalStakePool = {
       "code": 6132,
       "name": "StakeEntryFundsTokenAccountEmpty",
       "msg": "Stake entry funds token account is empty"
+    },
+    {
+      "code": 6133,
+      "name": "InvalidStakingDuration",
+      "msg": "Invalid staking duration"
+    },
+    {
+      "code": 6134,
+      "name": "InvalidTaxCoinMint",
+      "msg": "Invalid tax coin mint"
+    },
+    {
+      "code": 6135,
+      "name": "InvalidTaxCoinTokenAccount",
+      "msg": "Invalid tax coin token account"
     }
   ]
 };

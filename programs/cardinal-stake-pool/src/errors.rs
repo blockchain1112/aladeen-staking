@@ -94,4 +94,12 @@ pub enum ErrorCode {
     InvalidMintForTokenAccount,
     #[msg("Stake entry funds token account is empty")]
     StakeEntryFundsTokenAccountEmpty,
+    #[msg("Invalid staking duration")]
+    InvalidStakingDuration,
+
+    // unstaking tax coin
+    #[msg("Invalid tax coin mint")]
+    InvalidTaxCoinMint,
+    #[msg("Invalid tax coin token account")]
+    InvalidTaxCoinTokenAccount,
 }

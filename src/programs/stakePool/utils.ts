@@ -8,7 +8,6 @@ import type {
   Transaction,
 } from "@solana/web3.js";
 
-import { getMintSupply } from "../../utils";
 import type { REWARD_DISTRIBUTOR_PROGRAM } from "../rewardDistributor";
 import {
   REWARD_DISTRIBUTOR_ADDRESS,
@@ -71,17 +70,13 @@ export const withRemainingAccountsForUnstake = async (
  * @returns
  */
 export const findStakeEntryIdFromMint = async (
-  connection: Connection,
+  _connection: Connection,
   wallet: PublicKey,
   stakePoolId: PublicKey,
   originalMintId: PublicKey,
-  isFungible?: boolean
+  _isFungible?: boolean
 ): Promise<PublicKey> => {
-  if (isFungible === undefined) {
-    const supply = await getMintSupply(connection, originalMintId);
-    isFungible = supply.gt(new BN(1));
-  }
-  return findStakeEntryId(wallet, stakePoolId, originalMintId, isFungible);
+  return findStakeEntryId(wallet, stakePoolId, originalMintId, false);
 };
 
 export const getTotalStakeSeconds = async (

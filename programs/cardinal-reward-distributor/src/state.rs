@@ -50,6 +50,6 @@ pub const REWARD_AUTHORITY_SEED: &str = "reward-authority";
 pub const REWARD_AUTHORITY_SIZE: usize = 8 + std::mem::size_of::<RewardAuthority>() + 64;
 #[account]
 pub struct RewardAuthority {
-    pub authority: Pubkey,
+    pub authority: Option<Pubkey>,
     pub bump: u8,
 }

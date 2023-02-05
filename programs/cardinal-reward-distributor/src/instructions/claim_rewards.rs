@@ -51,7 +51,8 @@ pub fn handler<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts,
     let reward_distributor_signer = &[&reward_distributor_seed[..]];
     */
 
-    let reward_authority_seed = &[REWARD_AUTHORITY_SEED.as_bytes(), reward_authority.authority.as_ref(), &[reward_authority.bump]];
+    let reward_authority_authority = reward_authority.authority.unwrap();
+    let reward_authority_seed = &[REWARD_AUTHORITY_SEED.as_bytes(), reward_authority_authority.as_ref(), &[reward_authority.bump]];
     let reward_authority_signer = &[&reward_authority_seed[..]];
 
     let reward_amount = reward_distributor.reward_amount;

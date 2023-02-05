@@ -8,7 +8,7 @@ import type { ParsedIdlAccountData } from "../../accounts";
 import * as REWARD_DISTRIBUTOR_TYPES from "../../idl/cardinal_reward_distributor";
 
 export const REWARD_DISTRIBUTOR_ADDRESS = new PublicKey(
-  "J8KGQczjGYRvqDwMuQ6jBhZdFfLHzHmLTWZRuCCu6mrY"
+  "49dYrnx67y5zZnm3DZuJtqyrH6A5rHiNUUQ2gvBzSeT7"
 );
 export const REWARD_MANAGER = new PublicKey(
   "5nx4MybNcPBut1yMBsandykg2n99vQGAqXR3ymEXzQze"

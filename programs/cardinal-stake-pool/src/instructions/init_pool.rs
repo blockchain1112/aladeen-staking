@@ -10,9 +10,10 @@ pub struct InitPoolIx {
     authority: Pubkey,
     reset_on_stake: bool,
     cooldown_seconds: Option<u32>,
-    min_stake_seconds: Option<u32>,
+    min_stake_seconds: Option<Vec<Option<u32>>>,
     end_date: Option<i64>,
     double_or_reset_enabled: Option<bool>,
+    tax_mint: Pubkey,
 }
 
 #[derive(Accounts)]
@@ -51,6 +52,7 @@ pub fn handler(ctx: Context<InitPoolCtx>, ix: InitPoolIx) -> Result<()> {
     stake_pool.min_stake_seconds = ix.min_stake_seconds;
     stake_pool.end_date = ix.end_date;
     stake_pool.double_or_reset_enabled = ix.double_or_reset_enabled;
+    stake_pool.tax_mint = ix.tax_mint;
     let identifier = &mut ctx.accounts.identifier;
     identifier.count += 1;
     Ok(())

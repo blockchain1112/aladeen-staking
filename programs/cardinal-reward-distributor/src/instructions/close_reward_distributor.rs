@@ -29,7 +29,8 @@ pub struct CloseCtx<'info> {
 pub fn handler<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts, 'remaining, 'info, CloseCtx<'info>>) -> Result<()> {
     let reward_authority = &mut ctx.accounts.reward_authority;
     let reward_distributor = &mut ctx.accounts.reward_distributor;
-    let reward_authority_seed = &[REWARD_AUTHORITY_SEED.as_bytes(), reward_authority.authority.as_ref(), &[reward_authority.bump]];
+    let reward_authority_authority = reward_authority.authority.unwrap();
+    let reward_authority_seed = &[REWARD_AUTHORITY_SEED.as_bytes(), reward_authority_authority.as_ref(), &[reward_authority.bump]];
     let reward_authority_signer = &[&reward_authority_seed[..]];
 
     let remaining_accs = &mut ctx.remaining_accounts.iter();

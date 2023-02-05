@@ -4,7 +4,7 @@ pub mod state;
 
 use {anchor_lang::prelude::*, instructions::*};
 
-declare_id!("J8KGQczjGYRvqDwMuQ6jBhZdFfLHzHmLTWZRuCCu6mrY");
+declare_id!("49dYrnx67y5zZnm3DZuJtqyrH6A5rHiNUUQ2gvBzSeT7");
 
 #[program]
 pub mod cardinal_reward_distributor {
