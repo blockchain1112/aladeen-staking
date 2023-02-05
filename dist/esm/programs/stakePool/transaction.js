@@ -279,8 +279,10 @@ export const withUnstake = async (transaction, connection, wallet, params) => {
     const [stakeEntryData] = await Promise.all([
         tryGetAccount(() => getStakeEntry(connection, stakeEntryId)),
     ]);
-    for (const distributorId of params.distributorIds) {
-        const rewardDistributorId = findRewardDistributorId(params.stakePoolId, distributorId);
+    for (const rewardDistributorIndex of params.distributorIds) {
+        if (rewardDistributorIndex === undefined)
+            continue;
+        const rewardDistributorId = findRewardDistributorId(params.stakePoolId, rewardDistributorIndex);
         const [rewardDistributorData] = await Promise.all([
             tryGetAccount(() => getRewardDistributor(connection, rewardDistributorId)),
         ]);
@@ -308,7 +310,7 @@ export const withUnstake = async (transaction, connection, wallet, params) => {
         // claim any rewards deserved
         if (rewardDistributorData) {
             await withClaimRewards(transaction, connection, wallet, {
-                distributorId: distributorId,
+                distributorId: rewardDistributorIndex,
                 stakePoolId: params.stakePoolId,
                 stakeEntryId: stakeEntryId,
                 lastStaker: wallet.publicKey,
