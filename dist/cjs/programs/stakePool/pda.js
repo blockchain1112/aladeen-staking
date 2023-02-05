@@ -25,7 +25,6 @@ const findStakeEntryId = (_wallet, stakePoolId, originalMintId, _isFungible = fa
         anchor_1.utils.bytes.utf8.encode(_1.STAKE_ENTRY_SEED),
         stakePoolId.toBuffer(),
         originalMintId.toBuffer(),
-        web3_js_1.PublicKey.default.toBuffer(),
     ], _1.STAKE_POOL_ADDRESS)[0];
 };
 exports.findStakeEntryId = findStakeEntryId;

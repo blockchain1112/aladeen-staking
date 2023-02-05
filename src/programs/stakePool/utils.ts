@@ -76,7 +76,7 @@ export const findStakeEntryIdFromMint = async (
   originalMintId: PublicKey,
   _isFungible?: boolean
 ): Promise<PublicKey> => {
-  return findStakeEntryId(wallet, stakePoolId, originalMintId, false);
+  return findStakeEntryId(wallet, stakePoolId, originalMintId);
 };
 
 export const getTotalStakeSeconds = async (

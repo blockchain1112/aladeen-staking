@@ -40,7 +40,7 @@ exports.withRemainingAccountsForUnstake = withRemainingAccountsForUnstake;
  * @returns
  */
 const findStakeEntryIdFromMint = async (_connection, wallet, stakePoolId, originalMintId, _isFungible) => {
-    return (0, pda_2.findStakeEntryId)(wallet, stakePoolId, originalMintId, false);
+    return (0, pda_2.findStakeEntryId)(wallet, stakePoolId, originalMintId);
 };
 exports.findStakeEntryIdFromMint = findStakeEntryIdFromMint;
 const getTotalStakeSeconds = async (connection, stakeEntryId) => {

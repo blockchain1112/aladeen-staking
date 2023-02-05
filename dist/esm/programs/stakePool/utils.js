@@ -35,7 +35,7 @@ export const withRemainingAccountsForUnstake = async (transaction, connection, w
  * @returns
  */
 export const findStakeEntryIdFromMint = async (_connection, wallet, stakePoolId, originalMintId, _isFungible) => {
-    return findStakeEntryId(wallet, stakePoolId, originalMintId, false);
+    return findStakeEntryId(wallet, stakePoolId, originalMintId);
 };
 export const getTotalStakeSeconds = async (connection, stakeEntryId) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

@@ -19,7 +19,6 @@ pub struct InitEntryCtx<'info> {
             STAKE_ENTRY_PREFIX.as_bytes(),
             stake_pool.key().as_ref(),
             original_mint.key().as_ref(),
-            Pubkey::default().as_ref()
         ],
         bump,
     )]

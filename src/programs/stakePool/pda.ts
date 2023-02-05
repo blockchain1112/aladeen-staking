@@ -38,7 +38,6 @@ export const findStakeEntryId = (
       utils.bytes.utf8.encode(STAKE_ENTRY_SEED),
       stakePoolId.toBuffer(),
       originalMintId.toBuffer(),
-      PublicKey.default.toBuffer(),
     ],
     STAKE_POOL_ADDRESS
   )[0];
