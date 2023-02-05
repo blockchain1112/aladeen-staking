@@ -36,9 +36,25 @@ export const config: Config = {
         {
           label: "reward zero",
           tokenMint: new PublicKey(
-            "A2hyKqC16YBYcUT74bn8pM5WRoLxzvVne5zfecV6Xr9b"
+            "6syXDav5RcG9h7frde77j3H6UProY5y5dteMCeRUfo5S"
           ),
-          emission: 50,
+          emission: 50000,
+          every: 60,
+        },
+        {
+          label: "reward one",
+          tokenMint: new PublicKey(
+            "X9uHaEWq3aMEjg9SDNpKvzDQWpwS4HtHPvfCDX2sp49"
+          ),
+          emission: 10000,
+          every: 60,
+        },
+        {
+          label: "reward two",
+          tokenMint: new PublicKey(
+            "HamaVNqzjA8UtFzFjcpAwdgPJBFAvHa553KnikdyqTV8"
+          ),
+          emission: 1000,
           every: 60,
         },
       ],
@@ -58,4 +74,3 @@ export type UiConfig = {
     rewardDistributors: UiConfigRewardDistributor[];
   };
 };
-

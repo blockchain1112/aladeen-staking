@@ -277,6 +277,9 @@ export const withUnstake = async (transaction, connection, wallet, params) => {
     const [stakeEntryData] = await Promise.all([
         tryGetAccount(() => getStakeEntry(connection, stakeEntryId)),
     ]);
+    await withReturnReceiptMint(transaction, connection, wallet, {
+        stakeEntryId: stakeEntryId,
+    });
     for (const [rewardDistributorIndex] of params.distributorIds.entries()) {
         if (!stakeEntryData)
             throw "Stake entry not found";
@@ -296,9 +299,6 @@ export const withUnstake = async (transaction, connection, wallet, params) => {
                 stakeEntryData.parsed.stakeMintClaimed)) {
             // return receipt mint if its claimed
         }
-        await withReturnReceiptMint(transaction, connection, wallet, {
-            stakeEntryId: stakeEntryId,
-        });
         // claim any rewards deserved
         await withClaimRewards(transaction, connection, wallet, {
             distributorId: new BN(rewardDistributorIndex),

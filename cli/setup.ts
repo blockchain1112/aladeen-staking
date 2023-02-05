@@ -121,7 +121,7 @@ export async function executeTransactions(
       rewardDistributors: scope.rewards.map((reward, index) => ({
         label: reward.label,
         rewardMint: reward.tokenMint.toString(),
-        rewardDistributorPda: rewardDistributorsIds![index]!.toString(),
+        rewardDistributorPda: rewardDistributorsIds![index]![1]!.toString(),
         distributorIndex: index,
       })),
     };

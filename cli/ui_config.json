@@ -1,11 +1,23 @@
 {
-  "2Lk2sM7hfvS2ymnj1HGpQDUdQqYwBUbA2cvcHmbs54P4": {
+  "HHV2USxo47joSj1LbjGKsrpM2C1yETGSqamaMAXgMXYi": {
     "rewardDistributors": [
       {
         "label": "reward zero",
-        "rewardMint": "A2hyKqC16YBYcUT74bn8pM5WRoLxzvVne5zfecV6Xr9b",
-        "rewardDistributorPda": "0,7PWu9hHoapt5MY88VtRKi4fKKX5RfUY4xV15VmThmBsg",
+        "rewardMint": "6syXDav5RcG9h7frde77j3H6UProY5y5dteMCeRUfo5S",
+        "rewardDistributorPda": "8MzQ4YGTiyqJ618ceWozzHxQpFd2Y1A2HkH7So7JqEAd",
         "distributorIndex": 0
+      },
+      {
+        "label": "reward one",
+        "rewardMint": "X9uHaEWq3aMEjg9SDNpKvzDQWpwS4HtHPvfCDX2sp49",
+        "rewardDistributorPda": "GmYaoRg2hiVdMj49v8wN5qEB52znuv5SHcLNcw37iaZU",
+        "distributorIndex": 1
+      },
+      {
+        "label": "reward two",
+        "rewardMint": "HamaVNqzjA8UtFzFjcpAwdgPJBFAvHa553KnikdyqTV8",
+        "rewardDistributorPda": "5j1zd5mhFs7oJgeBHHRVZsVScv9irP92bAJ5Ac13txTA",
+        "distributorIndex": 2
       }
     ]
   }
