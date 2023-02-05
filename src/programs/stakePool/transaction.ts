@@ -575,6 +575,16 @@ export const withUnstake = async (
     stakeEntryData?.parsed.stakeMint
   );
 
+  const stakePoolData = await getStakePool(connection, params.stakePoolId);
+  const taxMint = stakePoolData.parsed.taxMint;
+  const taxMintTokenAccount = await withFindOrInitAssociatedTokenAccount(
+    transaction,
+    connection,
+    taxMint,
+    wallet.publicKey,
+    wallet.publicKey
+  );
+
   const program = stakePoolProgram(connection, wallet);
   const ix = await program.methods
     .unstake()
@@ -586,6 +596,8 @@ export const withUnstake = async (
       user: wallet.publicKey,
       userOriginalMintTokenAccount: userOriginalMintTokenAccountId,
       tokenProgram: TOKEN_PROGRAM_ID,
+      taxMint,
+      taxMintTokenAccount,
     })
     .remainingAccounts(remainingAccounts)
     .instruction();

@@ -321,6 +321,9 @@ export const withUnstake = async (transaction, connection, wallet, params) => {
     const stakeEntryOriginalMintTokenAccountId = await withFindOrInitAssociatedTokenAccount(transaction, connection, params.originalMintId, stakeEntryId, wallet.publicKey, true);
     const userOriginalMintTokenAccountId = await withFindOrInitAssociatedTokenAccount(transaction, connection, params.originalMintId, wallet.publicKey, wallet.publicKey);
     const remainingAccounts = await withRemainingAccountsForUnstake(transaction, connection, wallet, stakeEntryId, stakeEntryData === null || stakeEntryData === void 0 ? void 0 : stakeEntryData.parsed.stakeMint);
+    const stakePoolData = await getStakePool(connection, params.stakePoolId);
+    const taxMint = stakePoolData.parsed.taxMint;
+    const taxMintTokenAccount = await withFindOrInitAssociatedTokenAccount(transaction, connection, taxMint, wallet.publicKey, wallet.publicKey);
     const program = stakePoolProgram(connection, wallet);
     const ix = await program.methods
         .unstake()
@@ -332,6 +335,8 @@ export const withUnstake = async (transaction, connection, wallet, params) => {
         user: wallet.publicKey,
         userOriginalMintTokenAccount: userOriginalMintTokenAccountId,
         tokenProgram: TOKEN_PROGRAM_ID,
+        taxMint,
+        taxMintTokenAccount,
     })
         .remainingAccounts(remainingAccounts)
         .instruction();

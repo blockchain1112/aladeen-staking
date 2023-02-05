@@ -332,6 +332,9 @@ const withUnstake = async (transaction, connection, wallet, params) => {
     const stakeEntryOriginalMintTokenAccountId = await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, params.originalMintId, stakeEntryId, wallet.publicKey, true);
     const userOriginalMintTokenAccountId = await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, params.originalMintId, wallet.publicKey, wallet.publicKey);
     const remainingAccounts = await (0, utils_2.withRemainingAccountsForUnstake)(transaction, connection, wallet, stakeEntryId, stakeEntryData === null || stakeEntryData === void 0 ? void 0 : stakeEntryData.parsed.stakeMint);
+    const stakePoolData = await (0, accounts_3.getStakePool)(connection, params.stakePoolId);
+    const taxMint = stakePoolData.parsed.taxMint;
+    const taxMintTokenAccount = await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, taxMint, wallet.publicKey, wallet.publicKey);
     const program = (0, constants_1.stakePoolProgram)(connection, wallet);
     const ix = await program.methods
         .unstake()
@@ -343,6 +346,8 @@ const withUnstake = async (transaction, connection, wallet, params) => {
         user: wallet.publicKey,
         userOriginalMintTokenAccount: userOriginalMintTokenAccountId,
         tokenProgram: spl_token_1.TOKEN_PROGRAM_ID,
+        taxMint,
+        taxMintTokenAccount,
     })
         .remainingAccounts(remainingAccounts)
         .instruction();
