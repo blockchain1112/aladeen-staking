@@ -489,6 +489,8 @@ export const withUnstake = async (
     skipRewardMintTokenAccount?: boolean;
   }
 ): Promise<Transaction> => {
+  if (params.distributorIds.length === 0)
+    throw new Error("empty distributorIds");
   const stakeEntryId = await findStakeEntryIdFromMint(
     params.stakePoolId,
     params.originalMintId

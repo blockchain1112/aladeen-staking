@@ -273,6 +273,8 @@ export const withStake = async (transaction, connection, wallet, params) => {
  * @returns Transaction
  */
 export const withUnstake = async (transaction, connection, wallet, params) => {
+    if (params.distributorIds.length === 0)
+        throw new Error("empty distributorIds");
     const stakeEntryId = await findStakeEntryIdFromMint(params.stakePoolId, params.originalMintId);
     const [stakeEntryData] = await Promise.all([
         tryGetAccount(() => getStakeEntry(connection, stakeEntryId)),
