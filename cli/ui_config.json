@@ -1,10 +1,10 @@
 {
-  "4TXbeAkuFjkTK9RFbzqUU3DWm1f1z8mat9CX4Yd9agWo": {
+  "2Lk2sM7hfvS2ymnj1HGpQDUdQqYwBUbA2cvcHmbs54P4": {
     "rewardDistributors": [
       {
         "label": "reward zero",
-        "rewardMint": "GzjbEiTSVGkfPU2uZXX5UdvLTXm5nt5QwJcLqYPZPqFh",
-        "rewardDistributorPda": "D4jdAPMB2zaUm1bdwiF8xU8f2sacYEaoKge6rcbKkVxb",
+        "rewardMint": "A2hyKqC16YBYcUT74bn8pM5WRoLxzvVne5zfecV6Xr9b",
+        "rewardDistributorPda": "0,7PWu9hHoapt5MY88VtRKi4fKKX5RfUY4xV15VmThmBsg",
         "distributorIndex": 0
       }
     ]

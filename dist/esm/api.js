@@ -41,7 +41,10 @@ export const createStakePool = async (connection, wallet, params) => {
                 maxSupply: rewardDistributor.maxSupply,
                 supply: rewardDistributor.supply,
             });
-            rewardDistributorIds.push(rewardDistributorId);
+            rewardDistributorIds.push([
+                new BN(index).toNumber(),
+                rewardDistributorId,
+            ]);
         }
     }
     return [transaction, stakePoolId, rewardDistributorIds];

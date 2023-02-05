@@ -36,7 +36,7 @@ export const config: Config = {
         {
           label: "reward zero",
           tokenMint: new PublicKey(
-            "GzjbEiTSVGkfPU2uZXX5UdvLTXm5nt5QwJcLqYPZPqFh"
+            "A2hyKqC16YBYcUT74bn8pM5WRoLxzvVne5zfecV6Xr9b"
           ),
           emission: 50,
           every: 60,
@@ -58,3 +58,4 @@ export type UiConfig = {
     rewardDistributors: UiConfigRewardDistributor[];
   };
 };
+

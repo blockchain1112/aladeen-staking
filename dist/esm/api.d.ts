@@ -39,7 +39,7 @@ export declare const createStakePool: (connection: Connection, wallet: Wallet, p
         supply?: BN;
     }[];
     taxMint: PublicKey;
-}) => Promise<[Transaction, PublicKey, PublicKey[]?]>;
+}) => Promise<[Transaction, PublicKey, (number | PublicKey)[][]?]>;
 /**
  * Convenience call to create a reward distributor
  * @param connection - Connection to use

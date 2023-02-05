@@ -87,7 +87,7 @@ export const createStakePool = async (
     }[];
     taxMint: PublicKey;
   }
-): Promise<[Transaction, PublicKey, PublicKey[]?]> => {
+): Promise<[Transaction, PublicKey, (number | PublicKey)[][]?]> => {
   const transaction = new Transaction();
 
   const [, stakePoolId] = await withInitStakePool(
@@ -117,7 +117,10 @@ export const createStakePool = async (
           supply: rewardDistributor.supply,
         }
       );
-      rewardDistributorIds.push(rewardDistributorId);
+      rewardDistributorIds.push([
+        new BN(index).toNumber(),
+        rewardDistributorId,
+      ]);
     }
   }
   return [transaction, stakePoolId, rewardDistributorIds];
