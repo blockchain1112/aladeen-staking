@@ -49,10 +49,10 @@ exports.getMintSupply = getMintSupply;
  * @param rewardDistributor
  * @returns
  */
-const getPendingRewardsForPool = async (connection, wallet, mintIds, rewardDistributor, UTCNow) => {
+const getPendingRewardsForPool = async (connection, _wallet, mintIds, rewardDistributor, UTCNow) => {
     const rewardDistributorTokenAccount = await (0, common_1.findAta)(rewardDistributor.parsed.rewardMint, rewardDistributor.pubkey, true);
     const rewardDistributorTokenAccountInfo = await (0, spl_token_1.getAccount)(connection, rewardDistributorTokenAccount);
-    const stakeEntryIds = await Promise.all(mintIds.map(async (mintId) => (0, utils_1.findStakeEntryIdFromMint)(connection, wallet, rewardDistributor.parsed.stakePool, mintId)));
+    const stakeEntryIds = await Promise.all(mintIds.map(async (mintId) => (0, utils_1.findStakeEntryIdFromMint)(rewardDistributor.parsed.stakePool, mintId)));
     const rewardEntryIds = stakeEntryIds.map((stakeEntryId) => (0, pda_1.findRewardEntryId)(rewardDistributor.pubkey, stakeEntryId));
     const [stakeEntries, rewardEntries] = await Promise.all([
         (0, accounts_2.getStakeEntries)(connection, stakeEntryIds),

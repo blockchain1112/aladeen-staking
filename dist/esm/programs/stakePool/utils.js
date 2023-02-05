@@ -34,8 +34,8 @@ export const withRemainingAccountsForUnstake = async (transaction, connection, w
  * NOTE: This will lookup the mint on-chain to get the supply
  * @returns
  */
-export const findStakeEntryIdFromMint = async (_connection, wallet, stakePoolId, originalMintId, _isFungible) => {
-    return findStakeEntryId(wallet, stakePoolId, originalMintId);
+export const findStakeEntryIdFromMint = async (stakePoolId, originalMintId) => {
+    return findStakeEntryId(stakePoolId, originalMintId);
 };
 export const getTotalStakeSeconds = async (connection, stakeEntryId) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

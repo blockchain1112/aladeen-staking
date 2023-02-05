@@ -16,7 +16,7 @@ export const findStakePoolId = (identifier) => {
  * Convenience method to find the stake entry id.
  * @returns
  */
-export const findStakeEntryId = (_wallet, stakePoolId, originalMintId, _isFungible = false) => {
+export const findStakeEntryId = (stakePoolId, originalMintId) => {
     return PublicKey.findProgramAddressSync([
         utils.bytes.utf8.encode(STAKE_ENTRY_SEED),
         stakePoolId.toBuffer(),

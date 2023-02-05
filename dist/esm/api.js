@@ -85,7 +85,7 @@ export const createStakeEntry = async (connection, wallet, params) => {
  */
 export const initializeRewardEntry = async (connection, wallet, params) => {
     var _a;
-    const stakeEntryId = await findStakeEntryIdFromMint(connection, wallet.publicKey, params.stakePoolId, params.originalMintId);
+    const stakeEntryId = await findStakeEntryIdFromMint(params.stakePoolId, params.originalMintId);
     const stakeEntryData = await tryGetAccount(() => getStakeEntry(connection, stakeEntryId));
     const transaction = new Transaction();
     if (!stakeEntryData) {
@@ -133,7 +133,7 @@ export const authorizeStakeEntry = (connection, wallet, params) => {
 export const createStakeEntryAndStakeMint = async (connection, wallet, params) => {
     var _a;
     let transaction = new Transaction();
-    const stakeEntryId = await findStakeEntryIdFromMint(connection, wallet.publicKey, params.stakePoolId, params.originalMintId);
+    const stakeEntryId = await findStakeEntryIdFromMint(params.stakePoolId, params.originalMintId);
     const stakeEntryData = await tryGetAccount(() => getStakeEntry(connection, stakeEntryId));
     if (!stakeEntryData) {
         transaction = (await createStakeEntry(connection, wallet, {
@@ -203,7 +203,7 @@ export const stake = async (connection, wallet, params) => {
         throw new Error("Fungible with receipt type Original is not supported yet");
     }
     let transaction = new Transaction();
-    const stakeEntryId = await findStakeEntryIdFromMint(connection, wallet.publicKey, params.stakePoolId, params.originalMintId);
+    const stakeEntryId = await findStakeEntryIdFromMint(params.stakePoolId, params.originalMintId);
     const stakeEntryData = await tryGetAccount(() => getStakeEntry(connection, stakeEntryId));
     if (!stakeEntryData) {
         [transaction] = await createStakeEntry(connection, wallet, {

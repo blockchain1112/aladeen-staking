@@ -88,7 +88,7 @@ export const withInitStakePool = async (transaction, connection, wallet, params)
  * @returns Transaction, public key for the created stake entry
  */
 export const withInitStakeEntry = async (transaction, connection, wallet, params) => {
-    const stakeEntryId = await findStakeEntryIdFromMint(connection, wallet.publicKey, params.stakePoolId, params.originalMintId);
+    const stakeEntryId = await findStakeEntryIdFromMint(params.stakePoolId, params.originalMintId);
     const originalMintMetadatId = findMintMetadataId(params.originalMintId);
     const remainingAccounts = remainingAccountsForInitStakeEntry(params.stakePoolId, params.originalMintId);
     const program = stakePoolProgram(connection, wallet);
@@ -246,7 +246,7 @@ export const withClaimReceiptMint = async (transaction, connection, wallet, para
  * @returns Transaction
  */
 export const withStake = async (transaction, connection, wallet, params) => {
-    const stakeEntryId = await findStakeEntryIdFromMint(connection, wallet.publicKey, params.stakePoolId, params.originalMintId);
+    const stakeEntryId = await findStakeEntryIdFromMint(params.stakePoolId, params.originalMintId);
     const stakeEntryOriginalMintTokenAccountId = await withFindOrInitAssociatedTokenAccount(transaction, connection, params.originalMintId, stakeEntryId, wallet.publicKey, true);
     const program = stakePoolProgram(connection, wallet);
     const ix = await program.methods
@@ -274,7 +274,7 @@ export const withStake = async (transaction, connection, wallet, params) => {
  */
 export const withUnstake = async (transaction, connection, wallet, params) => {
     const rewardDistributorId = findRewardDistributorId(params.stakePoolId, params.distributorId);
-    const stakeEntryId = await findStakeEntryIdFromMint(connection, wallet.publicKey, params.stakePoolId, params.originalMintId);
+    const stakeEntryId = await findStakeEntryIdFromMint(params.stakePoolId, params.originalMintId);
     const [stakeEntryData, rewardDistributorData] = await Promise.all([
         tryGetAccount(() => getStakeEntry(connection, stakeEntryId)),
         tryGetAccount(() => getRewardDistributor(connection, rewardDistributorId)),

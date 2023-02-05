@@ -57,8 +57,7 @@ export const handler = async (
   wallet: Wallet,
   args: ReturnType<typeof getArgs>
 ) => {
-  const { stakePoolId, initEntries, fungible, metadataRules, distributorId } =
-    args;
+  const { stakePoolId, initEntries, metadataRules, distributorId } = args;
   const rewardDistributorId = findRewardDistributorId(
     stakePoolId,
     distributorId
@@ -73,9 +72,7 @@ export const handler = async (
     } entries for pool (${stakePoolId.toString()}) and reward distributor (${rewardDistributorId.toString()}) ---------`
   );
   const stakeEntryIds = await Promise.all(
-    initEntries.map((e) =>
-      findStakeEntryId(wallet.publicKey, stakePoolId, e.mintId, fungible)
-    )
+    initEntries.map((e) => findStakeEntryId(stakePoolId, e.mintId))
   );
   const stakeEntries = await getStakeEntries(connection, stakeEntryIds);
   const stakeEntriesById = stakeEntries.reduce(
@@ -123,12 +120,7 @@ export const handler = async (
             }] (${mintId.toString()})`
           );
           try {
-            const stakeEntryId = findStakeEntryId(
-              wallet.publicKey,
-              stakePoolId,
-              mintId,
-              fungible
-            );
+            const stakeEntryId = findStakeEntryId(stakePoolId, mintId);
 
             await withFindOrInitAssociatedTokenAccount(
               transaction,
@@ -239,3 +231,4 @@ export const handler = async (
     );
   }
 };
+

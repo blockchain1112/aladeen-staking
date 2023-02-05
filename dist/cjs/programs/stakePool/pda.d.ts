@@ -9,7 +9,7 @@ export declare const findStakePoolId: (identifier: BN) => PublicKey;
  * Convenience method to find the stake entry id.
  * @returns
  */
-export declare const findStakeEntryId: (_wallet: PublicKey, stakePoolId: PublicKey, originalMintId: PublicKey, _isFungible?: boolean) => PublicKey;
+export declare const findStakeEntryId: (stakePoolId: PublicKey, originalMintId: PublicKey) => PublicKey;
 /**
  * Finds the identifier id.
  * @returns

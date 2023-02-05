@@ -27,7 +27,7 @@ export declare const getMintSupply: (connection: web3.Connection, originalMintId
  * @param rewardDistributor
  * @returns
  */
-export declare const getPendingRewardsForPool: (connection: Connection, wallet: PublicKey, mintIds: PublicKey[], rewardDistributor: AccountData<RewardDistributorData>, UTCNow: number) => Promise<{
+export declare const getPendingRewardsForPool: (connection: Connection, _wallet: PublicKey, mintIds: PublicKey[], rewardDistributor: AccountData<RewardDistributorData>, UTCNow: number) => Promise<{
     rewardMap: {
         [mintId: string]: {
             claimableRewards: BN;

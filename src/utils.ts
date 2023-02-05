@@ -89,7 +89,7 @@ export const getMintSupply = async (
  */
 export const getPendingRewardsForPool = async (
   connection: Connection,
-  wallet: PublicKey,
+  _wallet: PublicKey,
   mintIds: PublicKey[],
   rewardDistributor: AccountData<RewardDistributorData>,
   UTCNow: number
@@ -111,12 +111,7 @@ export const getPendingRewardsForPool = async (
 
   const stakeEntryIds: PublicKey[] = await Promise.all(
     mintIds.map(async (mintId) =>
-      findStakeEntryIdFromMint(
-        connection,
-        wallet,
-        rewardDistributor.parsed.stakePool,
-        mintId
-      )
+      findStakeEntryIdFromMint(rewardDistributor.parsed.stakePool, mintId)
     )
   );
 
@@ -365,3 +360,4 @@ export const calculatePendingGroupRewards = (
 
   return [groupRewardAmountToReceive, nextRewardsIn];
 };
+

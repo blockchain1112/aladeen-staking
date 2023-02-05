@@ -216,12 +216,7 @@ export const handler = async (
 
         // Update multiplier of primary mints
         for (const primaryMint of primaryMints) {
-          const stakeEntryId = findStakeEntryId(
-            wallet.publicKey,
-            stakePoolId,
-            primaryMint,
-            false
-          );
+          const stakeEntryId = findStakeEntryId(stakePoolId, primaryMint);
           dataToSubmit.push({
             mint: stakeEntryId,
             multiplier: multiplierToSet,
@@ -324,3 +319,4 @@ const updateMultipliers = async (
     console.log("No instructions provided\n");
   }
 };
+

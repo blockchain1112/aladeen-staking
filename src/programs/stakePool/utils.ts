@@ -70,13 +70,10 @@ export const withRemainingAccountsForUnstake = async (
  * @returns
  */
 export const findStakeEntryIdFromMint = async (
-  _connection: Connection,
-  wallet: PublicKey,
   stakePoolId: PublicKey,
-  originalMintId: PublicKey,
-  _isFungible?: boolean
+  originalMintId: PublicKey
 ): Promise<PublicKey> => {
-  return findStakeEntryId(wallet, stakePoolId, originalMintId);
+  return findStakeEntryId(stakePoolId, originalMintId);
 };
 
 export const getTotalStakeSeconds = async (

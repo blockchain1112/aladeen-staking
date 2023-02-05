@@ -194,8 +194,6 @@ export const initializeRewardEntry = async (
   }
 ): Promise<Transaction> => {
   const stakeEntryId = await findStakeEntryIdFromMint(
-    connection,
-    wallet.publicKey,
     params.stakePoolId,
     params.originalMintId
   );
@@ -271,8 +269,6 @@ export const createStakeEntryAndStakeMint = async (
 ): Promise<[Transaction, PublicKey, Keypair | undefined]> => {
   let transaction = new Transaction();
   const stakeEntryId = await findStakeEntryIdFromMint(
-    connection,
-    wallet.publicKey,
     params.stakePoolId,
     params.originalMintId
   );
@@ -383,8 +379,6 @@ export const stake = async (
 
   let transaction = new Transaction();
   const stakeEntryId = await findStakeEntryIdFromMint(
-    connection,
-    wallet.publicKey,
     params.stakePoolId,
     params.originalMintId
   );
