@@ -277,7 +277,7 @@ export const withUnstake = async (transaction, connection, wallet, params) => {
     const [stakeEntryData] = await Promise.all([
         tryGetAccount(() => getStakeEntry(connection, stakeEntryId)),
     ]);
-    for (const rewardDistributorIndex of params.distributorIds) {
+    for (const [rewardDistributorIndex] of params.distributorIds.entries()) {
         if (!stakeEntryData)
             throw "Stake entry not found";
         const stakePoolData = await getStakePool(connection, params.stakePoolId);
@@ -301,7 +301,7 @@ export const withUnstake = async (transaction, connection, wallet, params) => {
         });
         // claim any rewards deserved
         await withClaimRewards(transaction, connection, wallet, {
-            distributorId: rewardDistributorIndex,
+            distributorId: new BN(rewardDistributorIndex),
             stakePoolId: params.stakePoolId,
             stakeEntryId: stakeEntryId,
             lastStaker: wallet.publicKey,
