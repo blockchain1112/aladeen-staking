@@ -454,7 +454,7 @@ export const withStake = async (
 
   const program = stakePoolProgram(connection, wallet);
   const ix = await program.methods
-    .stake(params.amount || new BN(1), params.duration)
+    .stake(new BN(1), params.duration)
     .accounts({
       stakeEntry: stakeEntryId,
       stakePool: params.stakePoolId,

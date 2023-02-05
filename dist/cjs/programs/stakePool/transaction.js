@@ -260,7 +260,7 @@ const withStake = async (transaction, connection, wallet, params) => {
     const stakeEntryOriginalMintTokenAccountId = await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, params.originalMintId, stakeEntryId, wallet.publicKey, true);
     const program = (0, constants_1.stakePoolProgram)(connection, wallet);
     const ix = await program.methods
-        .stake(params.amount || new anchor_1.BN(1), params.duration)
+        .stake(new anchor_1.BN(1), params.duration)
         .accounts({
         stakeEntry: stakeEntryId,
         stakePool: params.stakePoolId,
