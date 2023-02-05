@@ -20,7 +20,7 @@ export const findRewardDistributorId = (stakePoolId, id) => {
     return PublicKey.findProgramAddressSync([
         utils.bytes.utf8.encode(REWARD_DISTRIBUTOR_SEED),
         stakePoolId.toBuffer(),
-        id.toBuffer("le"),
+        id.toBuffer(),
     ], REWARD_DISTRIBUTOR_ADDRESS)[0];
 };
 /**

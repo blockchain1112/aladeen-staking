@@ -24,7 +24,7 @@ const findRewardDistributorId = (stakePoolId, id) => {
     return web3_js_1.PublicKey.findProgramAddressSync([
         anchor_1.utils.bytes.utf8.encode(_1.REWARD_DISTRIBUTOR_SEED),
         stakePoolId.toBuffer(),
-        id.toBuffer("le"),
+        id.toBuffer(),
     ], _1.REWARD_DISTRIBUTOR_ADDRESS)[0];
 };
 exports.findRewardDistributorId = findRewardDistributorId;
