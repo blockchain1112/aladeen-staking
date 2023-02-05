@@ -37,8 +37,6 @@ import {
 } from "@solana/web3.js";
 
 import { getMintSupply } from "../../utils";
-import { getRewardDistributor } from "../rewardDistributor/accounts";
-import { findRewardDistributorId } from "../rewardDistributor/pda";
 import { withClaimRewards } from "../rewardDistributor/transaction";
 import {
   getPoolIdentifier,
@@ -499,18 +497,6 @@ export const withUnstake = async (
     tryGetAccount(() => getStakeEntry(connection, stakeEntryId)),
   ]);
   for (const rewardDistributorIndex of params.distributorIds) {
-    if (rewardDistributorIndex === undefined) continue;
-    const rewardDistributorId = findRewardDistributorId(
-      params.stakePoolId,
-      rewardDistributorIndex
-    );
-
-    const [rewardDistributorData] = await Promise.all([
-      tryGetAccount(() =>
-        getRewardDistributor(connection, rewardDistributorId)
-      ),
-    ]);
-
     if (!stakeEntryData) throw "Stake entry not found";
 
     const stakePoolData = await getStakePool(connection, params.stakePoolId);
@@ -538,15 +524,13 @@ export const withUnstake = async (
     });
 
     // claim any rewards deserved
-    if (rewardDistributorData) {
-      await withClaimRewards(transaction, connection, wallet, {
-        distributorId: rewardDistributorIndex,
-        stakePoolId: params.stakePoolId,
-        stakeEntryId: stakeEntryId,
-        lastStaker: wallet.publicKey,
-        skipRewardMintTokenAccount: params.skipRewardMintTokenAccount,
-      });
-    }
+    await withClaimRewards(transaction, connection, wallet, {
+      distributorId: rewardDistributorIndex,
+      stakePoolId: params.stakePoolId,
+      stakeEntryId: stakeEntryId,
+      lastStaker: wallet.publicKey,
+      skipRewardMintTokenAccount: params.skipRewardMintTokenAccount,
+    });
   }
 
   const stakeEntryOriginalMintTokenAccountId =

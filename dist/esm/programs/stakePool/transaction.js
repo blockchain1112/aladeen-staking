@@ -9,8 +9,6 @@ import { ASSOCIATED_PROGRAM_ID } from "@project-serum/anchor/dist/cjs/utils/toke
 import { getAssociatedTokenAddressSync, TOKEN_PROGRAM_ID, } from "@solana/spl-token";
 import { Keypair, SystemProgram, SYSVAR_RENT_PUBKEY, SYSVAR_SLOT_HASHES_PUBKEY, } from "@solana/web3.js";
 import { getMintSupply } from "../../utils";
-import { getRewardDistributor } from "../rewardDistributor/accounts";
-import { findRewardDistributorId } from "../rewardDistributor/pda";
 import { withClaimRewards } from "../rewardDistributor/transaction";
 import { getPoolIdentifier, getStakeBooster, getStakeEntry, getStakePool, } from "./accounts";
 import { ReceiptType, STAKE_BOOSTER_PAYMENT_MANAGER, stakePoolProgram, } from "./constants";
@@ -280,12 +278,6 @@ export const withUnstake = async (transaction, connection, wallet, params) => {
         tryGetAccount(() => getStakeEntry(connection, stakeEntryId)),
     ]);
     for (const rewardDistributorIndex of params.distributorIds) {
-        if (rewardDistributorIndex === undefined)
-            continue;
-        const rewardDistributorId = findRewardDistributorId(params.stakePoolId, rewardDistributorIndex);
-        const [rewardDistributorData] = await Promise.all([
-            tryGetAccount(() => getRewardDistributor(connection, rewardDistributorId)),
-        ]);
         if (!stakeEntryData)
             throw "Stake entry not found";
         const stakePoolData = await getStakePool(connection, params.stakePoolId);
@@ -308,15 +300,13 @@ export const withUnstake = async (transaction, connection, wallet, params) => {
             stakeEntryId: stakeEntryId,
         });
         // claim any rewards deserved
-        if (rewardDistributorData) {
-            await withClaimRewards(transaction, connection, wallet, {
-                distributorId: rewardDistributorIndex,
-                stakePoolId: params.stakePoolId,
-                stakeEntryId: stakeEntryId,
-                lastStaker: wallet.publicKey,
-                skipRewardMintTokenAccount: params.skipRewardMintTokenAccount,
-            });
-        }
+        await withClaimRewards(transaction, connection, wallet, {
+            distributorId: rewardDistributorIndex,
+            stakePoolId: params.stakePoolId,
+            stakeEntryId: stakeEntryId,
+            lastStaker: wallet.publicKey,
+            skipRewardMintTokenAccount: params.skipRewardMintTokenAccount,
+        });
     }
     const stakeEntryOriginalMintTokenAccountId = await withFindOrInitAssociatedTokenAccount(transaction, connection, params.originalMintId, stakeEntryId, wallet.publicKey, true);
     const userOriginalMintTokenAccountId = await withFindOrInitAssociatedTokenAccount(transaction, connection, params.originalMintId, wallet.publicKey, wallet.publicKey);
