@@ -30,8 +30,8 @@ pub struct UnstakeCtx<'info> {
 
     // stake_entry token accounts
     #[account(mut, constraint =
-        (stake_entry_original_mint_token_account.amount > 0 || stake_pool.cooldown_seconds.is_some())
-        && stake_entry_original_mint_token_account.mint == stake_entry.original_mint
+        /*(stake_entry_original_mint_token_account.amount > 0 || stake_pool.cooldown_seconds.is_some())
+        &&*/ stake_entry_original_mint_token_account.mint == stake_entry.original_mint
         && stake_entry_original_mint_token_account.owner == stake_entry.key()
         @ ErrorCode::InvalidStakeEntryOriginalMintTokenAccount)]
     stake_entry_original_mint_token_account: Box<Account<'info, TokenAccount>>,
@@ -54,11 +54,9 @@ pub fn handler(ctx: Context<UnstakeCtx>) -> Result<()> {
     let stake_entry = &mut ctx.accounts.stake_entry;
 
     let original_mint = stake_entry.original_mint;
-    let user = ctx.accounts.user.key();
     let stake_pool_key = stake_pool.key();
-    let seed = get_stake_seed(ctx.accounts.original_mint.supply, user);
 
-    let stake_entry_seed = [STAKE_ENTRY_PREFIX.as_bytes(), stake_pool_key.as_ref(), original_mint.as_ref(), seed.as_ref(), &[stake_entry.bump]];
+    let stake_entry_seed = [STAKE_ENTRY_PREFIX.as_bytes(), stake_pool_key.as_ref(), original_mint.as_ref(), &[stake_entry.bump]];
     let stake_entry_signer = &[&stake_entry_seed[..]];
 
     if stake_entry.grouped == Some(true) {

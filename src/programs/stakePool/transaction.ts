@@ -531,10 +531,11 @@ export const withUnstake = async (
         stakeEntryData.parsed.stakeMintClaimed)
     ) {
       // return receipt mint if its claimed
-      await withReturnReceiptMint(transaction, connection, wallet, {
-        stakeEntryId: stakeEntryId,
-      });
     }
+
+    await withReturnReceiptMint(transaction, connection, wallet, {
+      stakeEntryId: stakeEntryId,
+    });
 
     // claim any rewards deserved
     if (rewardDistributorData) {

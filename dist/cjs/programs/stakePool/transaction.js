@@ -314,10 +314,10 @@ const withUnstake = async (transaction, connection, wallet, params) => {
             (stakeEntryData.parsed.originalMintClaimed ||
                 stakeEntryData.parsed.stakeMintClaimed)) {
             // return receipt mint if its claimed
-            await (0, exports.withReturnReceiptMint)(transaction, connection, wallet, {
-                stakeEntryId: stakeEntryId,
-            });
         }
+        await (0, exports.withReturnReceiptMint)(transaction, connection, wallet, {
+            stakeEntryId: stakeEntryId,
+        });
         // claim any rewards deserved
         if (rewardDistributorData) {
             await (0, transaction_1.withClaimRewards)(transaction, connection, wallet, {
