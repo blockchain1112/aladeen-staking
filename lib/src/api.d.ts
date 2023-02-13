@@ -31,6 +31,7 @@ export declare const createStakePool: (connection: Connection, wallet: Wallet, p
     endDate?: BN;
     doubleOrResetEnabled?: boolean;
     rewardDistributors?: {
+        duration: number;
         rewardMintId: PublicKey;
         rewardAmount?: BN;
         rewardDurationSeconds?: BN;
@@ -39,7 +40,7 @@ export declare const createStakePool: (connection: Connection, wallet: Wallet, p
         supply?: BN;
     }[];
     taxMint: PublicKey;
-}) => Promise<[Transaction, PublicKey, PublicKey[]?]>;
+}) => Promise<[Transaction, PublicKey, (number | PublicKey)[][]?]>;
 /**
  * Convenience call to create a reward distributor
  * @param connection - Connection to use

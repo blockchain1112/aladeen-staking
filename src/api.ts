@@ -78,6 +78,7 @@ export const createStakePool = async (
     endDate?: BN;
     doubleOrResetEnabled?: boolean;
     rewardDistributors?: {
+      duration: number;
       rewardMintId: PublicKey;
       rewardAmount?: BN;
       rewardDurationSeconds?: BN;

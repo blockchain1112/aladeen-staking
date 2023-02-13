@@ -31,6 +31,7 @@ export declare const createStakePool: (connection: Connection, wallet: Wallet, p
     endDate?: BN;
     doubleOrResetEnabled?: boolean;
     rewardDistributors?: {
+        duration: number;
         rewardMintId: PublicKey;
         rewardAmount?: BN;
         rewardDurationSeconds?: BN;
