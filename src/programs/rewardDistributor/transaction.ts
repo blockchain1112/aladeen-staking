@@ -39,21 +39,27 @@ export const withInitRewardDistributor = async (
     defaultMultiplier?: BN;
     multiplierDecimals?: number;
     maxRewardSecondsReceived?: BN;
+    stakePoolDuration: number;
+    createRewardDistributorMintTokenAccount?: boolean;
+    createAuthorityMintTokenAccount?: boolean;
   }
 ): Promise<[Transaction, web3.PublicKey]> => {
   const rewardAuthority = findRewardAuthority(wallet.publicKey);
 
   const rewardDistributorId = findRewardDistributorId(
     params.stakePoolId,
-    params.distributorId
+    params.distributorId,
+    params.stakePoolDuration
   );
   const remainingAccountsForKind = await withRemainingAccountsForKind(
     transaction,
     connection,
     wallet,
     rewardAuthority,
-    params.kind || RewardDistributorKind.Mint,
-    params.rewardMintId
+    params.kind || RewardDistributorKind.Treasury,
+    params.rewardMintId,
+    undefined,
+    params.createRewardDistributorMintTokenAccount
   );
   const program = rewardDistributorProgram(connection, wallet);
   const ix = await program.methods
@@ -67,6 +73,7 @@ export const withInitRewardDistributor = async (
       multiplierDecimals: params.multiplierDecimals || null,
       maxRewardSecondsReceived: params.maxRewardSecondsReceived || null,
       distributorIndex: params.distributorId.toNumber(),
+      stakePoolDuration: params.stakePoolDuration,
     })
     .accounts({
       rewardDistributor: rewardDistributorId,
@@ -135,11 +142,13 @@ export const withClaimRewards = async (
     payer?: PublicKey;
     skipRewardMintTokenAccount?: boolean;
     authority?: PublicKey;
+    stakePoolDuration: number;
   }
 ): Promise<Transaction> => {
   const rewardDistributorId = findRewardDistributorId(
     params.stakePoolId,
-    params.distributorId
+    params.distributorId,
+    params.stakePoolDuration
   );
   const rewardDistributorData = await tryGetAccount(() =>
     getRewardDistributor(connection, rewardDistributorId)
@@ -148,17 +157,17 @@ export const withClaimRewards = async (
 
   const rewardMintTokenAccountId = params.skipRewardMintTokenAccount
     ? await findAta(
-        rewardDistributorData!.parsed.rewardMint,
-        params.lastStaker,
-        true
-      )
+      rewardDistributorData!.parsed.rewardMint,
+      params.lastStaker,
+      true
+    )
     : await withFindOrInitAssociatedTokenAccount(
-        transaction,
-        connection,
-        rewardDistributorData!.parsed.rewardMint,
-        params.lastStaker,
-        params.payer ?? wallet.publicKey
-      );
+      transaction,
+      connection,
+      rewardDistributorData!.parsed.rewardMint,
+      params.lastStaker,
+      params.payer ?? wallet.publicKey
+    );
 
   const remainingAccountsForKind = await withRemainingAccountsForKind(
     transaction,
@@ -222,12 +231,14 @@ export const withCloseRewardDistributor = async (
   params: {
     distributorId: BN;
     stakePoolId: PublicKey;
+    stakePoolDuration: number;
   }
 ): Promise<Transaction> => {
   const rewardAuthority = findRewardAuthority(wallet.publicKey);
   const rewardDistributorId = findRewardDistributorId(
     params.stakePoolId,
-    params.distributorId
+    params.distributorId,
+    params.stakePoolDuration
   );
   const rewardDistributorData = await tryGetAccount(() =>
     getRewardDistributor(connection, rewardDistributorId)
@@ -301,12 +312,14 @@ export const withCloseRewardEntry = async (
     distributorId: BN;
     stakePoolId: PublicKey;
     stakeEntryId: PublicKey;
+    stakePoolDuration: number;
   }
 ): Promise<Transaction> => {
   const rewardAuthority = findRewardAuthority(wallet.publicKey);
   const rewardDistributorId = findRewardDistributorId(
     params.stakePoolId,
-    params.distributorId
+    params.distributorId,
+    params.stakePoolDuration
   );
 
   const rewardEntryId = findRewardEntryId(
@@ -340,12 +353,14 @@ export const withUpdateRewardDistributor = async (
     rewardAmount?: BN;
     rewardDurationSeconds?: BN;
     maxRewardSecondsReceived?: BN;
+    stakePoolDuration: number;
   }
 ): Promise<Transaction> => {
   const rewardAuthority = findRewardAuthority(wallet.publicKey);
   const rewardDistributorId = findRewardDistributorId(
     params.stakePoolId,
-    params.distributorId
+    params.distributorId,
+    params.stakePoolDuration
   );
   const rewardDistributorData = await getRewardDistributor(
     connection,
@@ -386,12 +401,14 @@ export const withReclaimFunds = async (
     distributorId: BN;
     stakePoolId: PublicKey;
     amount: BN;
+    stakePoolDuration: number;
   }
 ): Promise<Transaction> => {
   const rewardAuthority = findRewardAuthority(wallet.publicKey);
   const rewardDistributorId = findRewardDistributorId(
     params.stakePoolId,
-    params.distributorId
+    params.distributorId,
+    params.stakePoolDuration
   );
 
   const rewardDistributorData = await tryGetAccount(() =>

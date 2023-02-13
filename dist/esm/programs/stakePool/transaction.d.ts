@@ -23,6 +23,7 @@ export declare const withInitStakePool: (transaction: Transaction, connection: C
     endDate?: BN;
     doubleOrResetEnabled?: boolean;
     taxMint: PublicKey;
+    offset?: number;
 }) => Promise<[Transaction, PublicKey]>;
 /**
  * Add init stake entry instructions to a transaction
@@ -119,6 +120,7 @@ export declare const withUnstake: (transaction: Transaction, connection: Connect
     stakePoolId: PublicKey;
     originalMintId: PublicKey;
     skipRewardMintTokenAccount?: boolean;
+    stakePoolDuration: number;
 }) => Promise<Transaction>;
 export declare const withUpdateStakePool: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
     stakePoolId: PublicKey;

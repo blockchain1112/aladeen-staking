@@ -19,7 +19,8 @@ export const withRemainingAccountsForKind = async (
   rewardDistributorId: PublicKey,
   kind: RewardDistributorKind,
   rewardMint: PublicKey,
-  isClaimRewards?: boolean
+  isClaimRewards?: boolean,
+  createRewardDistributorMintTokenAccount: boolean = false
 ): Promise<AccountMeta[]> => {
   switch (kind) {
     case RewardDistributorKind.Mint: {
@@ -27,14 +28,26 @@ export const withRemainingAccountsForKind = async (
     }
     case RewardDistributorKind.Treasury: {
       const rewardDistributorRewardMintTokenAccountId =
-        await withFindOrInitAssociatedTokenAccount(
-          transaction,
-          connection,
-          rewardMint,
-          rewardDistributorId,
-          wallet.publicKey,
-          true
-        );
+        createRewardDistributorMintTokenAccount
+          ? await withFindOrInitAssociatedTokenAccount(
+            transaction,
+            connection,
+            rewardMint,
+            rewardDistributorId,
+            wallet.publicKey,
+            true
+          )
+          : !createRewardDistributorMintTokenAccount
+            ? await findAta(rewardMint, rewardDistributorId, true)
+            : await withFindOrInitAssociatedTokenAccount(
+              transaction,
+              connection,
+              rewardMint,
+              rewardDistributorId,
+              wallet.publicKey,
+              true
+            );
+
       const userRewardMintTokenAccountId = await findAta(
         rewardMint,
         wallet.publicKey,
@@ -49,12 +62,12 @@ export const withRemainingAccountsForKind = async (
       ].concat(
         !isClaimRewards
           ? [
-              {
-                pubkey: userRewardMintTokenAccountId,
-                isSigner: false,
-                isWritable: true,
-              },
-            ]
+            {
+              pubkey: userRewardMintTokenAccountId,
+              isSigner: false,
+              isWritable: true,
+            },
+          ]
           : []
       );
     }

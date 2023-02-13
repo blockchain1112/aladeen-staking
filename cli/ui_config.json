@@ -1,24 +1,214 @@
 {
-  "HHV2USxo47joSj1LbjGKsrpM2C1yETGSqamaMAXgMXYi": {
-    "rewardDistributors": [
-      {
-        "label": "reward zero",
-        "rewardMint": "6syXDav5RcG9h7frde77j3H6UProY5y5dteMCeRUfo5S",
-        "rewardDistributorPda": "8MzQ4YGTiyqJ618ceWozzHxQpFd2Y1A2HkH7So7JqEAd",
-        "distributorIndex": 0
-      },
-      {
-        "label": "reward one",
-        "rewardMint": "X9uHaEWq3aMEjg9SDNpKvzDQWpwS4HtHPvfCDX2sp49",
-        "rewardDistributorPda": "GmYaoRg2hiVdMj49v8wN5qEB52znuv5SHcLNcw37iaZU",
-        "distributorIndex": 1
-      },
-      {
-        "label": "reward two",
-        "rewardMint": "HamaVNqzjA8UtFzFjcpAwdgPJBFAvHa553KnikdyqTV8",
-        "rewardDistributorPda": "5j1zd5mhFs7oJgeBHHRVZsVScv9irP92bAJ5Ac13txTA",
-        "distributorIndex": 2
-      }
-    ]
+  "AKptJa1QEAa44oCN9bi5y4WAyH35ztsRQQsMFVj2T11F": {
+    "faction": "North",
+    "rewardDistributors": {
+      "0": [
+        {
+          "label": "YRD-XP",
+          "duration": 0,
+          "rewardMint": "55thbqpqCPLZUTKL24sJdpji2XJUhA46GtgaCCmKf616",
+          "rewardDistributorPda": "41ZwBX4VQranHZQnD3DSwbEa8WnwunJef2gECN2psMXP",
+          "distributorIndex": 0
+        },
+        {
+          "label": "CATSINDEX",
+          "duration": 0,
+          "rewardMint": "CGzMt7K1KYfVqNG2PHvqq7QXLckSHHKri8x5u2h64uLz",
+          "rewardDistributorPda": "HHD2ziujshAswDqAfZk3RtZABcHQ9vTNKGpa47H9YTbL",
+          "distributorIndex": 1
+        }
+      ],
+      "60": [
+        {
+          "label": "YRD-XP",
+          "duration": 60,
+          "rewardMint": "55thbqpqCPLZUTKL24sJdpji2XJUhA46GtgaCCmKf616",
+          "rewardDistributorPda": "G43J84HnPk17wcHmPDHiJmpkGpFH2QbEzdrPqpmRWZfx",
+          "distributorIndex": 0
+        },
+        {
+          "label": "CATSINDEX",
+          "duration": 60,
+          "rewardMint": "CGzMt7K1KYfVqNG2PHvqq7QXLckSHHKri8x5u2h64uLz",
+          "rewardDistributorPda": "9qe9q5VHABRDMBnq6VEsGyNB5UMGZreek4pyh2wDE6N6",
+          "distributorIndex": 1
+        }
+      ],
+      "120": [
+        {
+          "label": "YRD-XP",
+          "duration": 120,
+          "rewardMint": "55thbqpqCPLZUTKL24sJdpji2XJUhA46GtgaCCmKf616",
+          "rewardDistributorPda": "DyBxufqfc3FnzuTFMJ5DVt3BiFpcrkvYxdC9n6Tbi5pR",
+          "distributorIndex": 0
+        },
+        {
+          "label": "CATSINDEX",
+          "duration": 120,
+          "rewardMint": "CGzMt7K1KYfVqNG2PHvqq7QXLckSHHKri8x5u2h64uLz",
+          "rewardDistributorPda": "9v6iviCCJNo4yedyi1GJ6T487iXRKmFx24orzMHXYBzk",
+          "distributorIndex": 1
+        }
+      ]
+    }
+  },
+  "A5rVo61nzYHZLrWqwxBcxnQRdDNVThcnqckLWBvHX1tR": {
+    "faction": "East",
+    "rewardDistributors": {
+      "0": [
+        {
+          "label": "YRD-XP",
+          "duration": 0,
+          "rewardMint": "55thbqpqCPLZUTKL24sJdpji2XJUhA46GtgaCCmKf616",
+          "rewardDistributorPda": "3eeiWjDksxdFySJ59jXFnwKWvQkevGg8kPgvcH6k1wuc",
+          "distributorIndex": 0
+        },
+        {
+          "label": "CATSINDEX",
+          "duration": 0,
+          "rewardMint": "CGzMt7K1KYfVqNG2PHvqq7QXLckSHHKri8x5u2h64uLz",
+          "rewardDistributorPda": "CSSSCSSJ2WviaJ7iYGoWws4NEAyYBWJFFFWvC4ZAwMM7",
+          "distributorIndex": 1
+        }
+      ],
+      "60": [
+        {
+          "label": "YRD-XP",
+          "duration": 60,
+          "rewardMint": "55thbqpqCPLZUTKL24sJdpji2XJUhA46GtgaCCmKf616",
+          "rewardDistributorPda": "8YTeZHf6qiworGixTPS3bcDFrA2mnQDxSSEjosN54X3W",
+          "distributorIndex": 0
+        },
+        {
+          "label": "CATSINDEX",
+          "duration": 60,
+          "rewardMint": "CGzMt7K1KYfVqNG2PHvqq7QXLckSHHKri8x5u2h64uLz",
+          "rewardDistributorPda": "AT5EeDNUzorME7bLSTiNXvREQABf5wryQnVzGuyXZcKo",
+          "distributorIndex": 1
+        }
+      ],
+      "120": [
+        {
+          "label": "YRD-XP",
+          "duration": 120,
+          "rewardMint": "55thbqpqCPLZUTKL24sJdpji2XJUhA46GtgaCCmKf616",
+          "rewardDistributorPda": "8gWhJYy1p3mjnXy5RVp5yDJLkqmUrjAcshMCvxJjB9mB",
+          "distributorIndex": 0
+        },
+        {
+          "label": "CATSINDEX",
+          "duration": 120,
+          "rewardMint": "CGzMt7K1KYfVqNG2PHvqq7QXLckSHHKri8x5u2h64uLz",
+          "rewardDistributorPda": "E5wArVFKakjjKMxiWGNA7eEUaCkNDv4KnKunt2BsVTgi",
+          "distributorIndex": 1
+        }
+      ]
+    }
+  },
+  "HrwrzLPtbPeedLZ6s8QxP4XxTQhFo3kD1cuCnS7x5tKA": {
+    "faction": "South",
+    "rewardDistributors": {
+      "0": [
+        {
+          "label": "YRD-XP",
+          "duration": 0,
+          "rewardMint": "55thbqpqCPLZUTKL24sJdpji2XJUhA46GtgaCCmKf616",
+          "rewardDistributorPda": "5Rk3Y7DfLzymaJeSkKrwdf7sGBMMf9en3WXaTytDEpoy",
+          "distributorIndex": 0
+        },
+        {
+          "label": "CATSINDEX",
+          "duration": 0,
+          "rewardMint": "CGzMt7K1KYfVqNG2PHvqq7QXLckSHHKri8x5u2h64uLz",
+          "rewardDistributorPda": "FrktaXrxVTYhxqGCokrgaxU2PL8RFADw2AmqkPU1seAT",
+          "distributorIndex": 1
+        }
+      ],
+      "60": [
+        {
+          "label": "YRD-XP",
+          "duration": 60,
+          "rewardMint": "55thbqpqCPLZUTKL24sJdpji2XJUhA46GtgaCCmKf616",
+          "rewardDistributorPda": "3dUFCrdDV4EF7Njn2JjCydTowMLHf7ag5vfJ8Sp3nX2K",
+          "distributorIndex": 0
+        },
+        {
+          "label": "CATSINDEX",
+          "duration": 60,
+          "rewardMint": "CGzMt7K1KYfVqNG2PHvqq7QXLckSHHKri8x5u2h64uLz",
+          "rewardDistributorPda": "EC2KHTLSGgnZZ9pnXjtyqMis5t12o9veEgpeHS6P44jh",
+          "distributorIndex": 1
+        }
+      ],
+      "120": [
+        {
+          "label": "YRD-XP",
+          "duration": 120,
+          "rewardMint": "55thbqpqCPLZUTKL24sJdpji2XJUhA46GtgaCCmKf616",
+          "rewardDistributorPda": "AVxvai3FkE3afNRX7Z88SxHz5PGqeVV7WKPXVarmigfd",
+          "distributorIndex": 0
+        },
+        {
+          "label": "CATSINDEX",
+          "duration": 120,
+          "rewardMint": "CGzMt7K1KYfVqNG2PHvqq7QXLckSHHKri8x5u2h64uLz",
+          "rewardDistributorPda": "G798kpHckP6ocjUrFxiFgbVSmwsg5f3Hgys6twQgsUxw",
+          "distributorIndex": 1
+        }
+      ]
+    }
+  },
+  "EEQndjTMeKTmKjoCvwA6C4E6wVCZefsACaCsGDBAQGLZ": {
+    "faction": "West",
+    "rewardDistributors": {
+      "0": [
+        {
+          "label": "YRD-XP",
+          "duration": 0,
+          "rewardMint": "55thbqpqCPLZUTKL24sJdpji2XJUhA46GtgaCCmKf616",
+          "rewardDistributorPda": "9zxmh2K4e9AUHQMBxNRW7hD5PetAaQPwPkZp9vLQaw8q",
+          "distributorIndex": 0
+        },
+        {
+          "label": "CATSINDEX",
+          "duration": 0,
+          "rewardMint": "CGzMt7K1KYfVqNG2PHvqq7QXLckSHHKri8x5u2h64uLz",
+          "rewardDistributorPda": "4a8wAeVmpEmfXkURncLVTDwjoFisz15sNujDGMPdrFJY",
+          "distributorIndex": 1
+        }
+      ],
+      "60": [
+        {
+          "label": "YRD-XP",
+          "duration": 60,
+          "rewardMint": "55thbqpqCPLZUTKL24sJdpji2XJUhA46GtgaCCmKf616",
+          "rewardDistributorPda": "BKbop71ceiLmKgCV8rGp3gkA3ompCnFRSKeVNEbxt5mK",
+          "distributorIndex": 0
+        },
+        {
+          "label": "CATSINDEX",
+          "duration": 60,
+          "rewardMint": "CGzMt7K1KYfVqNG2PHvqq7QXLckSHHKri8x5u2h64uLz",
+          "rewardDistributorPda": "5kQBU7Wuu46wUeZsqjKNnCE7wc8oEniK2jwcpH7H7ZjM",
+          "distributorIndex": 1
+        }
+      ],
+      "120": [
+        {
+          "label": "YRD-XP",
+          "duration": 120,
+          "rewardMint": "55thbqpqCPLZUTKL24sJdpji2XJUhA46GtgaCCmKf616",
+          "rewardDistributorPda": "7xmQq48i2kQU4Tzn6Bmpy4uoBNW8DgMRW2WbWURJkA3n",
+          "distributorIndex": 0
+        },
+        {
+          "label": "CATSINDEX",
+          "duration": 120,
+          "rewardMint": "CGzMt7K1KYfVqNG2PHvqq7QXLckSHHKri8x5u2h64uLz",
+          "rewardDistributorPda": "EdJMsHhYNCgH6HeQ8qKrLDH4fcMFkU7ri6n3Ee4RdX4r",
+          "distributorIndex": 1
+        }
+      ]
+    }
   }
 }

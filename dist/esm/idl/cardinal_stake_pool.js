@@ -384,12 +384,22 @@ export const IDL = {
                     "isSigner": false
                 },
                 {
+                    "name": "rewardAuthority",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
                     "name": "taxMint",
                     "isMut": true,
                     "isSigner": false
                 },
                 {
-                    "name": "taxMintTokenAccount",
+                    "name": "authorityTaxMintTokenAccount",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "userTaxMintTokenAccount",
                     "isMut": true,
                     "isSigner": false
                 },
@@ -1150,9 +1160,7 @@ export const IDL = {
                         "name": "minStakeSeconds",
                         "type": {
                             "option": {
-                                "vec": {
-                                    "option": "u32"
-                                }
+                                "vec": "u32"
                             }
                         }
                     },
@@ -1328,9 +1336,7 @@ export const IDL = {
                         "name": "minStakeSeconds",
                         "type": {
                             "option": {
-                                "vec": {
-                                    "option": "u32"
-                                }
+                                "vec": "u32"
                             }
                         }
                     },
@@ -1506,9 +1512,7 @@ export const IDL = {
                         "name": "minStakeSeconds",
                         "type": {
                             "option": {
-                                "vec": {
-                                    "option": "u32"
-                                }
+                                "vec": "u32"
                             }
                         }
                     },

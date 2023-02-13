@@ -15,6 +15,12 @@ pub struct UnstakeCtx<'info> {
     stake_entry: Box<Account<'info, StakeEntry>>,
 
     original_mint: Box<Account<'info, Mint>>,
+    #[account(
+        mut,
+        constraint = assert_reward_authority_owner(reward_authority.owner)?,
+    )]
+    /// CHECK: this is ok
+    reward_authority: UncheckedAccount<'info>,
 
     // tax accounts
     #[account(
@@ -24,9 +30,16 @@ pub struct UnstakeCtx<'info> {
     tax_mint: Box<Account<'info, Mint>>,
     #[account(
         mut,
-        constraint = tax_mint.key() == tax_mint_token_account.mint @ ErrorCode::InvalidTaxCoinTokenAccount
+        constraint = tax_mint.key() == authority_tax_mint_token_account.mint @ ErrorCode::InvalidTaxCoinTokenAccount,
+        token::authority = reward_authority.key(),
     )]
-    tax_mint_token_account: Box<Account<'info, TokenAccount>>,
+    authority_tax_mint_token_account: Box<Account<'info, TokenAccount>>,
+
+    #[account(
+        mut,
+        constraint = tax_mint.key() == user_tax_mint_token_account.mint @ ErrorCode::InvalidTaxCoinTokenAccount
+    )]
+    user_tax_mint_token_account: Box<Account<'info, TokenAccount>>,
 
     // stake_entry token accounts
     #[account(mut, constraint =
@@ -73,7 +86,7 @@ pub fn handler(ctx: Context<UnstakeCtx>) -> Result<()> {
             let unstaking_fee = 1000u64 * 10u64.pow(ctx.accounts.tax_mint.decimals as u32);
 
             let cpi_accounts = token::Burn {
-                from: ctx.accounts.tax_mint_token_account.to_account_info(),
+                from: ctx.accounts.user_tax_mint_token_account.to_account_info(),
                 mint: ctx.accounts.tax_mint.to_account_info(),
                 authority: ctx.accounts.user.to_account_info(),
             };
@@ -83,6 +96,22 @@ pub fn handler(ctx: Context<UnstakeCtx>) -> Result<()> {
         }
 
         return Ok(());
+    } else {
+        // else reward unstaking bonus
+        msg!("normal unstaking");
+
+        /*
+        let unstaking_fee = 1000u64 * 10u64.pow(ctx.accounts.tax_mint.decimals as u32);
+
+        let cpi_accounts = token::Transfer {
+            from: ctx.accounts.authority_tax_mint_token_account.to_account_info(),
+            to: ctx.accounts.user_tax_mint_token_account,
+            authority: ctx.accounts.reward_authority.to_account_info(),
+        };
+        let cpi_program = ctx.accounts.token_program.to_account_info();
+        let cpi_context = CpiContext::new(cpi_program, cpi_accounts);
+        token::burn(cpi_context, unstaking_fee)?;
+        */
     }
 
     if stake_pool.cooldown_seconds.is_some() && stake_pool.cooldown_seconds.unwrap() > 0 {

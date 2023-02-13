@@ -45,7 +45,7 @@ export async function newAccountWithLamports(
       lamports
     );
     await connection.confirmTransaction(signature, "confirmed");
-  } catch {}
+  } catch { }
   return account;
 }
 
@@ -108,14 +108,8 @@ export async function executeTransactions(
         requiresCreators: [config.nftCreator],
         taxMint: config.unstakeTaxMint,
         minStakeSeconds: config.durations,
-        rewardDistributors: scope.rewards.map((reward) => ({
-          rewardMintId: reward.tokenMint,
-          rewardAmount: new BN(reward.emission),
-          rewardDurationSeconds: new BN(reward.every),
-          rewardDistributorKind: RewardDistributorKind.Mint,
-        })),
       });
-    transactions.push(transaction);
+    transactions.push(...transaction);
 
     uiConfig[stakePoolId.toString()] = {
       rewardDistributors: scope.rewards.map((reward, index) => ({

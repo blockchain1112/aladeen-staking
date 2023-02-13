@@ -15,6 +15,9 @@ export declare const withInitRewardDistributor: (transaction: Transaction, conne
     defaultMultiplier?: BN;
     multiplierDecimals?: number;
     maxRewardSecondsReceived?: BN;
+    stakePoolDuration: number;
+    createRewardDistributorMintTokenAccount?: boolean;
+    createAuthorityMintTokenAccount?: boolean;
 }) => Promise<[Transaction, web3.PublicKey]>;
 export declare const withInitRewardEntry: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
     stakeEntryId: PublicKey;
@@ -28,10 +31,12 @@ export declare const withClaimRewards: (transaction: Transaction, connection: Co
     payer?: PublicKey;
     skipRewardMintTokenAccount?: boolean;
     authority?: PublicKey;
+    stakePoolDuration: number;
 }) => Promise<Transaction>;
 export declare const withCloseRewardDistributor: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
     distributorId: BN;
     stakePoolId: PublicKey;
+    stakePoolDuration: number;
 }) => Promise<Transaction>;
 export declare const withUpdateRewardEntry: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
     stakePoolId: PublicKey;
@@ -43,6 +48,7 @@ export declare const withCloseRewardEntry: (transaction: Transaction, connection
     distributorId: BN;
     stakePoolId: PublicKey;
     stakeEntryId: PublicKey;
+    stakePoolDuration: number;
 }) => Promise<Transaction>;
 export declare const withUpdateRewardDistributor: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
     distributorId: BN;
@@ -52,10 +58,12 @@ export declare const withUpdateRewardDistributor: (transaction: Transaction, con
     rewardAmount?: BN;
     rewardDurationSeconds?: BN;
     maxRewardSecondsReceived?: BN;
+    stakePoolDuration: number;
 }) => Promise<Transaction>;
 export declare const withReclaimFunds: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
     distributorId: BN;
     stakePoolId: PublicKey;
     amount: BN;
+    stakePoolDuration: number;
 }) => Promise<Transaction>;
 //# sourceMappingURL=transaction.d.ts.map

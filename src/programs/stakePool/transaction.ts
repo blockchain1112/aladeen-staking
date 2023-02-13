@@ -37,6 +37,7 @@ import {
 } from "@solana/web3.js";
 
 import { getMintSupply } from "../../utils";
+import { findRewardAuthority } from "../rewardDistributor/pda";
 import { withClaimRewards } from "../rewardDistributor/transaction";
 import {
   getPoolIdentifier,
@@ -104,13 +105,15 @@ export const withInitStakePool = async (
     endDate?: BN;
     doubleOrResetEnabled?: boolean;
     taxMint: PublicKey;
+    offset?: number;
   }
 ): Promise<[Transaction, PublicKey]> => {
   const identifierId = findIdentifierId();
   const identifierData = await tryGetAccount(() =>
     getPoolIdentifier(connection)
   );
-  const identifier = identifierData?.parsed.count || new BN(1);
+  let identifier = identifierData?.parsed.count || new BN(1);
+  identifier = identifier.add(new BN(!!params.offset ? params.offset : 0));
 
   const program = stakePoolProgram(connection, wallet);
   if (!identifierData) {
@@ -125,7 +128,10 @@ export const withInitStakePool = async (
     transaction.add(ix);
   }
 
-  const stakePoolId = findStakePoolId(identifier);
+  const stakePoolId = findStakePoolId(
+    // identifier.add(new BN(!!params.offset ? params.offset : 0))
+    identifier
+  );
   const ix = await program.methods
     .initPool({
       overlayText: params.overlayText || "STAKED",
@@ -136,7 +142,7 @@ export const withInitStakePool = async (
       authority: wallet.publicKey,
       resetOnStake: params.resetOnStake || false,
       cooldownSeconds: params.cooldownSeconds || null,
-      minStakeSeconds: params.minStakeSeconds || [],
+      minStakeSeconds: params.minStakeSeconds || 0,
       endDate: params.endDate || null,
       doubleOrResetEnabled: params.doubleOrResetEnabled || null,
       taxMint: params.taxMint,
@@ -485,6 +491,7 @@ export const withUnstake = async (
     stakePoolId: PublicKey;
     originalMintId: PublicKey;
     skipRewardMintTokenAccount?: boolean;
+    stakePoolDuration: number;
   }
 ): Promise<Transaction> => {
   if (params.distributorIds.length === 0)
@@ -500,23 +507,22 @@ export const withUnstake = async (
   await withReturnReceiptMint(transaction, connection, wallet, {
     stakeEntryId: stakeEntryId,
   });
+  const stakePoolData = await getStakePool(connection, params.stakePoolId);
   for (const [rewardDistributorIndex] of params.distributorIds.entries()) {
     if (!stakeEntryData) throw "Stake entry not found";
-
-    const stakePoolData = await getStakePool(connection, params.stakePoolId);
 
     if (
       (!stakePoolData.parsed.cooldownSeconds ||
         stakePoolData.parsed.cooldownSeconds === 0 ||
         (stakeEntryData?.parsed.cooldownStartSeconds &&
           Date.now() / 1000 -
-            stakeEntryData.parsed.cooldownStartSeconds.toNumber() >=
-            stakePoolData.parsed.cooldownSeconds)) &&
+          stakeEntryData.parsed.cooldownStartSeconds.toNumber() >=
+          stakePoolData.parsed.cooldownSeconds)) &&
       (!stakePoolData.parsed.minStakeSeconds ||
         stakePoolData.parsed.minStakeSeconds === 0 ||
         (stakeEntryData?.parsed.lastStakedAt &&
           Date.now() / 1000 - stakeEntryData.parsed.lastStakedAt.toNumber() >=
-            stakePoolData.parsed.minStakeSeconds)) &&
+          stakePoolData.parsed.minStakeSeconds)) &&
       (stakeEntryData.parsed.originalMintClaimed ||
         stakeEntryData.parsed.stakeMintClaimed)
     ) {
@@ -530,6 +536,7 @@ export const withUnstake = async (
       stakeEntryId: stakeEntryId,
       lastStaker: wallet.publicKey,
       skipRewardMintTokenAccount: params.skipRewardMintTokenAccount,
+      stakePoolDuration: params.stakePoolDuration,
     });
   }
 
@@ -560,9 +567,19 @@ export const withUnstake = async (
     stakeEntryData?.parsed.stakeMint
   );
 
-  const stakePoolData = await getStakePool(connection, params.stakePoolId);
+  const authority = stakePoolData.parsed.authority;
+  const rewardAuthority = findRewardAuthority(authority);
+
   const taxMint = stakePoolData.parsed.taxMint;
-  const taxMintTokenAccount = await withFindOrInitAssociatedTokenAccount(
+  const authorityTaxMintTokenAccount =
+    await withFindOrInitAssociatedTokenAccount(
+      transaction,
+      connection,
+      taxMint,
+      rewardAuthority,
+      wallet.publicKey
+    );
+  const userTaxMintTokenAccount = await withFindOrInitAssociatedTokenAccount(
     transaction,
     connection,
     taxMint,
@@ -582,7 +599,9 @@ export const withUnstake = async (
       userOriginalMintTokenAccount: userOriginalMintTokenAccountId,
       tokenProgram: TOKEN_PROGRAM_ID,
       taxMint,
-      taxMintTokenAccount,
+      authorityTaxMintTokenAccount,
+      userTaxMintTokenAccount,
+      rewardAuthority,
     })
     .remainingAccounts(remainingAccounts)
     .instruction();

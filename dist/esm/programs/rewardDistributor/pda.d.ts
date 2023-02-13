@@ -9,7 +9,7 @@ export declare const findRewardEntryId: (rewardDistributorId: PublicKey, stakeEn
  * Finds the reward distributor id.
  * @returns
  */
-export declare const findRewardDistributorId: (stakePoolId: PublicKey, id: BN) => PublicKey;
+export declare const findRewardDistributorId: (stakePoolId: PublicKey, id: BN, duration: number) => PublicKey;
 /**
  * Finds the reward distributor id.
  * @returns

@@ -2,6 +2,13 @@ use crate::errors::ErrorCode;
 use anchor_lang::prelude::*;
 use std::str::FromStr;
 
+pub fn assert_reward_authority_owner(pubkey: &Pubkey) -> Result<bool> {
+    if pubkey.to_string() != Pubkey::from_str("49dYrnx67y5zZnm3DZuJtqyrH6A5rHiNUUQ2gvBzSeT7").unwrap().to_string() {
+        return Err(error!(ErrorCode::InvalidPaymentManager));
+    }
+    Ok(true)
+}
+
 pub const STAKE_ENTRY_PREFIX: &str = "stake-entry";
 pub const STAKE_ENTRY_SIZE: usize = 8 + std::mem::size_of::<StakeEntry>() + 8;
 
@@ -78,7 +85,7 @@ pub struct StakePool {
     pub reset_on_stake: bool,
     pub total_staked: u32,
     pub cooldown_seconds: Option<u32>,
-    pub min_stake_seconds: Option<Vec<Option<u32>>>,
+    pub min_stake_seconds: Option<Vec<u32>>,
     pub end_date: Option<i64>,
     pub double_or_reset_enabled: Option<bool>,
     pub tax_mint: Pubkey,

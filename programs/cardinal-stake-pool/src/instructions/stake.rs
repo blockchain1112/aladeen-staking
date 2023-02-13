@@ -40,13 +40,14 @@ pub fn handler(ctx: Context<StakeCtx>, amount: u64, duration: Option<u32>) -> Re
     let stake_pool = &mut ctx.accounts.stake_pool;
     let stake_entry = &mut ctx.accounts.stake_entry;
 
-    // ensure specified duration is set in stake pool config.
-    if let Some(stake_durations) = &stake_pool.min_stake_seconds {
-        let valid_staking_duration = stake_durations.iter().find(|&stake_duration| stake_duration == &duration);
-        if valid_staking_duration.is_none() {
-            return Err(error!(ErrorCode::InvalidStakingDuration));
+    let staking_durations = stake_pool.min_stake_seconds.clone().unwrap();
+    if let Some(stake_duration) = duration {
+        if staking_durations.iter().any(|&dur| dur.eq(&stake_duration)) {
+            stake_entry.staked_duration = Some(stake_duration);
         }
-        stake_entry.staked_duration = duration
+        stake_entry.staked_duration = Some(0u32);
+    } else {
+        stake_entry.staked_duration = Some(0u32);
     }
 
     if stake_pool.end_date.is_some() && Clock::get().unwrap().unix_timestamp > stake_pool.end_date.unwrap() {

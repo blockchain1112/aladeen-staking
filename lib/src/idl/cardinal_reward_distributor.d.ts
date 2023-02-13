@@ -434,6 +434,10 @@ export type CardinalRewardDistributor = {
                         "type": {
                             "option": "u128";
                         };
+                    },
+                    {
+                        "name": "stakePoolDuration";
+                        "type": "u32";
                     }
                 ];
             };
@@ -515,6 +519,10 @@ export type CardinalRewardDistributor = {
                         "type": {
                             "option": "u128";
                         };
+                    },
+                    {
+                        "name": "stakePoolDuration";
+                        "type": "u32";
                     }
                 ];
             };

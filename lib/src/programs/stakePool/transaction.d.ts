@@ -119,6 +119,7 @@ export declare const withUnstake: (transaction: Transaction, connection: Connect
     stakePoolId: PublicKey;
     originalMintId: PublicKey;
     skipRewardMintTokenAccount?: boolean;
+    stakePoolDuration: number;
 }) => Promise<Transaction>;
 export declare const withUpdateStakePool: (transaction: Transaction, connection: Connection, wallet: Wallet, params: {
     stakePoolId: PublicKey;

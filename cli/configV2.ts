@@ -30,16 +30,20 @@ export type LockupPeriod = {
 };
 
 export type ConfigV2 = {
+  nftCreator: string;
+  unstakeTokenMint: string;
   factions: Faction[];
   lockupPeriods: LockupPeriod[];
+};
+
+export type UiConfigV2RewardDistributors = {
+  [duration: string]: UiConfigV2RewardDistributor[];
 };
 
 export type UiConfigV2 = {
   [stakePoolId: string]: {
     faction: string;
-    rewardDistributors: {
-      [duration: string]: UiConfigV2RewardDistributor[];
-    };
+    rewardDistributors: UiConfigV2RewardDistributors;
   };
 };
 
@@ -98,6 +102,7 @@ export const testUiConfigV2: UiConfigV2 = {
     },
   },
 };
+
 export const UiConfigV2GetDurations = (
   _config: UiConfigV2,
   stakePoolId: string
@@ -110,7 +115,7 @@ export const UiConfigV2GetRewardDistributors = (
   stakePoolId: string,
   duration: number | string
 ): UiConfigV2RewardDistributor[] => {
-  return _config[stakePoolId].rewardDistributors[String(duration)];
+  return _config[stakePoolId]!.rewardDistributors[String(duration)]!;
 };
 
 /*
@@ -120,6 +125,8 @@ export const UiConfigV2GetRewardDistributors = (
 */
 
 export const configV2: ConfigV2 = {
+  nftCreator: "4tQvcbRFcYKBsJLFsrVyZs2Jq8UExMoaHWWCXhWG452L",
+  unstakeTokenMint: "3orR2FBUEwRdEvHCKCG4JKC16v6VTq239BgxM79yZGv9",
   factions: ["North", "East", "South", "West"],
   lockupPeriods: [
     {
@@ -128,13 +135,17 @@ export const configV2: ConfigV2 = {
       rewards: [
         {
           label: "YRD-XP",
-          tokenMint: new PublicKey(""),
+          tokenMint: new PublicKey(
+            "55thbqpqCPLZUTKL24sJdpji2XJUhA46GtgaCCmKf616"
+          ),
           emission: 5,
           every: 86400,
         },
         {
           label: "CATSINDEX",
-          tokenMint: new PublicKey(""),
+          tokenMint: new PublicKey(
+            "CGzMt7K1KYfVqNG2PHvqq7QXLckSHHKri8x5u2h64uLz"
+          ),
           emission: 25,
           every: 86400 * 40,
         },
@@ -147,20 +158,26 @@ export const configV2: ConfigV2 = {
       rewards: [
         {
           label: "YRD-XP",
-          tokenMint: new PublicKey(""),
+          tokenMint: new PublicKey(
+            "55thbqpqCPLZUTKL24sJdpji2XJUhA46GtgaCCmKf616"
+          ),
           emission: 7.5,
           every: 86400,
         },
         {
           label: "CATSINDEX",
-          tokenMint: new PublicKey(""),
+          tokenMint: new PublicKey(
+            "CGzMt7K1KYfVqNG2PHvqq7QXLckSHHKri8x5u2h64uLz"
+          ),
           emission: 25,
           every: 86400 * 40,
         },
       ],
       unstakingBonus: {
         label: "+125 LUV",
-        tokenMint: new PublicKey(""),
+        tokenMint: new PublicKey(
+          "HCXddxmfrtHo5VCVAdK138ddHJXbxg95PfqXHgVc7cFU"
+        ),
         amount: 125,
       },
     },
@@ -170,20 +187,26 @@ export const configV2: ConfigV2 = {
       rewards: [
         {
           label: "YRD-XP",
-          tokenMint: new PublicKey(""),
+          tokenMint: new PublicKey(
+            "55thbqpqCPLZUTKL24sJdpji2XJUhA46GtgaCCmKf616"
+          ),
           emission: 10,
           every: 86400,
         },
         {
           label: "CATSINDEX",
-          tokenMint: new PublicKey(""),
+          tokenMint: new PublicKey(
+            "CGzMt7K1KYfVqNG2PHvqq7QXLckSHHKri8x5u2h64uLz"
+          ),
           emission: 25,
           every: 86400 * 40,
         },
       ],
       unstakingBonus: {
         label: "+375 LUV",
-        tokenMint: new PublicKey(""),
+        tokenMint: new PublicKey(
+          "HCXddxmfrtHo5VCVAdK138ddHJXbxg95PfqXHgVc7cFU"
+        ),
         amount: 125,
       },
     },

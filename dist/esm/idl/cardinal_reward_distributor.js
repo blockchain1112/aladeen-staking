@@ -434,6 +434,10 @@ export const IDL = {
                         "type": {
                             "option": "u128"
                         }
+                    },
+                    {
+                        "name": "stakePoolDuration",
+                        "type": "u32"
                     }
                 ]
             }
@@ -515,6 +519,10 @@ export const IDL = {
                         "type": {
                             "option": "u128"
                         }
+                    },
+                    {
+                        "name": "stakePoolDuration",
+                        "type": "u32"
                     }
                 ]
             }

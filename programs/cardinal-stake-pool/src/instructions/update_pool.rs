@@ -10,7 +10,7 @@ pub struct UpdatePoolIx {
     authority: Pubkey,
     reset_on_stake: bool,
     cooldown_seconds: Option<u32>,
-    min_stake_seconds: Option<Vec<Option<u32>>>,
+    min_stake_seconds: Option<Vec<u32>>,
     end_date: Option<i64>,
     double_or_reset_enabled: Option<bool>,
 }

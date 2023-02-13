@@ -27,11 +27,13 @@ import { getMintSupply } from "./utils";
  */
 export const createStakePool = async (connection, wallet, params) => {
     const transaction = new Transaction();
+    const rewardTransaction = new Transaction();
     const [, stakePoolId] = await withInitStakePool(transaction, connection, wallet, params);
     let rewardDistributorIds = [];
     if (params.rewardDistributors) {
+        let rewardMintTokenAccountCreationRecord = params.rewardDistributors.reduce((acc, _dist) => ({ ...acc, [_dist.rewardMintId.toString()]: false }), {});
         for (const [index, rewardDistributor,] of params.rewardDistributors.entries()) {
-            const [, rewardDistributorId] = await withInitRewardDistributor(transaction, connection, wallet, {
+            const [, rewardDistributorId] = await withInitRewardDistributor(rewardTransaction, connection, wallet, {
                 distributorId: new BN(index),
                 stakePoolId: stakePoolId,
                 rewardMintId: rewardDistributor.rewardMintId,
@@ -40,14 +42,17 @@ export const createStakePool = async (connection, wallet, params) => {
                 kind: rewardDistributor.rewardDistributorKind,
                 maxSupply: rewardDistributor.maxSupply,
                 supply: rewardDistributor.supply,
+                stakePoolDuration: rewardDistributor.duration,
+                createRewardDistributorMintTokenAccount: !rewardMintTokenAccountCreationRecord[rewardDistributor.rewardMintId.toString()],
             });
+            rewardMintTokenAccountCreationRecord[rewardDistributor.rewardMintId.toString()] = true;
             rewardDistributorIds.push([
                 new BN(index).toNumber(),
                 rewardDistributorId,
             ]);
         }
     }
-    return [transaction, stakePoolId, rewardDistributorIds];
+    return [[transaction, rewardTransaction], stakePoolId, rewardDistributorIds];
 };
 /**
  * Convenience call to create a reward distributor
@@ -97,7 +102,7 @@ export const initializeRewardEntry = async (connection, wallet, params) => {
             originalMintId: params.originalMintId,
         });
     }
-    const rewardDistributorId = findRewardDistributorId(params.stakePoolId, params.distributorId);
+    const rewardDistributorId = findRewardDistributorId(params.stakePoolId, params.distributorId, params.duration);
     await withInitRewardEntry(transaction, connection, wallet, {
         stakeEntryId: stakeEntryId,
         rewardDistributorId: rewardDistributorId,
@@ -182,6 +187,7 @@ export const claimRewards = async (connection, wallet, params) => {
         payer: params.payer,
         skipRewardMintTokenAccount: params.skipRewardMintTokenAccount,
         authority: params.authority,
+        stakePoolDuration: params.stakePoolDuration,
     });
     return transaction;
 };
@@ -349,7 +355,7 @@ export const claimGroupRewards = async (connection, wallet, params) => {
     if (!groupRewardEntry) {
         const stakeEntriesData = await getStakeEntries(connection, params.stakeEntryIds);
         const stakeEntries = await Promise.all(stakeEntriesData.map((stakeEntry) => {
-            const rewardDistributorId = findRewardDistributorId(stakeEntry.parsed.pool, params.distributorId);
+            const rewardDistributorId = findRewardDistributorId(stakeEntry.parsed.pool, params.distributorId, 0);
             return {
                 stakeEntryId: stakeEntry.pubkey,
                 originalMint: stakeEntry.parsed.originalMint,

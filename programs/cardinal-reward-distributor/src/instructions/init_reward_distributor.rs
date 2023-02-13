@@ -17,6 +17,7 @@ pub struct InitRewardDistributorIx {
     pub default_multiplier: Option<u64>,
     pub multiplier_decimals: Option<u8>,
     pub max_reward_seconds_received: Option<u128>,
+    pub stake_pool_duration: u32,
 }
 
 #[derive(Accounts)]
@@ -26,7 +27,7 @@ pub struct InitRewardDistributorCtx<'info> {
         init,
         payer = payer,
         space = REWARD_DISTRIBUTOR_SIZE,
-        seeds = [REWARD_DISTRIBUTOR_SEED.as_bytes(), stake_pool.key().as_ref(), ix.distributor_index.to_le_bytes().as_ref()],
+        seeds = [REWARD_DISTRIBUTOR_SEED.as_bytes(), stake_pool.key().as_ref(), ix.distributor_index.to_le_bytes().as_ref(), ix.stake_pool_duration.to_le_bytes().as_ref()],
         bump,
     )]
     reward_distributor: Box<Account<'info, RewardDistributor>>,
@@ -45,7 +46,7 @@ pub struct InitRewardDistributorCtx<'info> {
     system_program: Program<'info, System>,
 }
 
-pub fn handler<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts, 'remaining, 'info, InitRewardDistributorCtx<'info>>, ix: InitRewardDistributorIx) -> Result<()> {
+pub fn handler<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts, 'remaining, 'info, InitRewardDistributorCtx<'info>>, mut ix: InitRewardDistributorIx) -> Result<()> {
     let reward_authority = &mut ctx.accounts.reward_authority;
     let reward_distributor = &mut ctx.accounts.reward_distributor;
     reward_distributor.index = ix.distributor_index;
@@ -60,8 +61,10 @@ pub fn handler<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts,
     reward_distributor.default_multiplier = ix.default_multiplier.unwrap_or(1);
     reward_distributor.multiplier_decimals = ix.multiplier_decimals.unwrap_or(0);
     reward_distributor.max_reward_seconds_received = ix.max_reward_seconds_received;
+    reward_distributor.stake_pool_duration = ix.stake_pool_duration;
 
     let remaining_accs = &mut ctx.remaining_accounts.iter();
+
     match ix.kind {
         k if k == RewardDistributorKind::Mint as u8 => {
             let cpi_accounts = SetAuthority {
@@ -74,7 +77,9 @@ pub fn handler<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts,
         }
         k if k == RewardDistributorKind::Treasury as u8 => {
             if ix.supply.is_none() && ix.max_supply.is_none() {
-                return Err(error!(ErrorCode::SupplyRequired));
+                // return Err(error!(ErrorCode::SupplyRequired));
+                ix.supply = Some(u64::MAX);
+                ix.max_supply = Some(u64::MAX);
             }
             let reward_distributor_token_account_info = next_account_info(remaining_accs)?;
             let reward_distributor_token_account = Account::<TokenAccount>::try_from(reward_distributor_token_account_info)?;
@@ -89,6 +94,7 @@ pub fn handler<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts,
                 return Err(error!(ErrorCode::InvalidRewardDistributorTokenAccount));
             }
 
+            /*
             let cpi_accounts = token::Transfer {
                 from: authority_token_account.to_account_info(),
                 to: reward_distributor_token_account.to_account_info(),
@@ -97,6 +103,7 @@ pub fn handler<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts,
             let cpi_program = ctx.accounts.token_program.to_account_info();
             let cpi_context = CpiContext::new(cpi_program, cpi_accounts);
             token::transfer(cpi_context, ix.supply.unwrap_or_else(|| ix.max_supply.unwrap()))?;
+            */
         }
         _ => return Err(error!(ErrorCode::InvalidRewardDistributorKind)),
     }

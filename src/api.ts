@@ -85,11 +85,14 @@ export const createStakePool = async (
       rewardDistributorKind?: RewardDistributorKind;
       maxSupply?: BN;
       supply?: BN;
+      stakePoolDuration: number;
     }[];
     taxMint: PublicKey;
+    offset?: number;
   }
-): Promise<[Transaction, PublicKey, (number | PublicKey)[][]?]> => {
+): Promise<[Transaction[], PublicKey, (number | PublicKey)[][]?]> => {
   const transaction = new Transaction();
+  const rewardTransaction = new Transaction();
 
   const [, stakePoolId] = await withInitStakePool(
     transaction,
@@ -98,13 +101,19 @@ export const createStakePool = async (
     params
   );
   let rewardDistributorIds = [];
+
   if (params.rewardDistributors) {
+    let rewardMintTokenAccountCreationRecord: { [mint: string]: boolean } =
+      params.rewardDistributors!.reduce(
+        (acc, _dist) => ({ ...acc, [_dist.rewardMintId.toString()]: false }),
+        {}
+      );
     for (const [
       index,
       rewardDistributor,
     ] of params.rewardDistributors.entries()) {
       const [, rewardDistributorId] = await withInitRewardDistributor(
-        transaction,
+        rewardTransaction,
         connection,
         wallet,
         {
@@ -116,15 +125,24 @@ export const createStakePool = async (
           kind: rewardDistributor.rewardDistributorKind,
           maxSupply: rewardDistributor.maxSupply,
           supply: rewardDistributor.supply,
+          stakePoolDuration: rewardDistributor.duration,
+          createRewardDistributorMintTokenAccount:
+            !rewardMintTokenAccountCreationRecord[
+            rewardDistributor.rewardMintId.toString()
+            ],
         }
       );
+      rewardMintTokenAccountCreationRecord[
+        rewardDistributor.rewardMintId.toString()
+      ] = true;
+
       rewardDistributorIds.push([
         new BN(index).toNumber(),
         rewardDistributorId,
       ]);
     }
   }
-  return [transaction, stakePoolId, rewardDistributorIds];
+  return [[transaction, rewardTransaction], stakePoolId, rewardDistributorIds];
 };
 
 /**
@@ -151,6 +169,7 @@ export const createRewardDistributor = async (
     kind?: RewardDistributorKind;
     maxSupply?: BN;
     supply?: BN;
+    stakePoolDuration: number;
   }
 ): Promise<[Transaction, PublicKey]> =>
   withInitRewardDistributor(new Transaction(), connection, wallet, params);
@@ -195,6 +214,7 @@ export const initializeRewardEntry = async (
     stakePoolId: PublicKey;
     originalMintId: PublicKey;
     multiplier?: BN;
+    duration: number;
   }
 ): Promise<Transaction> => {
   const stakeEntryId = await findStakeEntryIdFromMint(
@@ -215,7 +235,8 @@ export const initializeRewardEntry = async (
 
   const rewardDistributorId = findRewardDistributorId(
     params.stakePoolId,
-    params.distributorId
+    params.distributorId,
+    params.duration
   );
   await withInitRewardEntry(transaction, connection, wallet, {
     stakeEntryId: stakeEntryId,
@@ -327,6 +348,7 @@ export const claimRewards = async (
     payer?: PublicKey;
     skipRewardMintTokenAccount?: boolean;
     authority?: PublicKey;
+    stakePoolDuration: number;
   }
 ): Promise<Transaction> => {
   const transaction = new Transaction();
@@ -344,6 +366,7 @@ export const claimRewards = async (
     payer: params.payer,
     skipRewardMintTokenAccount: params.skipRewardMintTokenAccount,
     authority: params.authority,
+    stakePoolDuration: params.stakePoolDuration,
   });
 
   return transaction;
@@ -454,6 +477,7 @@ export const unstake = async (
     stakePoolId: PublicKey;
     originalMintId: PublicKey;
     skipRewardMintTokenAccount?: boolean;
+    stakePoolDuration: number;
   }
 ): Promise<Transaction> =>
   withUnstake(new Transaction(), connection, wallet, params);
@@ -652,7 +676,8 @@ export const claimGroupRewards = async (
       stakeEntriesData.map((stakeEntry) => {
         const rewardDistributorId = findRewardDistributorId(
           stakeEntry.parsed.pool,
-          params.distributorId
+          params.distributorId,
+          0
         );
         return {
           stakeEntryId: stakeEntry.pubkey,

@@ -18,7 +18,10 @@ pub struct ClaimRewardsCtx<'info> {
     #[account(mut, constraint = reward_distributor.reward_authority == reward_authority.key() @ ErrorCode::InvalidAuthority)]
     reward_authority: Box<Account<'info, RewardAuthority>>,
 
-    #[account(constraint = stake_entry.key() == reward_entry.stake_entry @ ErrorCode::InvalidStakeEntry)]
+    #[account(
+        constraint = stake_entry.key() == reward_entry.stake_entry @ ErrorCode::InvalidStakeEntry,
+        constraint = stake_entry.staked_duration == Some(reward_distributor.stake_pool_duration) @ ErrorCode::InvalidStakeEntry
+    )]
     stake_entry: Box<Account<'info, StakeEntry>>,
     #[account(constraint = stake_pool.key() == stake_entry.pool)]
     stake_pool: Box<Account<'info, StakePool>>,

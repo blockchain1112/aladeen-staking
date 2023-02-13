@@ -30,12 +30,17 @@ export const findRewardEntryId = (
  * Finds the reward distributor id.
  * @returns
  */
-export const findRewardDistributorId = (stakePoolId: PublicKey, id: BN) => {
+export const findRewardDistributorId = (
+  stakePoolId: PublicKey,
+  id: BN,
+  duration: number
+) => {
   return PublicKey.findProgramAddressSync(
     [
       Buffer.from(REWARD_DISTRIBUTOR_SEED),
       stakePoolId.toBuffer(),
       id.toArrayLike(Buffer, "le", 1),
+      new BN(duration).toArrayLike(Buffer, "le", 4),
     ],
     REWARD_DISTRIBUTOR_ADDRESS
   )[0];

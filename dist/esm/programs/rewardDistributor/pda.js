@@ -1,4 +1,4 @@
-import { utils } from "@project-serum/anchor";
+import { utils, BN } from "@project-serum/anchor";
 import { PublicKey } from "@solana/web3.js";
 import { REWARD_AUTHORITY_SEED, REWARD_DISTRIBUTOR_ADDRESS, REWARD_DISTRIBUTOR_SEED, REWARD_ENTRY_SEED, } from ".";
 /**
@@ -16,11 +16,12 @@ export const findRewardEntryId = (rewardDistributorId, stakeEntryId) => {
  * Finds the reward distributor id.
  * @returns
  */
-export const findRewardDistributorId = (stakePoolId, id) => {
+export const findRewardDistributorId = (stakePoolId, id, duration) => {
     return PublicKey.findProgramAddressSync([
         Buffer.from(REWARD_DISTRIBUTOR_SEED),
         stakePoolId.toBuffer(),
         id.toArrayLike(Buffer, "le", 1),
+        new BN(duration).toArrayLike(Buffer, "le", 4),
     ], REWARD_DISTRIBUTOR_ADDRESS)[0];
 };
 /**

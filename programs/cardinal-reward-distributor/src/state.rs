@@ -44,6 +44,7 @@ pub struct RewardDistributor {
     pub default_multiplier: u64,
     pub multiplier_decimals: u8,
     pub max_reward_seconds_received: Option<u128>,
+    pub stake_pool_duration: u32,
 }
 
 pub const REWARD_AUTHORITY_SEED: &str = "reward-authority";

@@ -38,9 +38,11 @@ export declare const createStakePool: (connection: Connection, wallet: Wallet, p
         rewardDistributorKind?: RewardDistributorKind;
         maxSupply?: BN;
         supply?: BN;
+        stakePoolDuration: number;
     }[];
     taxMint: PublicKey;
-}) => Promise<[Transaction, PublicKey, (number | PublicKey)[][]?]>;
+    offset?: number;
+}) => Promise<[Transaction[], PublicKey, (number | PublicKey)[][]?]>;
 /**
  * Convenience call to create a reward distributor
  * @param connection - Connection to use
@@ -62,6 +64,7 @@ export declare const createRewardDistributor: (connection: Connection, wallet: W
     kind?: RewardDistributorKind;
     maxSupply?: BN;
     supply?: BN;
+    stakePoolDuration: number;
 }) => Promise<[Transaction, PublicKey]>;
 /**
  * Convenience call to create a stake entry
@@ -90,6 +93,7 @@ export declare const initializeRewardEntry: (connection: Connection, wallet: Wal
     stakePoolId: PublicKey;
     originalMintId: PublicKey;
     multiplier?: BN;
+    duration: number;
 }) => Promise<Transaction>;
 /**
  * Convenience call to authorize a stake entry
@@ -133,6 +137,7 @@ export declare const claimRewards: (connection: Connection, wallet: Wallet, para
     payer?: PublicKey;
     skipRewardMintTokenAccount?: boolean;
     authority?: PublicKey;
+    stakePoolDuration: number;
 }) => Promise<Transaction>;
 /**
  * Convenience method to stake tokens
@@ -167,6 +172,7 @@ export declare const unstake: (connection: Connection, wallet: Wallet, params: {
     stakePoolId: PublicKey;
     originalMintId: PublicKey;
     skipRewardMintTokenAccount?: boolean;
+    stakePoolDuration: number;
 }) => Promise<Transaction>;
 /**
  * Convenience call to create a group entry
