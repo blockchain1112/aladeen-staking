@@ -1,5 +1,12 @@
 import { PublicKey } from "@solana/web3.js";
 
+const CREATOR = "4tQvcbRFcYKBsJLFsrVyZs2Jq8UExMoaHWWCXhWG452L";
+const UNSTAKE = "3orR2FBUEwRdEvHCKCG4JKC16v6VTq239BgxM79yZGv9";
+
+const TOKEN_A = new PublicKey("55thbqpqCPLZUTKL24sJdpji2XJUhA46GtgaCCmKf616");
+const TOKEN_B = new PublicKey("CGzMt7K1KYfVqNG2PHvqq7QXLckSHHKri8x5u2h64uLz");
+const TOKEN_C = new PublicKey("HCXddxmfrtHo5VCVAdK138ddHJXbxg95PfqXHgVc7cFU");
+
 export type UiConfigV2RewardDistributor = {
   label: string;
   duration: number;
@@ -26,7 +33,7 @@ export type LockupPeriod = {
   name: string;
   duration: number;
   rewards: RewardV2[];
-  unstakingBonus: UnstakingBonus | null;
+  unstakingBonus: UnstakingBonus | null; // stub
 };
 
 export type ConfigV2 = {
@@ -125,8 +132,8 @@ export const UiConfigV2GetRewardDistributors = (
 */
 
 export const configV2: ConfigV2 = {
-  nftCreator: "4tQvcbRFcYKBsJLFsrVyZs2Jq8UExMoaHWWCXhWG452L",
-  unstakeTokenMint: "3orR2FBUEwRdEvHCKCG4JKC16v6VTq239BgxM79yZGv9",
+  nftCreator: CREATOR,
+  unstakeTokenMint: UNSTAKE,
   factions: ["North", "East", "South", "West"],
   lockupPeriods: [
     {
@@ -135,17 +142,13 @@ export const configV2: ConfigV2 = {
       rewards: [
         {
           label: "YRD-XP",
-          tokenMint: new PublicKey(
-            "55thbqpqCPLZUTKL24sJdpji2XJUhA46GtgaCCmKf616"
-          ),
+          tokenMint: TOKEN_A,
           emission: 5,
           every: 86400,
         },
         {
           label: "CATSINDEX",
-          tokenMint: new PublicKey(
-            "CGzMt7K1KYfVqNG2PHvqq7QXLckSHHKri8x5u2h64uLz"
-          ),
+          tokenMint: TOKEN_B,
           emission: 25,
           every: 86400 * 40,
         },
@@ -158,26 +161,20 @@ export const configV2: ConfigV2 = {
       rewards: [
         {
           label: "YRD-XP",
-          tokenMint: new PublicKey(
-            "55thbqpqCPLZUTKL24sJdpji2XJUhA46GtgaCCmKf616"
-          ),
+          tokenMint: TOKEN_A,
           emission: 7.5,
           every: 86400,
         },
         {
           label: "CATSINDEX",
-          tokenMint: new PublicKey(
-            "CGzMt7K1KYfVqNG2PHvqq7QXLckSHHKri8x5u2h64uLz"
-          ),
+          tokenMint: TOKEN_B,
           emission: 25,
           every: 86400 * 40,
         },
       ],
       unstakingBonus: {
         label: "+125 LUV",
-        tokenMint: new PublicKey(
-          "HCXddxmfrtHo5VCVAdK138ddHJXbxg95PfqXHgVc7cFU"
-        ),
+        tokenMint: TOKEN_C,
         amount: 125,
       },
     },
@@ -187,26 +184,20 @@ export const configV2: ConfigV2 = {
       rewards: [
         {
           label: "YRD-XP",
-          tokenMint: new PublicKey(
-            "55thbqpqCPLZUTKL24sJdpji2XJUhA46GtgaCCmKf616"
-          ),
+          tokenMint: TOKEN_A,
           emission: 10,
           every: 86400,
         },
         {
           label: "CATSINDEX",
-          tokenMint: new PublicKey(
-            "CGzMt7K1KYfVqNG2PHvqq7QXLckSHHKri8x5u2h64uLz"
-          ),
+          tokenMint: TOKEN_B,
           emission: 25,
           every: 86400 * 40,
         },
       ],
       unstakingBonus: {
         label: "+375 LUV",
-        tokenMint: new PublicKey(
-          "HCXddxmfrtHo5VCVAdK138ddHJXbxg95PfqXHgVc7cFU"
-        ),
+        tokenMint: TOKEN_C,
         amount: 125,
       },
     },
