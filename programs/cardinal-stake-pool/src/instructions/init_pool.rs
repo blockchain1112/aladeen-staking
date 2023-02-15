@@ -51,7 +51,7 @@ pub fn handler(ctx: Context<InitPoolCtx>, ix: InitPoolIx) -> Result<()> {
     stake_pool.cooldown_seconds = ix.cooldown_seconds;
     stake_pool.min_stake_seconds = ix.min_stake_seconds;
     stake_pool.end_date = ix.end_date;
-    stake_pool.double_or_reset_enabled = false;
+    stake_pool.double_or_reset_enabled = Some(false);
     stake_pool.tax_mint = ix.tax_mint;
     let identifier = &mut ctx.accounts.identifier;
     identifier.count += 1;
