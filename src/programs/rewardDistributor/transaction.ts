@@ -166,7 +166,8 @@ export const withClaimRewards = async (
       connection,
       rewardDistributorData!.parsed.rewardMint,
       params.lastStaker,
-      params.payer ?? wallet.publicKey
+      params.payer ?? wallet.publicKey,
+      true
     );
 
   const remainingAccountsForKind = await withRemainingAccountsForKind(

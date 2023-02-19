@@ -77,7 +77,7 @@ const withClaimRewards = async (transaction, connection, wallet, params) => {
     const rewardAuthority = rewardDistributorData === null || rewardDistributorData === void 0 ? void 0 : rewardDistributorData.parsed.rewardAuthority;
     const rewardMintTokenAccountId = params.skipRewardMintTokenAccount
         ? await (0, common_1.findAta)(rewardDistributorData.parsed.rewardMint, params.lastStaker, true)
-        : await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, rewardDistributorData.parsed.rewardMint, params.lastStaker, (_a = params.payer) !== null && _a !== void 0 ? _a : wallet.publicKey);
+        : await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, rewardDistributorData.parsed.rewardMint, params.lastStaker, (_a = params.payer) !== null && _a !== void 0 ? _a : wallet.publicKey, true);
     const remainingAccountsForKind = await (0, utils_1.withRemainingAccountsForKind)(transaction, connection, wallet, rewardAuthority, rewardDistributorData.parsed.kind, rewardDistributorData.parsed.rewardMint, true);
     const rewardEntryId = (0, pda_1.findRewardEntryId)(rewardDistributorData.pubkey, params.stakeEntryId);
     const rewardEntryData = await (0, common_1.tryGetAccount)(() => (0, accounts_1.getRewardEntry)(connection, rewardEntryId));

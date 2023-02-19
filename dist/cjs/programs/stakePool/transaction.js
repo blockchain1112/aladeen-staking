@@ -325,13 +325,13 @@ const withUnstake = async (transaction, connection, wallet, params) => {
         });
     }
     const stakeEntryOriginalMintTokenAccountId = await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, params.originalMintId, stakeEntryId, wallet.publicKey, true);
-    const userOriginalMintTokenAccountId = await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, params.originalMintId, wallet.publicKey, wallet.publicKey);
+    const userOriginalMintTokenAccountId = await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, params.originalMintId, wallet.publicKey, wallet.publicKey, true);
     const remainingAccounts = await (0, utils_2.withRemainingAccountsForUnstake)(transaction, connection, wallet, stakeEntryId, stakeEntryData === null || stakeEntryData === void 0 ? void 0 : stakeEntryData.parsed.stakeMint);
     const authority = stakePoolData.parsed.authority;
     const rewardAuthority = (0, pda_2.findRewardAuthority)(authority);
     const taxMint = stakePoolData.parsed.taxMint;
-    const authorityTaxMintTokenAccount = await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, taxMint, rewardAuthority, wallet.publicKey);
-    const userTaxMintTokenAccount = await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, taxMint, wallet.publicKey, wallet.publicKey);
+    const authorityTaxMintTokenAccount = await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, taxMint, rewardAuthority, wallet.publicKey, true);
+    const userTaxMintTokenAccount = await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, taxMint, wallet.publicKey, wallet.publicKey, true);
     const program = (0, constants_1.stakePoolProgram)(connection, wallet);
     const ix = await program.methods
         .unstake()
@@ -562,8 +562,8 @@ const withBoostStakeEntry = async (transaction, connection, wallet, params) => {
     const stakeBoosterId = (0, pda_3.findStakeBoosterId)(params.stakePoolId, params.stakeBoosterIdentifier);
     const stakeBooster = await (0, accounts_2.getStakeBooster)(connection, stakeBoosterId);
     const paymentManager = await (0, accounts_1.getPaymentManager)(connection, stakeBooster.parsed.paymentManager);
-    const feeCollectorTokenAccount = await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, stakeBooster.parsed.paymentMint, paymentManager.parsed.feeCollector, (_a = params.payer) !== null && _a !== void 0 ? _a : wallet.publicKey);
-    const paymentRecipientTokenAccount = await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, stakeBooster.parsed.paymentMint, stakeBooster.parsed.paymentRecipient, (_b = params.payer) !== null && _b !== void 0 ? _b : wallet.publicKey);
+    const feeCollectorTokenAccount = await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, stakeBooster.parsed.paymentMint, paymentManager.parsed.feeCollector, (_a = params.payer) !== null && _a !== void 0 ? _a : wallet.publicKey, true);
+    const paymentRecipientTokenAccount = await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, stakeBooster.parsed.paymentMint, stakeBooster.parsed.paymentRecipient, (_b = params.payer) !== null && _b !== void 0 ? _b : wallet.publicKey, true);
     const program = (0, constants_1.stakePoolProgram)(connection, wallet);
     const ix = await program.methods
         .boostStakeEntry({ secondsToBoost: params.secondsToBoost })

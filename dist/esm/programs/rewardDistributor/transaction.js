@@ -72,7 +72,7 @@ export const withClaimRewards = async (transaction, connection, wallet, params) 
     const rewardAuthority = rewardDistributorData === null || rewardDistributorData === void 0 ? void 0 : rewardDistributorData.parsed.rewardAuthority;
     const rewardMintTokenAccountId = params.skipRewardMintTokenAccount
         ? await findAta(rewardDistributorData.parsed.rewardMint, params.lastStaker, true)
-        : await withFindOrInitAssociatedTokenAccount(transaction, connection, rewardDistributorData.parsed.rewardMint, params.lastStaker, (_a = params.payer) !== null && _a !== void 0 ? _a : wallet.publicKey);
+        : await withFindOrInitAssociatedTokenAccount(transaction, connection, rewardDistributorData.parsed.rewardMint, params.lastStaker, (_a = params.payer) !== null && _a !== void 0 ? _a : wallet.publicKey, true);
     const remainingAccountsForKind = await withRemainingAccountsForKind(transaction, connection, wallet, rewardAuthority, rewardDistributorData.parsed.kind, rewardDistributorData.parsed.rewardMint, true);
     const rewardEntryId = findRewardEntryId(rewardDistributorData.pubkey, params.stakeEntryId);
     const rewardEntryData = await tryGetAccount(() => getRewardEntry(connection, rewardEntryId));

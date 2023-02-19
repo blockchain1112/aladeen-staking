@@ -556,7 +556,8 @@ export const withUnstake = async (
       connection,
       params.originalMintId,
       wallet.publicKey,
-      wallet.publicKey
+      wallet.publicKey,
+      true
     );
 
   const remainingAccounts = await withRemainingAccountsForUnstake(
@@ -577,14 +578,16 @@ export const withUnstake = async (
       connection,
       taxMint,
       rewardAuthority,
-      wallet.publicKey
+      wallet.publicKey,
+      true
     );
   const userTaxMintTokenAccount = await withFindOrInitAssociatedTokenAccount(
     transaction,
     connection,
     taxMint,
     wallet.publicKey,
-    wallet.publicKey
+    wallet.publicKey,
+    true
   );
 
   const program = stakePoolProgram(connection, wallet);
@@ -980,7 +983,8 @@ export const withBoostStakeEntry = async (
     connection,
     stakeBooster.parsed.paymentMint,
     paymentManager.parsed.feeCollector,
-    params.payer ?? wallet.publicKey
+    params.payer ?? wallet.publicKey,
+    true
   );
   const paymentRecipientTokenAccount =
     await withFindOrInitAssociatedTokenAccount(
@@ -988,7 +992,8 @@ export const withBoostStakeEntry = async (
       connection,
       stakeBooster.parsed.paymentMint,
       stakeBooster.parsed.paymentRecipient,
-      params.payer ?? wallet.publicKey
+      params.payer ?? wallet.publicKey,
+      true
     );
   const program = stakePoolProgram(connection, wallet);
   const ix = await program.methods
