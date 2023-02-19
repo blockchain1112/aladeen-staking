@@ -24,7 +24,6 @@ import {
   withClaimRewards,
   withInitRewardDistributor,
   withInitRewardEntry,
-  withUpdateRewardEntry,
 } from "./programs/rewardDistributor/transaction";
 import { ReceiptType } from "./programs/stakePool";
 import {
@@ -221,17 +220,8 @@ export const initializeRewardEntry = async (
     params.stakePoolId,
     params.originalMintId
   );
-  const stakeEntryData = await tryGetAccount(() =>
-    getStakeEntry(connection, stakeEntryId)
-  );
 
   const transaction = new Transaction();
-  if (!stakeEntryData) {
-    await withInitStakeEntry(transaction, connection, wallet, {
-      stakePoolId: params.stakePoolId,
-      originalMintId: params.originalMintId,
-    });
-  }
 
   const rewardDistributorId = findRewardDistributorId(
     params.stakePoolId,
@@ -243,12 +233,6 @@ export const initializeRewardEntry = async (
     rewardDistributorId: rewardDistributorId,
   });
 
-  await withUpdateRewardEntry(transaction, connection, wallet, {
-    stakePoolId: params.stakePoolId,
-    rewardDistributorId: rewardDistributorId,
-    stakeEntryId: stakeEntryId,
-    multiplier: params.multiplier ?? new BN(1), //TODO default multiplier
-  });
   return transaction;
 };
 

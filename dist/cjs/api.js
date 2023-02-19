@@ -98,26 +98,12 @@ exports.createStakeEntry = createStakeEntry;
  * @returns
  */
 const initializeRewardEntry = async (connection, wallet, params) => {
-    var _a;
     const stakeEntryId = await (0, utils_1.findStakeEntryIdFromMint)(params.stakePoolId, params.originalMintId);
-    const stakeEntryData = await (0, common_1.tryGetAccount)(() => (0, accounts_2.getStakeEntry)(connection, stakeEntryId));
     const transaction = new web3_js_1.Transaction();
-    if (!stakeEntryData) {
-        await (0, transaction_3.withInitStakeEntry)(transaction, connection, wallet, {
-            stakePoolId: params.stakePoolId,
-            originalMintId: params.originalMintId,
-        });
-    }
     const rewardDistributorId = (0, pda_2.findRewardDistributorId)(params.stakePoolId, params.distributorId, params.duration);
     await (0, transaction_2.withInitRewardEntry)(transaction, connection, wallet, {
         stakeEntryId: stakeEntryId,
         rewardDistributorId: rewardDistributorId,
-    });
-    await (0, transaction_2.withUpdateRewardEntry)(transaction, connection, wallet, {
-        stakePoolId: params.stakePoolId,
-        rewardDistributorId: rewardDistributorId,
-        stakeEntryId: stakeEntryId,
-        multiplier: (_a = params.multiplier) !== null && _a !== void 0 ? _a : new anchor_1.BN(1), //TODO default multiplier
     });
     return transaction;
 };

@@ -5,7 +5,7 @@ import { getGroupRewardEntry } from "./programs/groupRewardDistributor/accounts"
 import { findGroupRewardEntryId } from "./programs/groupRewardDistributor/pda";
 import { withClaimGroupRewards, withCloseGroupRewardEntry, withInitGroupRewardDistributor, withInitGroupRewardEntry, withUpdateGroupRewardDistributor, } from "./programs/groupRewardDistributor/transaction";
 import { findRewardDistributorId } from "./programs/rewardDistributor/pda";
-import { withClaimRewards, withInitRewardDistributor, withInitRewardEntry, withUpdateRewardEntry, } from "./programs/rewardDistributor/transaction";
+import { withClaimRewards, withInitRewardDistributor, withInitRewardEntry, } from "./programs/rewardDistributor/transaction";
 import { ReceiptType } from "./programs/stakePool";
 import { getStakeEntries, getStakeEntry, getStakePool, } from "./programs/stakePool/accounts";
 import { withAddToGroupEntry, withAuthorizeStakeEntry, withClaimReceiptMint, withInitGroupStakeEntry, withInitStakeEntry, withInitStakeMint, withInitStakePool, withInitUngrouping, withRemoveFromGroupEntry, withStake, withUnstake, withUpdateTotalStakeSeconds, } from "./programs/stakePool/transaction";
@@ -92,26 +92,12 @@ export const createStakeEntry = async (connection, wallet, params) => {
  * @returns
  */
 export const initializeRewardEntry = async (connection, wallet, params) => {
-    var _a;
     const stakeEntryId = await findStakeEntryIdFromMint(params.stakePoolId, params.originalMintId);
-    const stakeEntryData = await tryGetAccount(() => getStakeEntry(connection, stakeEntryId));
     const transaction = new Transaction();
-    if (!stakeEntryData) {
-        await withInitStakeEntry(transaction, connection, wallet, {
-            stakePoolId: params.stakePoolId,
-            originalMintId: params.originalMintId,
-        });
-    }
     const rewardDistributorId = findRewardDistributorId(params.stakePoolId, params.distributorId, params.duration);
     await withInitRewardEntry(transaction, connection, wallet, {
         stakeEntryId: stakeEntryId,
         rewardDistributorId: rewardDistributorId,
-    });
-    await withUpdateRewardEntry(transaction, connection, wallet, {
-        stakePoolId: params.stakePoolId,
-        rewardDistributorId: rewardDistributorId,
-        stakeEntryId: stakeEntryId,
-        multiplier: (_a = params.multiplier) !== null && _a !== void 0 ? _a : new BN(1), //TODO default multiplier
     });
     return transaction;
 };
