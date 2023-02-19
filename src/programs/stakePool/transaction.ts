@@ -38,7 +38,6 @@ import {
 
 import { getMintSupply } from "../../utils";
 import { findRewardAuthority } from "../rewardDistributor/pda";
-import { withClaimRewards } from "../rewardDistributor/transaction";
 import {
   getPoolIdentifier,
   getStakeBooster,
@@ -508,6 +507,7 @@ export const withUnstake = async (
     stakeEntryId: stakeEntryId,
   });
   const stakePoolData = await getStakePool(connection, params.stakePoolId);
+  /*
   for (const [rewardDistributorIndex] of params.distributorIds.entries()) {
     if (!stakeEntryData) throw "Stake entry not found";
 
@@ -530,15 +530,8 @@ export const withUnstake = async (
     }
 
     // claim any rewards deserved
-    await withClaimRewards(transaction, connection, wallet, {
-      distributorId: new BN(rewardDistributorIndex),
-      stakePoolId: params.stakePoolId,
-      stakeEntryId: stakeEntryId,
-      lastStaker: wallet.publicKey,
-      skipRewardMintTokenAccount: params.skipRewardMintTokenAccount,
-      stakePoolDuration: params.stakePoolDuration,
-    });
   }
+  */
 
   const stakeEntryOriginalMintTokenAccountId =
     await withFindOrInitAssociatedTokenAccount(

@@ -13,7 +13,6 @@ const spl_token_1 = require("@solana/spl-token");
 const web3_js_1 = require("@solana/web3.js");
 const utils_1 = require("../../utils");
 const pda_2 = require("../rewardDistributor/pda");
-const transaction_1 = require("../rewardDistributor/transaction");
 const accounts_2 = require("./accounts");
 const constants_1 = require("./constants");
 const pda_3 = require("./pda");
@@ -296,34 +295,31 @@ const withUnstake = async (transaction, connection, wallet, params) => {
         stakeEntryId: stakeEntryId,
     });
     const stakePoolData = await (0, accounts_2.getStakePool)(connection, params.stakePoolId);
+    /*
     for (const [rewardDistributorIndex] of params.distributorIds.entries()) {
-        if (!stakeEntryData)
-            throw "Stake entry not found";
-        if ((!stakePoolData.parsed.cooldownSeconds ||
-            stakePoolData.parsed.cooldownSeconds === 0 ||
-            ((stakeEntryData === null || stakeEntryData === void 0 ? void 0 : stakeEntryData.parsed.cooldownStartSeconds) &&
-                Date.now() / 1000 -
-                    stakeEntryData.parsed.cooldownStartSeconds.toNumber() >=
-                    stakePoolData.parsed.cooldownSeconds)) &&
-            (!stakePoolData.parsed.minStakeSeconds ||
-                stakePoolData.parsed.minStakeSeconds === 0 ||
-                ((stakeEntryData === null || stakeEntryData === void 0 ? void 0 : stakeEntryData.parsed.lastStakedAt) &&
-                    Date.now() / 1000 - stakeEntryData.parsed.lastStakedAt.toNumber() >=
-                        stakePoolData.parsed.minStakeSeconds)) &&
-            (stakeEntryData.parsed.originalMintClaimed ||
-                stakeEntryData.parsed.stakeMintClaimed)) {
-            // return receipt mint if its claimed
-        }
-        // claim any rewards deserved
-        await (0, transaction_1.withClaimRewards)(transaction, connection, wallet, {
-            distributorId: new anchor_1.BN(rewardDistributorIndex),
-            stakePoolId: params.stakePoolId,
-            stakeEntryId: stakeEntryId,
-            lastStaker: wallet.publicKey,
-            skipRewardMintTokenAccount: params.skipRewardMintTokenAccount,
-            stakePoolDuration: params.stakePoolDuration,
-        });
+      if (!stakeEntryData) throw "Stake entry not found";
+  
+      if (
+        (!stakePoolData.parsed.cooldownSeconds ||
+          stakePoolData.parsed.cooldownSeconds === 0 ||
+          (stakeEntryData?.parsed.cooldownStartSeconds &&
+            Date.now() / 1000 -
+            stakeEntryData.parsed.cooldownStartSeconds.toNumber() >=
+            stakePoolData.parsed.cooldownSeconds)) &&
+        (!stakePoolData.parsed.minStakeSeconds ||
+          stakePoolData.parsed.minStakeSeconds === 0 ||
+          (stakeEntryData?.parsed.lastStakedAt &&
+            Date.now() / 1000 - stakeEntryData.parsed.lastStakedAt.toNumber() >=
+            stakePoolData.parsed.minStakeSeconds)) &&
+        (stakeEntryData.parsed.originalMintClaimed ||
+          stakeEntryData.parsed.stakeMintClaimed)
+      ) {
+        // return receipt mint if its claimed
+      }
+  
+      // claim any rewards deserved
     }
+    */
     const stakeEntryOriginalMintTokenAccountId = await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, params.originalMintId, stakeEntryId, wallet.publicKey, true);
     const userOriginalMintTokenAccountId = await (0, common_1.withFindOrInitAssociatedTokenAccount)(transaction, connection, params.originalMintId, wallet.publicKey, wallet.publicKey, true);
     const remainingAccounts = await (0, utils_2.withRemainingAccountsForUnstake)(transaction, connection, wallet, stakeEntryId, stakeEntryData === null || stakeEntryData === void 0 ? void 0 : stakeEntryData.parsed.stakeMint);
